@@ -449,5 +449,31 @@ function _funds_civix_civicrm_alterSettingsFolders(&$metaDataFolders = NULL) {
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_entityTypes
  */
 function _funds_civix_civicrm_entityTypes(&$entityTypes) {
-  $entityTypes = array_merge($entityTypes, []);
+  $entityTypes = array_merge($entityTypes, [
+    'CRM_Funds_DAO_Fund' => [
+      'name' => 'Fund',
+      'class' => 'CRM_Funds_DAO_Fund',
+      'table' => 'civicrm_o8_fund',
+    ],
+    'CRM_Funds_DAO_FundAccount' => [
+      'name' => 'FundAccount',
+      'class' => 'CRM_Funds_DAO_FundAccount',
+      'table' => 'civicrm_o8_fund_account',
+    ],
+    'CRM_Funds_DAO_FundCategory' => [
+      'name' => 'FundCategory',
+      'class' => 'CRM_Funds_DAO_FundCategory',
+      'table' => 'civicrm_o8_fund_category',
+    ],
+    'CRM_Funds_DAO_FundComponent' => [
+      'name' => 'FundComponent',
+      'class' => 'CRM_Funds_DAO_FundComponent',
+      'table' => 'civicrm_o8_fund_component',
+    ],
+    'CRM_Funds_DAO_FundTransaction' => [
+      'name' => 'FundTransaction',
+      'class' => 'CRM_Funds_DAO_FundTransaction',
+      'table' => 'civicrm_o8_fund_transaction',
+    ],
+  ]);
 }

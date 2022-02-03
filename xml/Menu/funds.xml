@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<menu>
+  <item>
+    <path>civicrm/fund/form</path>
+    <page_callback>CRM_Funds_Form_Fund</page_callback>
+    <title>Fund</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/fund/search</path>
+    <page_callback>CRM_Funds_Page_SearchFund</page_callback>
+    <title>SearchFund</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/fund/account</path>
+    <page_callback>CRM_Funds_Form_Fund</page_callback>
+    <title>Fund</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/fund/accountsearch</path>
+    <page_callback>CRM_Funds_Page_SearchFund</page_callback>
+    <title>SearchFund</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/fund/category</path>
+    <page_callback>CRM_Funds_Form_Fund</page_callback>
+    <title>Fund</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/fund/categorysearch</path>
+    <page_callback>CRM_Funds_Page_SearchFund</page_callback>
+    <title>SearchFund</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/fund/component</path>
+    <page_callback>CRM_Funds_Form_Fund</page_callback>
+    <title>Fund</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/fund/componentsearch</path>
+    <page_callback>CRM_Funds_Page_SearchFund</page_callback>
+    <title>SearchFund</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/fund/commonsearch</path>
+    <page_callback>CRM_Funds_Form_CommonSearch</page_callback>
+    <title>CommonSearch</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/fund/contacttab</path>
+    <page_callback>CRM_Funds_Page_ContactTab</page_callback>
+    <title>ContactTab</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+</menu>

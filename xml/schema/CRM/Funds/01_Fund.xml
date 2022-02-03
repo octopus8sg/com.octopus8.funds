@@ -116,7 +116,7 @@
     </field>
 
     <field>
-        <name>attachement_file_id</name>
+        <name>file_id</name>
         <title>Attachement File ID</title>
         <type>int unsigned</type>
         <required>true</required>
@@ -171,7 +171,7 @@
         <title>Fund Modified Date</title>
         <required>false</required>
         <default>CURRENT_TIMESTAMP</default>
-        <comment>Date and time the fund was created</comment>
+        <comment>Date and time the fund was modified</comment>
     </field>
 
     <field>

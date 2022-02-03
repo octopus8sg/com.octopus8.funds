@@ -11,7 +11,7 @@
     <name>id</name>
     <type>int unsigned</type>
     <required>true</required>
-    <comment>Unique FundTransaction ID</comment>
+    <comment>Unique Fund Transaction ID</comment>
     <html>
       <type>Number</type>
     </html>
@@ -21,16 +21,217 @@
     <autoincrement>true</autoincrement>
   </primaryKey>
 
+
+
   <field>
-    <name>contact_id</name>
+    <name>date</name>
+    <type>datetime</type>
+    <comment>Transaction Data Time</comment>
+    <html>
+      <type>Select Date</type>
+      <formatType>activityDateTime</formatType>
+    </html>
+    <required>true</required>
+    <import>true</import>
+    <export>true</export>
+  </field>
+
+  <field>
+    <name>description</name>
+    <type>text</type>
+    <title>Description</title>
+    <html>
+      <type>TextArea</type>
+      <rows>2</rows>
+      <cols>60</cols>
+    </html>
+    <comment>Optional verbose description of the transaction.</comment>
+  </field>
+
+  <field>
+    <name>amount</name>
+    <type>decimal</type>
+    <required>true</required>
+    <import>true</import>
+    <dataPattern>/^\d+(\.\d{2})?$/</dataPattern>
+    <comment>Amount of the transaction.</comment>
+    <html>
+      <type>Text</type>
+      <label>Amount</label>
+    </html>
+  </field>
+
+  <field>
+    <name>file_id</name>
+    <title>Attachement File ID</title>
+    <type>int unsigned</type>
+    <required>true</required>
+    <comment>FK to civicrm_file</comment>
+    <html>
+      <label>File</label>
+    </html>
+  </field>
+  <foreignKey>
+    <name>file_id</name>
+    <table>civicrm_file</table>
+    <key>id</key>
+  </foreignKey>
+
+
+<!--  status -->
+
+  <field>
+    <name>status_id</name>
+    <title>Status</title>
+    <type>int</type>
+    <length>3</length>
+    <default>1</default>
+    <pseudoconstant>
+      <optionGroupName>o8_fund_trxn_status</optionGroupName>
+    </pseudoconstant>
+    <html>
+      <type>Select</type>
+    </html>
+  </field>
+
+
+  <field>
+    <name>case_id</name>
+    <title>Case</title>
+    <type>int unsigned</type>
+    <comment>FK to civicrm_case</comment>
+    <pseudoconstant>
+      <table>civicrm_case</table>
+      <keyColumn>id</keyColumn>
+      <labelColumn>subject</labelColumn>
+    </pseudoconstant>
+    <html>
+      <label>Case</label>
+      <type>Select</type>
+    </html>
+  </field>
+  <foreignKey>
+    <name>case_id</name>
+    <table>civicrm_case</table>
+    <key>id</key>
+    <onDelete>RESTRICT</onDelete>
+  </foreignKey>
+
+  <field>
+    <name>contact_id_sub</name>
+    <title>Contact (Social Worker)</title>
     <type>int unsigned</type>
     <comment>FK to Contact</comment>
   </field>
   <foreignKey>
-    <name>contact_id</name>
+    <name>contact_id_sub</name>
     <table>civicrm_contact</table>
     <key>id</key>
-    <onDelete>CASCADE</onDelete>
+    <onDelete>RESTRICT</onDelete>
+  </foreignKey>
+
+  <field>
+    <name>contact_id_app</name>
+    <title>Contact (Approver)</title>
+    <type>int unsigned</type>
+    <comment>FK to Contact</comment>
+  </field>
+  <foreignKey>
+    <name>contact_id_app</name>
+    <table>civicrm_contact</table>
+    <key>id</key>
+    <onDelete>RESTRICT</onDelete>
+  </foreignKey>
+
+
+<!-- component -->
+  <field>
+    <name>component_id</name>
+    <title>Component</title>
+    <type>int unsigned</type>
+    <comment>FK to civicrm_o8_fund_component</comment>
+    <pseudoconstant>
+      <table>civicrm_o8_fund_component</table>
+      <keyColumn>id</keyColumn>
+      <labelColumn>title</labelColumn>
+    </pseudoconstant>
+    <html>
+      <label>Component</label>
+      <type>Select</type>
+    </html>
+  </field>
+  <foreignKey>
+    <name>component_id</name>
+    <table>civicrm_o8_fund_component</table>
+    <key>id</key>
+    <onDelete>RESTRICT</onDelete>
+  </foreignKey>
+
+<!-- account -->
+  <field>
+    <name>account_id</name>
+    <title>Account</title>
+    <type>int unsigned</type>
+    <comment>FK to civicrm_o8_fund_account</comment>
+    <pseudoconstant>
+      <table>civicrm_o8_fund_account</table>
+      <keyColumn>id</keyColumn>
+      <labelColumn>title</labelColumn>
+    </pseudoconstant>
+    <html>
+      <label>Account</label>
+      <type>Select</type>
+    </html>
+  </field>
+  <foreignKey>
+    <name>account_id</name>
+    <table>civicrm_o8_fund_account</table>
+    <key>id</key>
+    <onDelete>RESTRICT</onDelete>
+  </foreignKey>
+
+  <field>
+    <name>created_at</name>
+    <type>timestamp</type>
+    <title>Transaction Created Date</title>
+    <required>false</required>
+    <default>CURRENT_TIMESTAMP</default>
+    <comment>Date and time the transaction was created</comment>
+  </field>
+
+  <field>
+    <name>created_by</name>
+    <title>Fund Created Contact</title>
+    <type>int unsigned</type>
+    <comment>FK to Created Contact</comment>
+  </field>
+  <foreignKey>
+    <name>created_by</name>
+    <table>civicrm_contact</table>
+    <key>id</key>
+    <onDelete>RESTRICT</onDelete>
+  </foreignKey>
+
+  <field>
+    <name>modified_at</name>
+    <type>timestamp</type>
+    <title>Transaction Modified Date</title>
+    <required>false</required>
+    <default>CURRENT_TIMESTAMP</default>
+    <comment>Date and time the transaction was modified</comment>
+  </field>
+
+  <field>
+    <name>modified_by</name>
+    <title>Fund Modified Contact</title>
+    <type>int unsigned</type>
+    <comment>FK to Modified Contact</comment>
+  </field>
+  <foreignKey>
+    <name>modified_by</name>
+    <table>civicrm_contact</table>
+    <key>id</key>
+    <onDelete>RESTRICT</onDelete>
   </foreignKey>
 
 </table>

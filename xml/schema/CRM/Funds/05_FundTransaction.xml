@@ -4,7 +4,7 @@
   <base>CRM/Funds</base>
   <class>FundTransaction</class>
   <name>civicrm_o8_fund_transaction</name>
-  <comment>FIXME</comment>
+  <comment>Fund Transaction</comment>
   <log>true</log>
 
   <field>

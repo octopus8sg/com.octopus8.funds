@@ -4,7 +4,7 @@
   <base>CRM/Funds</base>
   <class>FundAccount</class>
   <name>civicrm_o8_fund_account</name>
-  <comment>FIXME</comment>
+  <comment>Account</comment>
   <log>true</log>
 
   <field>
@@ -64,7 +64,7 @@
       <rows>2</rows>
       <cols>60</cols>
     </html>
-    <comment>Optional verbose description of the fund.</comment>
+    <comment>Optional verbose description of the account.</comment>
   </field>
 
   <field>
@@ -74,7 +74,7 @@
     <required>true</required>
     <comment>FK to civicrm_o8_fund</comment>
     <html>
-      <label>File</label>
+      <label>Fund</label>
     </html>
   </field>
   <foreignKey>
@@ -89,7 +89,7 @@
     <title>Account Created Date</title>
     <required>false</required>
     <default>CURRENT_TIMESTAMP</default>
-    <comment>Date and time the job was created</comment>
+    <comment>Date and time the account was created</comment>
   </field>
 
   <field>
@@ -111,7 +111,7 @@
     <title>Account Modified Date</title>
     <required>false</required>
     <default>CURRENT_TIMESTAMP</default>
-    <comment>Date and time the job was created</comment>
+    <comment>Date and time the account was modified</comment>
   </field>
 
   <field>

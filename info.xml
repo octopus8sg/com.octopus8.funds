@@ -1,21 +1,21 @@
 <?xml version="1.0"?>
 <extension key="com.octopus8.funds" type="module">
   <file>funds</file>
-  <name>FIXME</name>
-  <description>FIXME</description>
+  <name>Funds</name>
+  <description>o8 Funds</description>
   <license>AGPL-3.0</license>
   <maintainer>
-    <author>FIXME</author>
-    <email>FIXME</email>
+    <author>Octopus8</author>
+    <email>hindol@octopus8.com</email>
   </maintainer>
   <urls>
-    <url desc="Main Extension Page">http://FIXME</url>
-    <url desc="Documentation">http://FIXME</url>
-    <url desc="Support">http://FIXME</url>
+    <url desc="Main Extension Page">https://octopus8.com</url>
+    <url desc="Documentation">https://octopus8.com</url>
+    <url desc="Support">https://octopus8.com</url>
     <url desc="Licensing">http://www.gnu.org/licenses/agpl-3.0.html</url>
   </urls>
   <releaseDate>2022-02-02</releaseDate>
-  <version>1.0</version>
+  <version>0.0.1</version>
   <develStage>alpha</develStage>
   <compatibility>
     <ver>5.0</ver>

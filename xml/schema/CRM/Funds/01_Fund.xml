@@ -4,7 +4,7 @@
     <base>CRM/Funds</base>
     <class>Fund</class>
     <name>civicrm_o8_fund</name>
-    <comment>FIXME</comment>
+    <comment>Fund</comment>
     <log>true</log>
 
     <field>
@@ -149,7 +149,7 @@
         <title>Fund Created Date</title>
         <required>false</required>
         <default>CURRENT_TIMESTAMP</default>
-        <comment>Date and time the job was created</comment>
+        <comment>Date and time the fund was created</comment>
     </field>
 
     <field>
@@ -171,7 +171,7 @@
         <title>Fund Modified Date</title>
         <required>false</required>
         <default>CURRENT_TIMESTAMP</default>
-        <comment>Date and time the job was created</comment>
+        <comment>Date and time the fund was created</comment>
     </field>
 
     <field>

@@ -4,7 +4,7 @@
   <base>CRM/Funds</base>
   <class>FundComponent</class>
   <name>civicrm_o8_fund_component</name>
-  <comment>FIXME</comment>
+  <comment>Fund Component</comment>
   <log>true</log>
 
   <field>
@@ -22,15 +22,108 @@
   </primaryKey>
 
   <field>
-    <name>contact_id</name>
+    <name>code</name>
+    <type>varchar</type>
+    <length>255</length>
+    <label>Component Code</label>
+    <comment>Component Code</comment>
+    <required>true</required>
+    <import>true</import>
+    <export>true</export>
+  </field>
+
+  <index>
+    <name>index_code</name>
+    <fieldName>code</fieldName>
+    <unique>true</unique>
+  </index>
+
+  <field>
+    <name>name</name>
+    <type>varchar</type>
+    <length>255</length>
+    <label>Component Name</label>
+    <comment>Component Name</comment>
+    <required>true</required>
+    <import>true</import>
+    <export>true</export>
+  </field>
+
+  <index>
+    <name>index_name</name>
+    <fieldName>code</fieldName>
+  </index>
+
+  <field>
+    <name>description</name>
+    <type>text</type>
+    <title>Description</title>
+    <html>
+      <type>TextArea</type>
+      <rows>2</rows>
+      <cols>60</cols>
+    </html>
+    <comment>Optional verbose description of the component.</comment>
+  </field>
+
+  <field>
+    <name>fund_category_id</name>
+    <title>Category</title>
     <type>int unsigned</type>
-    <comment>FK to Contact</comment>
+    <required>true</required>
+    <comment>FK to civicrm_o8_fund_category</comment>
+    <html>
+      <label>Category</label>
+    </html>
   </field>
   <foreignKey>
-    <name>contact_id</name>
+    <name>fund_category_id</name>
+    <table>civicrm_o8_fund_category</table>
+    <key>id</key>
+  </foreignKey>
+
+  <field>
+    <name>created_at</name>
+    <type>timestamp</type>
+    <title>Component Created Date</title>
+    <required>false</required>
+    <default>CURRENT_TIMESTAMP</default>
+    <comment>Date and time the component was created</comment>
+  </field>
+
+  <field>
+    <name>created_by</name>
+    <type>int unsigned</type>
+    <title>Component Created Contact</title>
+    <comment>FK to Created Contact</comment>
+  </field>
+  <foreignKey>
+    <name>created_by</name>
     <table>civicrm_contact</table>
     <key>id</key>
-    <onDelete>CASCADE</onDelete>
+    <onDelete>RESTRICT</onDelete>
+  </foreignKey>
+
+  <field>
+    <name>modified_at</name>
+    <type>timestamp</type>
+    <title>Component Modified Date</title>
+    <required>false</required>
+    <default>CURRENT_TIMESTAMP</default>
+    <comment>Date and time the component was modified</comment>
+  </field>
+
+  <field>
+    <name>modified_by</name>
+    <type>int unsigned</type>
+    <title>Component Modified Contact</title>
+    <comment>FK to Modified Contact</comment>
+  </field>
+  <foreignKey>
+    <name>modified_by</name>
+    <table>civicrm_contact</table>
+    <key>id</key>
+    <onDelete>RESTRICT</onDelete>
   </foreignKey>
 
 </table>

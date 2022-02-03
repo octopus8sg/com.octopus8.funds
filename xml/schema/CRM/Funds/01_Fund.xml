@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+<table>
+    <base>CRM/Funds</base>
+    <class>Fund</class>
+    <name>civicrm_o8_fund</name>
+    <comment>FIXME</comment>
+    <log>true</log>
+
+    <field>
+        <name>id</name>
+        <type>int unsigned</type>
+        <required>true</required>
+        <comment>Unique Fund ID</comment>
+        <html>
+            <type>Number</type>
+        </html>
+    </field>
+    <primaryKey>
+        <name>id</name>
+        <autoincrement>true</autoincrement>
+    </primaryKey>
+
+
+    <field>
+        <name>code</name>
+        <type>varchar</type>
+        <length>255</length>
+        <label>Fund Code</label>
+        <comment>Fund Code</comment>
+        <required>true</required>
+        <import>true</import>
+        <export>true</export>
+    </field>
+
+    <index>
+        <name>index_code</name>
+        <fieldName>code</fieldName>
+        <unique>true</unique>
+    </index>
+
+    <field>
+        <name>name</name>
+        <type>varchar</type>
+        <length>255</length>
+        <label>Fund Name</label>
+        <comment>Fund Name</comment>
+        <required>true</required>
+        <import>true</import>
+        <export>true</export>
+    </field>
+
+    <index>
+        <name>index_name</name>
+        <fieldName>code</fieldName>
+    </index>
+
+    <field>
+        <name>target_cases</name>
+        <title>Target Cases</title>
+        <type>varchar</type>
+        <length>1255</length>
+        <export>true</export>
+        <import>true</import>
+        <comment>Target Cases.</comment>
+        <pseudoconstant>
+            <table>civicrm_case</table>
+            <keyColumn>id</keyColumn>
+            <labelColumn>subject</labelColumn>
+            <!--            <condition>parent_id IS NOT NULL</condition>-->
+        </pseudoconstant>
+        <html>
+            <type>Select</type>
+            <multiple>1</multiple>
+        </html>
+        <serialize>SEPARATOR_BOOKEND</serialize>
+    </field>
+
+    <field>
+        <name>start_date</name>
+        <type>datetime</type>
+        <comment>Fund Start Date</comment>
+        <html>
+            <type>Select Start Date</type>
+            <formatType>activityDateTime</formatType>
+        </html>
+        <required>true</required>
+        <import>true</import>
+        <export>true</export>
+    </field>
+
+    <field>
+        <name>end_date</name>
+        <type>datetime</type>
+        <comment>Fund End Date</comment>
+        <html>
+            <type>Select Start Date</type>
+            <formatType>activityDateTime</formatType>
+        </html>
+        <required>true</required>
+        <import>true</import>
+        <export>true</export>
+    </field>
+
+    <field>
+        <name>amount</name>
+        <type>decimal</type>
+        <required>true</required>
+        <import>true</import>
+        <dataPattern>/^\d+(\.\d{2})?$/</dataPattern>
+        <comment>Amount of the fund.</comment>
+        <html>
+            <type>Text</type>
+            <label>Amount</label>
+        </html>
+    </field>
+
+    <field>
+        <name>attachement_file_id</name>
+        <title>Attachement File ID</title>
+        <type>int unsigned</type>
+        <required>true</required>
+        <comment>FK to civicrm_file</comment>
+        <html>
+            <label>File</label>
+        </html>
+    </field>
+    <foreignKey>
+        <name>file_id</name>
+        <table>civicrm_file</table>
+        <key>id</key>
+    </foreignKey>
+
+    <field>
+        <name>description</name>
+        <type>text</type>
+        <title>Description</title>
+        <html>
+            <type>TextArea</type>
+            <rows>2</rows>
+            <cols>60</cols>
+        </html>
+        <comment>Optional verbose description of the fund.</comment>
+    </field>
+
+    <field>
+        <name>created_at</name>
+        <type>timestamp</type>
+        <title>Fund Created Date</title>
+        <required>false</required>
+        <default>CURRENT_TIMESTAMP</default>
+        <comment>Date and time the job was created</comment>
+    </field>
+
+    <field>
+        <name>created_by</name>
+        <title>Fund Created Contact</title>
+        <type>int unsigned</type>
+        <comment>FK to Created Contact</comment>
+    </field>
+    <foreignKey>
+        <name>created_by</name>
+        <table>civicrm_contact</table>
+        <key>id</key>
+        <onDelete>RESTRICT</onDelete>
+    </foreignKey>
+
+    <field>
+        <name>modified_at</name>
+        <type>timestamp</type>
+        <title>Fund Modified Date</title>
+        <required>false</required>
+        <default>CURRENT_TIMESTAMP</default>
+        <comment>Date and time the job was created</comment>
+    </field>
+
+    <field>
+        <name>modified_by</name>
+        <title>Fund Modified Contact</title>
+        <type>int unsigned</type>
+        <comment>FK to Modified Contact</comment>
+    </field>
+    <foreignKey>
+        <name>modified_by</name>
+        <table>civicrm_contact</table>
+        <key>id</key>
+        <onDelete>RESTRICT</onDelete>
+    </foreignKey>
+
+
+</table>

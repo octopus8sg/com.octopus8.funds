@@ -13,42 +13,6 @@
     <access_arguments>access CiviCRM</access_arguments>
   </item>
   <item>
-    <path>civicrm/fund/account</path>
-    <page_callback>CRM_Funds_Form_Fund</page_callback>
-    <title>Fund</title>
-    <access_arguments>access CiviCRM</access_arguments>
-  </item>
-  <item>
-    <path>civicrm/fund/accountsearch</path>
-    <page_callback>CRM_Funds_Page_SearchFund</page_callback>
-    <title>SearchFund</title>
-    <access_arguments>access CiviCRM</access_arguments>
-  </item>
-  <item>
-    <path>civicrm/fund/category</path>
-    <page_callback>CRM_Funds_Form_Fund</page_callback>
-    <title>Fund</title>
-    <access_arguments>access CiviCRM</access_arguments>
-  </item>
-  <item>
-    <path>civicrm/fund/categorysearch</path>
-    <page_callback>CRM_Funds_Page_SearchFund</page_callback>
-    <title>SearchFund</title>
-    <access_arguments>access CiviCRM</access_arguments>
-  </item>
-  <item>
-    <path>civicrm/fund/component</path>
-    <page_callback>CRM_Funds_Form_Fund</page_callback>
-    <title>Fund</title>
-    <access_arguments>access CiviCRM</access_arguments>
-  </item>
-  <item>
-    <path>civicrm/fund/componentsearch</path>
-    <page_callback>CRM_Funds_Page_SearchFund</page_callback>
-    <title>SearchFund</title>
-    <access_arguments>access CiviCRM</access_arguments>
-  </item>
-  <item>
     <path>civicrm/fund/commonsearch</path>
     <page_callback>CRM_Funds_Form_CommonSearch</page_callback>
     <title>CommonSearch</title>
@@ -58,6 +22,42 @@
     <path>civicrm/fund/contacttab</path>
     <page_callback>CRM_Funds_Page_ContactTab</page_callback>
     <title>ContactTab</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/fund/account</path>
+    <page_callback>CRM_Funds_Form_Account</page_callback>
+    <title>Account</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/fund/accountsearch</path>
+    <page_callback>CRM_Funds_Page_SearchAccount</page_callback>
+    <title>SearchAccount</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/fund/category</path>
+    <page_callback>CRM_Funds_Form_Category</page_callback>
+    <title>Category</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/fund/categorysearch</path>
+    <page_callback>CRM_Funds_Page_SearchCategory</page_callback>
+    <title>SearchCategory</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/fund/component</path>
+    <page_callback>CRM_Funds_Form_Component</page_callback>
+    <title>Component</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/fund/componentsearch</path>
+    <page_callback>CRM_Funds_Page_SearchComponent</page_callback>
+    <title>SearchComponent</title>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
 </menu>

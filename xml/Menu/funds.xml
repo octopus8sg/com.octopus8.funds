@@ -60,4 +60,22 @@
     <title>SearchComponent</title>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
+  <item>
+    <path>civicrm/fund/dashboard</path>
+    <page_callback>CRM_Funds_Page_Dashboard</page_callback>
+    <title>Dashboard</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/fund/transaction</path>
+    <page_callback>CRM_Funds_Form_Transaction</page_callback>
+    <title>Transaction</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/fund/transactionsearch</path>
+    <page_callback>CRM_Funds_Page_SearchTransaction</page_callback>
+    <title>SearchTransaction</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
 </menu>

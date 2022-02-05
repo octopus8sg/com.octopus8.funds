@@ -40,6 +40,20 @@
     </index>
 
     <field>
+        <name>contact_id</name>
+        <type>int unsigned</type>
+        <label>Source Organization (Contact)</label>
+        <comment>FK to Contact</comment>
+    </field>
+    <foreignKey>
+        <name>contact_id</name>
+        <table>civicrm_contact</table>
+        <key>id</key>
+        <onDelete>RESTRICT</onDelete>
+    </foreignKey>
+
+
+    <field>
         <name>name</name>
         <type>varchar</type>
         <length>255</length>
@@ -115,21 +129,21 @@
         </html>
     </field>
 
-    <field>
-        <name>file_id</name>
-        <title>Attachement File ID</title>
-        <type>int unsigned</type>
-        <required>true</required>
-        <comment>FK to civicrm_file</comment>
-        <html>
-            <label>File</label>
-        </html>
-    </field>
-    <foreignKey>
-        <name>file_id</name>
-        <table>civicrm_file</table>
-        <key>id</key>
-    </foreignKey>
+<!--    <field>-->
+<!--        <name>file_id</name>-->
+<!--        <title>Attachement File ID</title>-->
+<!--        <type>int unsigned</type>-->
+<!--        <required>true</required>-->
+<!--        <comment>FK to civicrm_file</comment>-->
+<!--        <html>-->
+<!--            <label>File</label>-->
+<!--        </html>-->
+<!--    </field>-->
+<!--    <foreignKey>-->
+<!--        <name>file_id</name>-->
+<!--        <table>civicrm_file</table>-->
+<!--        <key>id</key>-->
+<!--    </foreignKey>-->
 
     <field>
         <name>description</name>

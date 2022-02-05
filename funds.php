@@ -155,14 +155,123 @@ function funds_civicrm_themes(&$themes) {
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_navigationMenu
  */
-//function funds_civicrm_navigationMenu(&$menu) {
-//  _funds_civix_insert_navigation_menu($menu, 'Mailings', [
-//    'label' => E::ts('New subliminal message'),
-//    'name' => 'mailing_subliminal_message',
-//    'url' => 'civicrm/mailing/subliminal',
-//    'permission' => 'access CiviMail',
-//    'operator' => 'OR',
-//    'separator' => 0,
-//  ]);
-//  _funds_civix_navigationMenu($menu);
-//}
+function funds_civicrm_navigationMenu(&$menu) {
+    _funds_civix_insert_navigation_menu($menu, '', array(
+        'label' => E::ts('Funds'),
+        'name' => 'o8_funds',
+        'icon' => 'crm-i fa-dropbox',
+        'url' => 'civicrm/fund/dashboard',
+        'permission' => 'access CiviCRM',
+        'navID' => 10,
+        'operator' => 'OR',
+        'separator' => 0,
+    ));
+    _funds_civix_insert_navigation_menu($menu, 'o8_funds', array(
+        'label' => E::ts('Dashboard'),
+        'name' => 'o8_funds_dashboard',
+        'url' => 'civicrm/fund/dashboard',
+        'permission' => 'access CiviCRM',
+        'operator' => 'OR',
+        'separator' => 0,
+    ));
+    _funds_civix_navigationMenu($menu);
+    _funds_civix_insert_navigation_menu($menu, 'o8_funds', array(
+        'label' => E::ts('Find Funds'),
+        'name' => 'o8_funds_search',
+        'url' => 'civicrm/fund/search',
+        'permission' => 'access CiviCRM',
+        'operator' => 'OR',
+        'separator' => 0,
+    ));
+    _funds_civix_navigationMenu($menu);
+    _funds_civix_insert_navigation_menu($menu, 'o8_funds', array(
+        'label' => E::ts('Add Fund'),
+        'name' => 'o8_funds_add_fund',
+        'url' => 'civicrm/fund/form?reset=1&action=add',
+        'permission' => 'access CiviCRM',
+        'operator' => 'OR',
+        'separator' => 0,
+    ));
+    _funds_civix_navigationMenu($menu);
+    _funds_civix_insert_navigation_menu($menu, 'o8_funds', array(
+        'label' => E::ts('Find Account'),
+        'name' => 'o8_funds_account_search',
+        'url' => 'civicrm/fund/accountsearch',
+        'permission' => 'access CiviCRM',
+        'operator' => 'OR',
+        'separator' => 0,
+    ));
+    _funds_civix_navigationMenu($menu);
+    _funds_civix_insert_navigation_menu($menu, 'o8_funds', array(
+        'label' => E::ts('Add Account'),
+        'name' => 'o8_funds_account_add',
+        'url' => 'civicrm/fund/account?reset=1&action=add',
+        'permission' => 'access CiviCRM',
+        'operator' => 'OR',
+        'separator' => 0,
+    ));
+    _funds_civix_navigationMenu($menu);
+    _funds_civix_insert_navigation_menu($menu, 'o8_funds', array(
+        'label' => E::ts('Search category'),
+        'name' => 'o8_funds_category_search',
+        'url' => 'civicrm/fund/categorysearch',
+        'permission' => 'access CiviCRM',
+        'operator' => 'OR',
+        'separator' => 0,
+    ));
+    _funds_civix_navigationMenu($menu);
+    _funds_civix_insert_navigation_menu($menu, 'o8_funds', array(
+        'label' => E::ts('Add Category'),
+        'name' => 'o8_funds_category_add',
+        'url' => 'civicrm/fund/category?reset=1&action=add',
+        'permission' => 'access CiviCRM',
+        'operator' => 'OR',
+        'separator' => 0,
+    ));
+    _funds_civix_navigationMenu($menu);
+    _funds_civix_insert_navigation_menu($menu, 'o8_funds', array(
+        'label' => E::ts('Find Component'),
+        'name' => 'o8_funds_component_search',
+        'url' => 'civicrm/fund/componentsearch',
+        'permission' => 'access CiviCRM',
+        'operator' => 'OR',
+        'separator' => 0,
+    ));
+    _funds_civix_navigationMenu($menu);
+    _funds_civix_insert_navigation_menu($menu, 'o8_funds', array(
+        'label' => E::ts('Add Component'),
+        'name' => 'o8_funds_component_add',
+        'url' => 'civicrm/fund/component?reset=1&action=add',
+        'permission' => 'access CiviCRM',
+        'operator' => 'OR',
+        'separator' => 0,
+    ));
+    _funds_civix_navigationMenu($menu);
+    _funds_civix_insert_navigation_menu($menu, 'o8_funds', array(
+        'label' => E::ts('Find Transaction'),
+        'name' => 'o8_funds_transaction_search',
+        'url' => 'civicrm/fund/transactionsearch',
+        'permission' => 'access CiviCRM',
+        'operator' => 'OR',
+        'separator' => 0,
+    ));
+    _funds_civix_navigationMenu($menu);
+    _funds_civix_insert_navigation_menu($menu, 'o8_funds', array(
+        'label' => E::ts('Add Transaction'),
+        'name' => 'o8_funds_transaction_add',
+        'url' => 'civicrm/fund/transaction?reset=1&action=add',
+        'permission' => 'access CiviCRM',
+        'operator' => 'OR',
+        'separator' => 0,
+    ));
+    _funds_civix_navigationMenu($menu);
+    _funds_civix_insert_navigation_menu($menu, 'o8_funds', array(
+        'label' => E::ts('Fund Reports'),
+        'name' => 'o8_funds_report_funds',
+        'url' => CRM_Utils_System::url('civicrm/report/list', ['grp' => 'funds', 'reset' => 1]),
+        'permission' => 'access CiviCRM',
+        'operator' => 'OR',
+        'separator' => 2,
+    ));
+    _funds_civix_navigationMenu($menu);
+}

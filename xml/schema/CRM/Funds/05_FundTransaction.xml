@@ -153,7 +153,7 @@
     <pseudoconstant>
       <table>civicrm_o8_fund_component</table>
       <keyColumn>id</keyColumn>
-      <labelColumn>title</labelColumn>
+      <labelColumn>name</labelColumn>
     </pseudoconstant>
     <html>
       <label>Component</label>
@@ -176,7 +176,7 @@
     <pseudoconstant>
       <table>civicrm_o8_fund_account</table>
       <keyColumn>id</keyColumn>
-      <labelColumn>title</labelColumn>
+      <labelColumn>name</labelColumn>
     </pseudoconstant>
     <html>
       <label>Account</label>

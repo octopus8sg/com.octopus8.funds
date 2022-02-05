@@ -7,72 +7,199 @@ use CRM_Funds_ExtensionUtil as E;
  *
  * @see https://docs.civicrm.org/dev/en/latest/framework/quickform/
  */
-class CRM_Funds_Form_Fund extends CRM_Core_Form {
-  public function buildQuickForm() {
+class CRM_Funds_Form_Fund extends CRM_Core_Form
+{
 
-    // add form elements
-    $this->add(
-      'select', // field type
-      'favorite_color', // field name
-      'Favorite Color', // field label
-      $this->getColorOptions(), // list of options
-      TRUE // is required
-    );
-    $this->addButtons(array(
-      array(
-        'type' => 'submit',
-        'name' => E::ts('Submit'),
-        'isDefault' => TRUE,
-      ),
-    ));
+    protected $_id;
 
-    // export form elements
-    $this->assign('elementNames', $this->getRenderableElementNames());
-    parent::buildQuickForm();
-  }
+    protected $_myentity;
 
-  public function postProcess() {
-    $values = $this->exportValues();
-    $options = $this->getColorOptions();
-    CRM_Core_Session::setStatus(E::ts('You picked color "%1"', array(
-      1 => $options[$values['favorite_color']],
-    )));
-    parent::postProcess();
-  }
-
-  public function getColorOptions() {
-    $options = array(
-      '' => E::ts('- select -'),
-      '#f00' => E::ts('Red'),
-      '#0f0' => E::ts('Green'),
-      '#00f' => E::ts('Blue'),
-      '#f0f' => E::ts('Purple'),
-    );
-    foreach (array('1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e') as $f) {
-      $options["#{$f}{$f}{$f}"] = E::ts('Grey (%1)', array(1 => $f));
+    public function getDefaultEntity()
+    {
+        return 'Fund';
     }
-    return $options;
-  }
 
-  /**
-   * Get the fields/elements defined in this form.
-   *
-   * @return array (string)
-   */
-  public function getRenderableElementNames() {
-    // The _elements list includes some items which should not be
-    // auto-rendered in the loop -- such as "qfKey" and "buttons".  These
-    // items don't have labels.  We'll identify renderable by filtering on
-    // the 'label'.
-    $elementNames = array();
-    foreach ($this->_elements as $element) {
-      /** @var HTML_QuickForm_Element $element */
-      $label = $element->getLabel();
-      if (!empty($label)) {
-        $elementNames[] = $element->getName();
-      }
+    public function getDefaultEntityTable()
+    {
+        return 'civicrm_o8_fund';
     }
-    return $elementNames;
-  }
+
+    public function getEntityId()
+    {
+        return $this->_id;
+    }
+
+    /**
+     * Preprocess form.
+     *
+     * This is called before buildForm. Any pre-processing that
+     * needs to be done for buildForm should be done here.
+     *
+     * This is a virtual function and should be redefined if needed.
+     */
+    public function preProcess()
+    {
+        parent::preProcess();
+
+        $this->_action = CRM_Utils_Request::retrieve('action', 'String', $this);
+        $this->assign('action', $this->_action);
+
+        $this->_id = CRM_Utils_Request::retrieve('id', 'Positive', $this, FALSE);
+        CRM_Utils_System::setTitle('Add Fund');
+        if ($this->_id) {
+            CRM_Utils_System::setTitle('Edit Fund');
+            $entities = civicrm_api4('Fund', 'get',
+                ['where' => [
+                    ['id', '=', $this->_id]],
+                    'limit' => 1
+                ]
+            );
+            if (!empty($entities)) {
+                $this->_myentity = $entities[0];
+            }
+            $this->assign('myentity', $this->_myentity);
+
+            $session = CRM_Core_Session::singleton();
+            $session->replaceUserContext(CRM_Utils_System::url('civicrm/fund/form',
+                ['id' => $this->getEntityId(), 'action' => 'update']));
+        }
+    }
+
+
+    public function buildQuickForm()
+    {
+        $this->assign('id', $this->getEntityId());
+        $this->add('hidden', 'id');
+        if ($this->_action != CRM_Core_Action::DELETE) {
+            $this->addEntityRef('contact_id',
+                E::ts('Source Organisation (Contact)'), [], TRUE);
+            $this->add('text', 'code', E::ts('Code'), ['class' => 'huge'], TRUE);
+            $this->addRule('code',
+                ts('Fund Code should consist of numbers and letters'),
+                'alphanumeric', null, 'client');
+            $this->add('text', 'name', E::ts('Name'), ['class' => 'huge'], TRUE);
+//            $this->addDatePickerRange('fund_dateselect',
+//                'Select Date',
+//                FALSE,
+//                TRUE,
+//                "Start Date: ",
+//                "End Date: ",
+//                [],
+//                '_to',
+//                '_from'
+//            );
+            $this->add('datepicker', 'start_date',
+                E::ts('Start Date: '), CRM_Core_SelectValues::date(NULL, 'Y-m-d H:i:s'), TRUE, ['time' => FALSE]);
+            $this->add('datepicker', 'end_date',
+                E::ts('End Date: '), CRM_Core_SelectValues::date(NULL, 'Y-m-d H:i:s'), TRUE, ['time' => FALSE]);
+
+            //ToDo Should be given defaults, and in save have two values
+
+            $this->addEntityRef('target_cases', E::ts('Target Cases'), [
+                'entity' => 'case',
+                'placeholder' => ts('- Select Case -'),
+                'select' => ['minimumInputLength' => 0,],
+                'multiple' => TRUE,
+                'api' => [
+                    'extra' => ['subject', 'contact_id.sort_name'],
+//                    'search_field' => 'subject',
+                    'label_field' => 'subject',
+                ]
+            ], TRUE);
+            $this->add('text', 'amount', ts('Minimum Amount'), ['size' => 8, 'maxlength' => 8], TRUE);
+//            $this->addRule('amount', ts('Please enter a valid money value (e.g. %1).', [1 => CRM_Utils_Money::formatLocaleNumericRoundedForDefaultCurrency('9.99')]), 'money');
+//            $this->addUploadElement('file_id');
+//            $this->add('text', 'description', E::ts('Description'), ['class' => 'huge'], FALSE);
+
+            $this->add('text', 'amount', ts('Amount'));
+            $this->addRule('amount', ts('Please enter a valid amount.'), 'money');
+
+//            $noteAttrib = CRM_Core_DAO::getAttribute('CRM_Core_DAO_Note');
+            $this->add('textarea', 'description', ts('Description'));
+
+            // add attachments part
+            CRM_Core_BAO_File::buildAttachment($this,
+                'civicrm_o8_fund',
+                $this->_id
+            );
+            $this->addButtons([
+                [
+                    'type' => 'upload',
+                    'name' => E::ts('Submit'),
+                    'isDefault' => TRUE,
+                ],
+            ]);
+        } else {
+            CRM_Utils_System::setTitle('Delete Fund');
+            $this->addButtons([
+                ['type' => 'submit', 'name' => E::ts('Delete'), 'isDefault' => TRUE],
+                ['type' => 'cancel', 'name' => E::ts('Cancel')]
+            ]);
+        }
+        parent::buildQuickForm();
+    }
+
+    /**
+     * This virtual function is used to set the default values of various form
+     * elements.
+     *
+     * @return array|NULL
+     *   reference to the array of default values
+     */
+    public function setDefaultValues()
+    {
+        if ($this->_myentity) {
+            $defaults = $this->_myentity;
+        }
+        return $defaults;
+    }
+
+    public function postProcess()
+    {
+        if ($this->_action == CRM_Core_Action::DELETE) {
+            civicrm_api4('Fund', 'delete', ['where' => [['id', '=', $this->_id]]]);
+            CRM_Core_Session::setStatus(E::ts('Removed The Fund'), E::ts('Fund'), 'success');
+        } else {
+
+            $values = $this->controller->exportValues();
+            $fileparams = $values;
+            CRM_Core_Error::debug_var('values', $values);
+
+            $action = 'create';
+            if ($this->getEntityId()) {
+                $params['id'] = $this->getEntityId();
+                $action = 'update';
+            }
+            $params['entity_table'] = 'civicrm_o8_fund';
+            $params['entity_id'] = $this->getEntityId();
+            $values['entity_table'] = 'civicrm_o8_fund';
+            $values['entity_id'] = $this->getEntityId();
+            $params['name'] = $values['name'];
+            $params['code'] = $values['code'];
+            $params['target_cases'] = $values['target_cases'];
+            $params['amount'] = $values['amount'];
+            $params['start_date'] = $values['start_date'];
+            $params['end_date'] = $values['end_date'];
+            $params['contact_id'] = $values['contact_id'];
+            // add attachments as needed
+            if ($action == 'update') {
+                $attach = CRM_Core_BAO_File::formatAttachment($values, $values, 'civicrm_o8_fund', $this->getEntityId());
+                $values['modified_by'] = CRM_Core_Session::getLoggedInContactID();
+                $values['modified_date'] = date('YmdHis');
+                CRM_Core_Error::debug_var('attach', $attach);
+            } else {
+                $values['modified_by'] = CRM_Core_Session::getLoggedInContactID();
+                $values['modified_date'] = date('YmdHis');
+                $values['created_by'] = CRM_Core_Session::getLoggedInContactID();
+                $values['created_date'] = date('YmdHis');
+                $attach = CRM_Core_BAO_File::formatAttachment($values, $values, 'civicrm_o8_fund');
+                CRM_Core_Error::debug_var('attach', $attach);
+            }
+            CRM_Funds_BAO_Fund::create($values);
+//            $result = civicrm_api4('Fund', $action, ['values' => $params]);
+            CRM_Core_Session::setStatus(ts('Your Fund has been saved.'), ts('Saved'), 'success');
+        }
+        parent::postProcess();
+    }
 
 }

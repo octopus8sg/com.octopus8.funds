@@ -71,8 +71,9 @@ class CRM_Funds_Form_Fund extends CRM_Core_Form
         $this->assign('id', $this->getEntityId());
         $this->add('hidden', 'id');
         if ($this->_action != CRM_Core_Action::DELETE) {
+            $props = ['api' => ['params' => ['contact_type' => 'Organization']]];
             $this->addEntityRef('contact_id',
-                E::ts('Source Organisation (Contact)'), [], TRUE);
+                E::ts('Source Organisation (Contact)'), $props, TRUE);
             $this->add('text', 'code', E::ts('Code'), ['class' => 'huge'], TRUE);
             $this->addRule('code',
                 ts('Fund Code should consist of numbers and letters'),
@@ -92,24 +93,21 @@ class CRM_Funds_Form_Fund extends CRM_Core_Form
                 E::ts('Start Date: '), CRM_Core_SelectValues::date(NULL, 'Y-m-d H:i:s'), TRUE, ['time' => FALSE]);
             $this->add('datepicker', 'end_date',
                 E::ts('End Date: '), CRM_Core_SelectValues::date(NULL, 'Y-m-d H:i:s'), TRUE, ['time' => FALSE]);
-
-            //ToDo Should be given defaults, and in save have two values
-
+//            $params = ['type' => 'any'];
+//            $allCases = CRM_Case_BAO_Case::getCases(TRUE, $params);
+//            $this->addElement('select',
+//                'target_cases', ts('Target Cases'), $allCases,
+//                ['multiple' => TRUE, 'class' => 'crm-select2 huge']);
+//
             $this->addEntityRef('target_cases', E::ts('Target Cases'), [
                 'entity' => 'case',
+                'class' => 'huge',
                 'placeholder' => ts('- Select Case -'),
-                'select' => ['minimumInputLength' => 0,],
                 'multiple' => TRUE,
-                'api' => [
-                    'extra' => ['subject', 'contact_id.sort_name'],
-//                    'search_field' => 'subject',
-                    'label_field' => 'subject',
-                ]
             ], TRUE);
+
             $this->add('text', 'amount', ts('Minimum Amount'), ['size' => 8, 'maxlength' => 8], TRUE);
-//            $this->addRule('amount', ts('Please enter a valid money value (e.g. %1).', [1 => CRM_Utils_Money::formatLocaleNumericRoundedForDefaultCurrency('9.99')]), 'money');
-//            $this->addUploadElement('file_id');
-//            $this->add('text', 'description', E::ts('Description'), ['class' => 'huge'], FALSE);
+            $this->addRule('amount', ts('Please enter a valid money value (e.g. %1).', [1 => CRM_Utils_Money::formatLocaleNumericRoundedForDefaultCurrency('9.99')]), 'money');
 
             $this->add('text', 'amount', ts('Amount'));
             $this->addRule('amount', ts('Please enter a valid amount.'), 'money');
@@ -163,7 +161,7 @@ class CRM_Funds_Form_Fund extends CRM_Core_Form
 
             $values = $this->controller->exportValues();
             $fileparams = $values;
-            CRM_Core_Error::debug_var('values', $values);
+//            CRM_Core_Error::debug_var('values', $values);
 
             $action = 'create';
             if ($this->getEntityId()) {
@@ -186,14 +184,14 @@ class CRM_Funds_Form_Fund extends CRM_Core_Form
                 $attach = CRM_Core_BAO_File::formatAttachment($values, $values, 'civicrm_o8_fund', $this->getEntityId());
                 $values['modified_by'] = CRM_Core_Session::getLoggedInContactID();
                 $values['modified_date'] = date('YmdHis');
-                CRM_Core_Error::debug_var('attach', $attach);
+//                CRM_Core_Error::debug_var('attach', $attach);
             } else {
                 $values['modified_by'] = CRM_Core_Session::getLoggedInContactID();
                 $values['modified_date'] = date('YmdHis');
                 $values['created_by'] = CRM_Core_Session::getLoggedInContactID();
                 $values['created_date'] = date('YmdHis');
                 $attach = CRM_Core_BAO_File::formatAttachment($values, $values, 'civicrm_o8_fund');
-                CRM_Core_Error::debug_var('attach', $attach);
+//                CRM_Core_Error::debug_var('attach', $attach);
             }
             CRM_Funds_BAO_Fund::create($values);
 //            $result = civicrm_api4('Fund', $action, ['values' => $params]);

@@ -241,9 +241,9 @@ class CRM_Funds_DAO_Fund extends CRM_Core_DAO {
           'entity' => 'Fund',
           'bao' => 'CRM_Funds_DAO_Fund',
           'localizable' => 0,
-          'serialize' => self::SERIALIZE_SEPARATOR_BOOKEND,
+          'serialize' => self::SERIALIZE_COMMA,
           'html' => [
-            'type' => 'Select',
+            'type' => 'Select2',
           ],
           'pseudoconstant' => [
             'table' => 'civicrm_case',

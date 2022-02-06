@@ -111,6 +111,10 @@ class CRM_Funds_Form_Fund extends CRM_Core_Form
 
             $this->add('text', 'amount', ts('Amount'));
             $this->addRule('amount', ts('Please enter a valid amount.'), 'money');
+            // todo will be changed by transaction api or by hook?
+            $this->add('text', 'residue', ts('Residue'))->freeze();
+            $this->add('text', 'expenditure', ts('Expenditure'))->freeze();
+            $this->add('text', 'balance', ts('Balance'))->freeze();
 
 //            $noteAttrib = CRM_Core_DAO::getAttribute('CRM_Core_DAO_Note');
             $this->add('textarea', 'description', ts('Description'));
@@ -168,17 +172,17 @@ class CRM_Funds_Form_Fund extends CRM_Core_Form
                 $params['id'] = $this->getEntityId();
                 $action = 'update';
             }
-            $params['entity_table'] = 'civicrm_o8_fund';
-            $params['entity_id'] = $this->getEntityId();
+//            $params['entity_table'] = 'civicrm_o8_fund';
+//            $params['entity_id'] = $this->getEntityId();
             $values['entity_table'] = 'civicrm_o8_fund';
             $values['entity_id'] = $this->getEntityId();
-            $params['name'] = $values['name'];
-            $params['code'] = $values['code'];
-            $params['target_cases'] = $values['target_cases'];
-            $params['amount'] = $values['amount'];
-            $params['start_date'] = $values['start_date'];
-            $params['end_date'] = $values['end_date'];
-            $params['contact_id'] = $values['contact_id'];
+//            $params['name'] = $values['name'];
+//            $params['code'] = $values['code'];
+//            $params['target_cases'] = $values['target_cases'];
+//            $params['amount'] = $values['amount'];
+//            $params['start_date'] = $values['start_date'];
+//            $params['end_date'] = $values['end_date'];
+//            $params['contact_id'] = $values['contact_id'];
             // add attachments as needed
             if ($action == 'update') {
                 $attach = CRM_Core_BAO_File::formatAttachment($values, $values, 'civicrm_o8_fund', $this->getEntityId());

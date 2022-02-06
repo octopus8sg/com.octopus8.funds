@@ -1,4 +1,4 @@
-{crmScope extensionKey='device'}
+{crmScope extensionKey='com.octopus8.funds'}
 {if $action eq 8}
   {* Are you sure to delete form *}
   <h3>{ts}Delete Fund{/ts}</h3>

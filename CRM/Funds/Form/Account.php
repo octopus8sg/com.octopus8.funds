@@ -72,7 +72,7 @@ class CRM_Funds_Form_Account extends CRM_Core_Form
         if ($this->_action != CRM_Core_Action::DELETE) {
             $this->add('text', 'code', E::ts('Code'), ['class' => 'huge'], TRUE);
             $this->addRule('code',
-                ts('Fund Code should consist of numbers and letters'),
+                ts('Code should consist of numbers and letters'),
                 'alphanumeric', null, 'client');
             $this->add('text', 'name', E::ts('Name'), ['class' => 'huge'], TRUE);
             $this->addEntityRef('fund_id', E::ts('Fund'), [

@@ -45,7 +45,10 @@ CREATE TABLE `civicrm_o8_fund` (
   `target_cases` varchar(1255) COMMENT 'Target Cases.',
   `start_date` datetime NOT NULL COMMENT 'Fund Start Date',
   `end_date` datetime NOT NULL COMMENT 'Fund End Date',
-  `amount` decimal(20,2) NOT NULL COMMENT 'Amount of the fund.',
+  `amount` decimal(20,2) NOT NULL COMMENT 'Starting Amount of the fund.',
+  `residue` decimal(20,2) DEFAULT 0 COMMENT 'Residue Amount of the fund.',
+  `expenditure` decimal(20,2) DEFAULT 0 COMMENT 'Spent Amount of the fund.',
+  `balance` decimal(20,2) DEFAULT 0 COMMENT 'Balance % amount of the fund.',
   `description` text COMMENT 'Optional verbose description of the fund.',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Date and time the fund was created',
   `created_by` int unsigned COMMENT 'FK to Created Contact',
@@ -98,7 +101,6 @@ CREATE TABLE `civicrm_o8_fund_category` (
   `code` varchar(255) NOT NULL COMMENT 'Category Code',
   `name` varchar(255) NOT NULL COMMENT 'Category Name',
   `description` text COMMENT 'Optional verbose description of the category.',
-  `fund_id` int unsigned NOT NULL COMMENT 'FK to civicrm_o8_fund',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Date and time the category was created',
   `created_by` int unsigned COMMENT 'FK to Created Contact',
   `modified_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Date and time the category was modified',
@@ -106,7 +108,6 @@ CREATE TABLE `civicrm_o8_fund_category` (
   PRIMARY KEY (`id`),
   UNIQUE INDEX `index_code`(code),
   INDEX `index_name`(code),
-  CONSTRAINT FK_civicrm_o8_fund_category_fund_id FOREIGN KEY (`fund_id`) REFERENCES `civicrm_o8_fund`(`id`),
   CONSTRAINT FK_civicrm_o8_fund_category_created_by FOREIGN KEY (`created_by`) REFERENCES `civicrm_contact`(`id`) ON DELETE RESTRICT,
   CONSTRAINT FK_civicrm_o8_fund_category_modified_by FOREIGN KEY (`modified_by`) REFERENCES `civicrm_contact`(`id`) ON DELETE RESTRICT
 )

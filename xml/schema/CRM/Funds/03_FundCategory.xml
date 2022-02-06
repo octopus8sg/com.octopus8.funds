@@ -67,23 +67,7 @@
     <comment>Optional verbose description of the category.</comment>
   </field>
 
-  <field>
-    <name>fund_id</name>
-    <title>Fund</title>
-    <type>int unsigned</type>
-    <required>true</required>
-    <comment>FK to civicrm_o8_fund</comment>
-    <html>
-      <label>File</label>
-    </html>
-  </field>
-  <foreignKey>
-    <name>fund_id</name>
-    <table>civicrm_o8_fund</table>
-    <key>id</key>
-  </foreignKey>
-
-  <field>
+   <field>
     <name>created_at</name>
     <type>timestamp</type>
     <title>Category Created Date</title>

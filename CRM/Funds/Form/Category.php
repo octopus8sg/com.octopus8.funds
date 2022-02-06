@@ -113,7 +113,7 @@ class CRM_Funds_Form_Category extends CRM_Core_Form
     public function postProcess()
     {
         if ($this->_action == CRM_Core_Action::DELETE) {
-            civicrm_api4('Category', 'delete', ['where' => [['id', '=', $this->_id]]]);
+            civicrm_api4('FundCategory', 'delete', ['where' => [['id', '=', $this->_id]]]);
             CRM_Core_Session::setStatus(E::ts('Removed Category'), E::ts('Category'), 'success');
         } else {
 

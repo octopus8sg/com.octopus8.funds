@@ -129,7 +129,7 @@ class CRM_Funds_Form_Account extends CRM_Core_Form
     public function postProcess()
     {
         if ($this->_action == CRM_Core_Action::DELETE) {
-            civicrm_api4('Account', 'delete', ['where' => [['id', '=', $this->_id]]]);
+            civicrm_api4('FundAccount', 'delete', ['where' => [['id', '=', $this->_id]]]);
             CRM_Core_Session::setStatus(E::ts('Removed Account'), E::ts('Account'), 'success');
         } else {
 

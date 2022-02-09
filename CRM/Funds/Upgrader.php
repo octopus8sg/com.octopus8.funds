@@ -12,8 +12,32 @@ class CRM_Funds_Upgrader extends CRM_Funds_Upgrader_Base {
   /**
    * Example: Run an external SQL script when the module is installed.
    *
+   */
   public function install() {
-    $this->executeSqlFile('sql/myinstall.sql');
+      $this->uninstall();
+      // Create the device_type and sensor option groups
+      $trxnStatusGroup = civicrm_api3('OptionGroup',
+          'create',
+          ['name' => 'o8_fund_trxn_status',
+              'title' => E::ts('Fun Transaction Status')]);
+      $trxnStatusGroupId = $trxnStatusGroup['id'];
+
+      $device_type1 = civicrm_api3('OptionValue', 'create',
+          ['value' => 1,
+              'is_default' => '1',
+              'name' => 'Pending_Approval',
+              'label' => E::ts('Pending Approval'),
+              'option_group_id' => $trxnStatusGroupId]);
+      civicrm_api3('OptionValue', 'create',
+          ['value' => 2,
+              'name' => 'Approved',
+              'label' => E::ts('Approved'),
+              'option_group_id' => $trxnStatusGroupId]);
+      civicrm_api3('OptionValue', 'create',
+          ['value' => 3,
+              'name' => 'Rejected',
+              'label' => E::ts('Rejected'),
+              'option_group_id' => $trxnStatusGroupId]);
   }
 
   /**
@@ -37,9 +61,22 @@ class CRM_Funds_Upgrader extends CRM_Funds_Upgrader_Base {
   /**
    * Example: Run an external SQL script when the module is uninstalled.
    */
-  // public function uninstall() {
-  //  $this->executeSqlFile('sql/myuninstall.sql');
-  // }
+   public function uninstall() {
+       try {
+           $optionGroupId = civicrm_api3('OptionGroup',
+               'getvalue', ['return' => 'id',
+                   'name' => 'o8_fund_trxn_status']);
+           $optionValues = civicrm_api3('OptionValue',
+               'get', ['option_group_id' => $optionGroupId, 'options' => ['limit' => 0]]);
+           foreach ($optionValues['values'] as $optionValue) {
+               civicrm_api3('OptionValue', 'delete', ['id' => $optionValue['id']]);
+           }
+           civicrm_api3('OptionGroup', 'delete', ['id' => $optionGroupId]);
+       } catch (\CiviCRM_API3_Exception $ex) {
+           // Ignore exception.
+       }
+
+   }
 
   /**
    * Example: Run a simple query when a module is enabled.

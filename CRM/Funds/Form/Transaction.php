@@ -69,17 +69,50 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
     public function buildQuickForm()
     {
         $this->assign('id', $this->getEntityId());
-        $this->add('hidden', 'id');
+        $this->add('hidden', 'id'); // 1
         if ($this->_action != CRM_Core_Action::DELETE) {
 //            $props = ['api' => ['params' => ['contact_type' => 'Organization']]];
-            $props = [];
-            $this->addEntityRef('contact_id_sub',
-                E::ts('Contact (Social Worker)'), $props, TRUE);
-            $this->addEntityRef('contact_id_app',
-                E::ts('Contact (Approver)'), $props, TRUE);
+//            1 - id
+//            2 - date
+//            3 - description
+//            4 - amount
+//            5 - attachment
+//            6 - status
+//            7 - case_id
+//            8 - contact_id_sub
+//            9 - contact_id_app
+//            10 - component_id
+//            11 - account_id
+//            12 - created_by
+//            13 - created_on
+//            14 - updated_by
+//            15 - updated _on
+            //2
             $this->add('datepicker', 'date',
                 E::ts('Date: '), CRM_Core_SelectValues::date(NULL, 'Y-m-d H:i:s'), TRUE, ['time' => FALSE]);
+            //3
+            $noteAttrib = CRM_Core_DAO::getAttribute('CRM_Core_DAO_Note');
+            $this->add('textarea', 'description', ts('Description'), $noteAttrib['note'],TRUE);
 
+            //4
+            $this->add('text', 'amount', ts('Amount'), ['size' => 8, 'maxlength' => 8], TRUE);
+            $this->addRule('amount', ts('Please enter a valid money value (e.g. %1).', [1 => CRM_Utils_Money::formatLocaleNumericRoundedForDefaultCurrency('9.99')]), 'money');
+
+            //5
+            // add attachments part
+            CRM_Core_BAO_File::buildAttachment($this,
+                'civicrm_o8_fund_transaction',
+                $this->_id
+            );
+            //6 todo add options in Updater and in postProcess
+//            $statuses = CRM_Core_OptionGroup::values('o8_fund_trxn_status');
+//            $this->add('select', 'status_id',
+//                E::ts('Status'),
+//                $statuses,
+//                TRUE, ['class' => 'huge crm-select2',
+//                    'data-option-edit-path' => 'civicrm/admin/options/o8_fund_trxn_status']);
+
+            //7 case
             $this->addEntityRef('case_id', E::ts('Case'), [
                 'entity' => 'case',
                 'class' => 'huge',
@@ -87,21 +120,53 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
 //                'multiple' => TRUE,
             ], TRUE);
 
-            $this->add('text', 'amount', ts('Amount'), ['size' => 8, 'maxlength' => 8], TRUE);
-            $this->addRule('amount', ts('Please enter a valid money value (e.g. %1).', [1 => CRM_Utils_Money::formatLocaleNumericRoundedForDefaultCurrency('9.99')]), 'money');
+            //8
+            $props = [];
+            $this->addEntityRef('contact_id_sub',
+                E::ts('Contact (Social Worker)'), $props, TRUE);
+            //9
+            $this->addEntityRef('contact_id_app',
+                E::ts('Contact (Approver)'), $props, TRUE);
+
+
+            //10
+            $this->addEntityRef('component_id', E::ts('Case'), [
+                'entity' => 'fund_component',
+                'api' => [
+                    'search_field' => ['id','code', 'name', 'description'],
+                    'label_field' => "name",
+                    'description_field' => [
+                        'code',
+                        'description',
+                    ]
+                ],
+                'class' => 'huge',
+                'placeholder' => ts('- Select Component -'),
+//                'multiple' => TRUE,
+            ], TRUE);
+
+            //11
+            $this->addEntityRef('account_id', E::ts('Case'), [
+                'entity' => 'fund_account',
+                'api' => [
+                    'search_field' => ['id','code', 'name', 'description'],
+                    'label_field' => "name",
+                    'description_field' => [
+                        'code',
+//                        'description',
+                        'fund_id.code',
+                        'fund_id.name',
+                    ]
+                ],
+                'class' => 'huge',
+                'placeholder' => ts('- Select Account -'),
+//                'multiple' => TRUE,
+            ], TRUE);
 
 //            $this->add('text', 'amount', ts('Amount'));
 //            $this->addRule('amount', ts('Please enter a valid amount.'), 'money');
             // todo will be changed by transaction api or by hook?
 
-            $noteAttrib = CRM_Core_DAO::getAttribute('CRM_Core_DAO_Note');
-            $this->add('textarea', 'description', ts('Description'), $noteAttrib['note'],TRUE);
-
-            // add attachments part
-            CRM_Core_BAO_File::buildAttachment($this,
-                'civicrm_o8_fund_transaction',
-                $this->_id
-            );
             $this->addButtons([
                 [
                     'type' => 'upload',
@@ -166,6 +231,7 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
                 $attach = CRM_Core_BAO_File::formatAttachment($values, $values, 'civicrm_o8_fund', $this->getEntityId());
                 $values['modified_by'] = CRM_Core_Session::getLoggedInContactID();
                 $values['modified_date'] = date('YmdHis');
+                $values['status_id'] = 1; //status values to constants?
 //                CRM_Core_Error::debug_var('attach', $attach);
             } else {
                 $values['modified_by'] = CRM_Core_Session::getLoggedInContactID();

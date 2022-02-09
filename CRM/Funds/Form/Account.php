@@ -81,10 +81,7 @@ class CRM_Funds_Form_Account extends CRM_Core_Form
                     'label_field' => "name",
                     'description_field' => [
                         'code',
-//                        'name',
                         'description',
-//                        'amount',
-//                        'contact_id.search_name',
                     ]
                 ],
                 'entity' => 'fund',

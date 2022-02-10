@@ -92,7 +92,8 @@ class CRM_Funds_Form_Component extends CRM_Core_Form
                 'placeholder' => ts('- Select Fund Category -'),
             ], TRUE);
 
-            $this->add('textarea', 'description', ts('Description'));
+            $noteAttrib = CRM_Core_DAO::getAttribute('CRM_Core_DAO_Note');
+            $this->add('textarea', 'description', ts('Description'), $noteAttrib['note']);
 
             $this->addButtons([
                 [

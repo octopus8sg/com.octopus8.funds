@@ -87,7 +87,7 @@
             <type>Select</type>
             <multiple>1</multiple>
         </html>
-        <serialize>SERIALIZE_COMMA</serialize>
+        <serialize>COMMA</serialize>
     </field>
 
     <field>

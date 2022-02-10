@@ -62,72 +62,73 @@
   </field>
 
 <!--  status -->
+<!--  this option value group will be created during install proc of Upgrader.php -->
 
-  <field>
-    <name>status_id</name>
-    <title>Status</title>
-    <type>int</type>
-    <length>3</length>
-    <default>1</default>
-    <pseudoconstant>
-      <optionGroupName>o8_fund_trxn_status</optionGroupName>
-    </pseudoconstant>
-    <html>
-      <type>Select</type>
-    </html>
-  </field>
+    <field>
+      <name>status_id</name>
+      <title>Status</title>
+      <type>int</type>
+      <length>3</length>
+      <default>1</default>
+      <pseudoconstant>
+        <optionGroupName>o8_fund_trxn_status</optionGroupName>
+      </pseudoconstant>
+      <html>
+        <type>Select</type>
+      </html>
+    </field>
 
 
-  <field>
-    <name>case_id</name>
-    <title>Case</title>
-    <type>int unsigned</type>
-    <comment>FK to civicrm_case</comment>
-    <pseudoconstant>
+    <field>
+      <name>case_id</name>
+      <title>Case</title>
+      <type>int unsigned</type>
+      <comment>FK to civicrm_case</comment>
+      <pseudoconstant>
+        <table>civicrm_case</table>
+        <keyColumn>id</keyColumn>
+        <labelColumn>subject</labelColumn>
+      </pseudoconstant>
+      <html>
+        <label>Case</label>
+        <type>Select</type>
+      </html>
+    </field>
+    <foreignKey>
+      <name>case_id</name>
       <table>civicrm_case</table>
-      <keyColumn>id</keyColumn>
-      <labelColumn>subject</labelColumn>
-    </pseudoconstant>
-    <html>
-      <label>Case</label>
-      <type>Select</type>
-    </html>
-  </field>
-  <foreignKey>
-    <name>case_id</name>
-    <table>civicrm_case</table>
-    <key>id</key>
-    <onDelete>RESTRICT</onDelete>
-  </foreignKey>
+      <key>id</key>
+      <onDelete>RESTRICT</onDelete>
+    </foreignKey>
 
-  <field>
-    <name>contact_id_sub</name>
-    <title>Contact (Social Worker)</title>
-    <type>int unsigned</type>
-    <comment>FK to Contact</comment>
-  </field>
-  <foreignKey>
-    <name>contact_id_sub</name>
-    <table>civicrm_contact</table>
-    <key>id</key>
-    <onDelete>RESTRICT</onDelete>
-  </foreignKey>
+    <field>
+      <name>contact_id_sub</name>
+      <title>Contact (Social Worker)</title>
+      <type>int unsigned</type>
+      <comment>FK to Contact</comment>
+    </field>
+    <foreignKey>
+      <name>contact_id_sub</name>
+      <table>civicrm_contact</table>
+      <key>id</key>
+      <onDelete>RESTRICT</onDelete>
+    </foreignKey>
 
-  <field>
-    <name>contact_id_app</name>
-    <title>Contact (Approver)</title>
-    <type>int unsigned</type>
-    <comment>FK to Contact</comment>
-  </field>
-  <foreignKey>
-    <name>contact_id_app</name>
-    <table>civicrm_contact</table>
-    <key>id</key>
-    <onDelete>RESTRICT</onDelete>
-  </foreignKey>
+    <field>
+      <name>contact_id_app</name>
+      <title>Contact (Approver)</title>
+      <type>int unsigned</type>
+      <comment>FK to Contact</comment>
+    </field>
+    <foreignKey>
+      <name>contact_id_app</name>
+      <table>civicrm_contact</table>
+      <key>id</key>
+      <onDelete>RESTRICT</onDelete>
+    </foreignKey>
 
 
-<!-- component -->
+  <!-- component -->
   <field>
     <name>component_id</name>
     <title>Component</title>

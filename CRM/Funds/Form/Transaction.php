@@ -70,6 +70,7 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
     {
         $this->assign('id', $this->getEntityId());
         $this->add('hidden', 'id'); // 1
+        $editfields = TRUE;
         if ($this->_action != CRM_Core_Action::DELETE) {
 //            $props = ['api' => ['params' => ['contact_type' => 'Organization']]];
 //            1 - id
@@ -92,25 +93,31 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
                 E::ts('Date: '), CRM_Core_SelectValues::date(NULL, 'Y-m-d H:i:s'), TRUE, ['time' => FALSE]);
             //3
             $noteAttrib = CRM_Core_DAO::getAttribute('CRM_Core_DAO_Note');
-            $this->add('textarea', 'description', ts('Description'), $noteAttrib['note'],TRUE);
+            $this->add('textarea', 'description', ts('Description'), $noteAttrib['note'], TRUE);
 
             //4
             $this->add('text', 'amount', ts('Amount'), ['size' => 8, 'maxlength' => 8], TRUE);
             $this->addRule('amount', ts('Please enter a valid money value (e.g. %1).', [1 => CRM_Utils_Money::formatLocaleNumericRoundedForDefaultCurrency('9.99')]), 'money');
 
             //5
-            // add attachments part
-            CRM_Core_BAO_File::buildAttachment($this,
-                'civicrm_o8_fund_transaction',
-                $this->_id
-            );
+            // add attachments part - can be added only if editfields is true
+            if ($editfields) {
+                CRM_Core_BAO_File::buildAttachment($this,
+                    'civicrm_o8_fund_transaction',
+                    $this->_id, 3, true
+                );
+            } else {
+                $currentAttachmentInfo = CRM_Core_BAO_File::getEntityFile('civicrm_o8_fund_transaction', $this->_id);
+                $this->assign('currentAttachmentInfo', $currentAttachmentInfo);
+            }
             //6 todo add options in Updater and in postProcess
-//            $statuses = CRM_Core_OptionGroup::values('o8_fund_trxn_status');
-//            $this->add('select', 'status_id',
-//                E::ts('Status'),
-//                $statuses,
-//                TRUE, ['class' => 'huge crm-select2',
-//                    'data-option-edit-path' => 'civicrm/admin/options/o8_fund_trxn_status']);
+            $statuses = CRM_Core_OptionGroup::values('o8_fund_trxn_status');
+            $this->add('select', 'status_id',
+                E::ts('Status'),
+                $statuses,
+                TRUE, ['class' => 'huge crm-select2',
+//                    'data-option-edit-path' => 'civicrm/admin/options/o8_fund_trxn_status'
+                ])->freeze();
 
             //7 case
             $this->addEntityRef('case_id', E::ts('Case'), [
@@ -130,10 +137,10 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
 
 
             //10
-            $this->addEntityRef('component_id', E::ts('Case'), [
+            $this->addEntityRef('component_id', E::ts('Component'), [
                 'entity' => 'fund_component',
                 'api' => [
-                    'search_field' => ['id','code', 'name', 'description'],
+                    'search_field' => ['id', 'code', 'name', 'description'],
                     'label_field' => "name",
                     'description_field' => [
                         'code',
@@ -146,10 +153,10 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
             ], TRUE);
 
             //11
-            $this->addEntityRef('account_id', E::ts('Case'), [
+            $this->addEntityRef('account_id', E::ts('Account'), [
                 'entity' => 'fund_account',
                 'api' => [
-                    'search_field' => ['id','code', 'name', 'description'],
+                    'search_field' => ['id', 'code', 'name', 'description'],
                     'label_field' => "name",
                     'description_field' => [
                         'code',
@@ -181,6 +188,7 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
                 ['type' => 'cancel', 'name' => E::ts('Cancel')]
             ]);
         }
+
         parent::buildQuickForm();
     }
 
@@ -195,6 +203,9 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
     {
         if ($this->_myentity) {
             $defaults = $this->_myentity;
+        } else {
+            $defaults['status_id'] = 1;
+            $defaults['date'] = date("Y-m-d H:i:s");
         }
         return $defaults;
     }
@@ -217,7 +228,7 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
             }
 //            $params['entity_table'] = 'civicrm_o8_fund';
 //            $params['entity_id'] = $this->getEntityId();
-            $values['entity_table'] = 'civicrm_o8_fund';
+            $values['entity_table'] = 'civicrm_o8_fund_transaction';
             $values['entity_id'] = $this->getEntityId();
 //            $params['name'] = $values['name'];
 //            $params['code'] = $values['code'];
@@ -228,7 +239,7 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
 //            $params['contact_id'] = $values['contact_id'];
             // add attachments as needed
             if ($action == 'update') {
-                $attach = CRM_Core_BAO_File::formatAttachment($values, $values, 'civicrm_o8_fund', $this->getEntityId());
+                $attach = CRM_Core_BAO_File::formatAttachment($values, $values, 'civicrm_o8_fund_transaction', $this->getEntityId());
                 $values['modified_by'] = CRM_Core_Session::getLoggedInContactID();
                 $values['modified_date'] = date('YmdHis');
                 $values['status_id'] = 1; //status values to constants?
@@ -238,12 +249,15 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
                 $values['modified_date'] = date('YmdHis');
                 $values['created_by'] = CRM_Core_Session::getLoggedInContactID();
                 $values['created_date'] = date('YmdHis');
-                $attach = CRM_Core_BAO_File::formatAttachment($values, $values, 'civicrm_o8_fund');
+                if (!isset($values['status_id'])) {
+                    $values['status_id'] = 1;
+                }
+                $attach = CRM_Core_BAO_File::formatAttachment($values, $values, 'civicrm_o8_fund_transaction');
 //                CRM_Core_Error::debug_var('attach', $attach);
             }
-            CRM_Funds_BAO_Fund::create($values);
+            CRM_Funds_BAO_FundTransaction::create($values);
 //            $result = civicrm_api4('Fund', $action, ['values' => $params]);
-            CRM_Core_Session::setStatus(ts('Your Fund has been saved.'), ts('Saved'), 'success');
+            CRM_Core_Session::setStatus(ts('Your Transaction has been saved.'), ts('Saved'), 'success');
         }
         parent::postProcess();
     }

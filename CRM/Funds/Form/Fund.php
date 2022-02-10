@@ -116,8 +116,8 @@ class CRM_Funds_Form_Fund extends CRM_Core_Form
             $this->add('text', 'expenditure', ts('Expenditure'))->freeze();
             $this->add('text', 'balance', ts('Balance'))->freeze();
 
-//            $noteAttrib = CRM_Core_DAO::getAttribute('CRM_Core_DAO_Note');
-            $this->add('textarea', 'description', ts('Description'));
+            $noteAttrib = CRM_Core_DAO::getAttribute('CRM_Core_DAO_Note');
+            $this->add('textarea', 'description', ts('Description'), $noteAttrib['note']);
 
             // add attachments part
             CRM_Core_BAO_File::buildAttachment($this,

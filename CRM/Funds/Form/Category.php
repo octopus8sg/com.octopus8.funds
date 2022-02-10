@@ -76,7 +76,8 @@ class CRM_Funds_Form_Category extends CRM_Core_Form
                 'alphanumeric', null, 'client');
             $this->add('text', 'name', E::ts('Name'), ['class' => 'huge'], TRUE);
 
-            $this->add('textarea', 'description', ts('Description'));
+            $noteAttrib = CRM_Core_DAO::getAttribute('CRM_Core_DAO_Note');
+            $this->add('textarea', 'description', ts('Description'), $noteAttrib['note']);
 
             $this->addButtons([
                 [

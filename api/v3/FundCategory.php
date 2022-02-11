@@ -14,6 +14,42 @@ function _civicrm_api3_fund_category_create_spec(&$spec) {
 }
 
 /**
+ * Get fund category list parameters.
+ *
+ * @param array $request
+ * @see _civicrm_api3_generic_getlist_params
+ *
+ */
+function _civicrm_api3_fund_category_getlist_params(&$request)
+{
+//    CRM_Core_Error::debug_var('request3', $request);
+    $params = [];
+    if ($request['input']) {
+        if ($request['search_fields']) {
+            $search_fields = $request['search_fields'];
+//            CRM_Core_Error::debug_var('search_fields', $search_fields);
+            if (sizeof($search_fields) > 0) {
+
+                foreach ($search_fields as $search_field) {
+//                CRM_Core_Error::debug_var('search_field', $search_field);
+                    $params[$search_field] = ['LIKE' => ($request['add_wildcard'] ? '%' : '') . $request['input'] . '%'];
+                }
+                if (isset($request['search_field'])) {
+                    if (!in_array($request['search_field'], $search_fields)) {
+                        $search_fields[] = $request['search_field'];
+                    };
+                }
+                $request['params']['options']['or'] = [$search_fields];
+            }
+        }
+    }
+    $request['params'] += $params;
+    _civicrm_api3_generic_getlist_params($request);
+//    CRM_Core_Error::debug_var('request4', $request);
+}
+
+
+/**
  * FundCategory.create API.
  *
  * @param array $params

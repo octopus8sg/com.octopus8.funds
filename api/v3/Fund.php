@@ -21,7 +21,7 @@ function _civicrm_api3_fund_getlist_params(&$request)
     if ($request['input']) {
         if ($request['search_fields']) {
             $search_fields = $request['search_fields'];
-            CRM_Core_Error::debug_var('search_fields', $search_fields);
+//            CRM_Core_Error::debug_var('search_fields', $search_fields);
             if (sizeof($search_fields) > 0) {
 
                 foreach ($search_fields as $search_field) {

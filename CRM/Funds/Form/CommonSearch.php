@@ -254,7 +254,7 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
         }
         $this->addEntityRef('transaction_case_id', E::ts('Case'), [
             'api' => [
-                'search_field' => ['id', 'code', 'name', 'description'],
+//                'search_field' => ['id', 'code', 'name', 'description'],
                 'label_field' => "name",
                 'description_field' => [
                     'code',
@@ -267,9 +267,10 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
             'multiple' => true,
             'placeholder' => ts('- Select Case -'),
         ], FALSE);
+        //todo
         $this->addEntityRef('transaction_account_id', E::ts('Account'), [
             'api' => [
-                'search_field' => ['id', 'code', 'name', 'description'],
+                'search_fields' => ['code', 'name'],
                 'label_field' => "name",
                 'description_field' => [
                     'code',

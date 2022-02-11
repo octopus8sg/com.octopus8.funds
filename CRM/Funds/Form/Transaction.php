@@ -140,7 +140,7 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
             $this->addEntityRef('component_id', E::ts('Component'), [
                 'entity' => 'fund_component',
                 'api' => [
-                    'search_field' => ['id', 'code', 'name', 'description'],
+                    'search_fields' => ['code', 'name'],
                     'label_field' => "name",
                     'description_field' => [
                         'code',
@@ -156,7 +156,7 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
             $this->addEntityRef('account_id', E::ts('Account'), [
                 'entity' => 'fund_account',
                 'api' => [
-                    'search_field' => ['id', 'code', 'name', 'description'],
+                    'search_fields' => ['code', 'name'],
                     'label_field' => "name",
                     'description_field' => [
                         'code',

@@ -77,7 +77,7 @@ class CRM_Funds_Form_Account extends CRM_Core_Form
             $this->add('text', 'name', E::ts('Name'), ['class' => 'huge'], TRUE);
             $this->addEntityRef('fund_id', E::ts('Fund'), [
                 'api' => [
-                    'search_field' => ['id','code', 'name', 'description'],
+                    'search_fields' => ['code', 'name'],
                     'label_field' => "name",
                     'description_field' => [
                         'code',

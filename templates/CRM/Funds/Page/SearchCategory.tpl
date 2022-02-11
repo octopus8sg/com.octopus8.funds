@@ -26,18 +26,6 @@
                         <th scope="col">
                             {ts}Name{/ts}
                         </th>
-                        <th scope="col">
-                            {ts}Start Date{/ts}
-                        </th>
-                        <th scope="col">
-                            {ts}End Date{/ts}
-                        </th>
-                        <th scope="col">
-                            {ts}source Organisation (Contact){/ts}
-                        </th>
-                        <th scope="col">
-                            {ts}Amount{/ts}
-                        </th>
                         <th id="nosort">&nbsp;Action</th>
                     </tr>
                     </thead>

@@ -212,7 +212,7 @@ function funds_civicrm_navigationMenu(&$menu) {
     ));
     _funds_civix_navigationMenu($menu);
     _funds_civix_insert_navigation_menu($menu, 'o8_funds', array(
-        'label' => E::ts('Search Category'),
+        'label' => E::ts('Find Category'),
         'name' => 'o8_funds_category_search',
         'url' => 'civicrm/fund/categorysearch',
         'permission' => 'access CiviCRM',

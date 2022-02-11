@@ -235,7 +235,7 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
         $this->add(
             'text',
             'transaction_id',
-            ts('Device Data ID'),
+            ts('Transaction ID'),
             ['size' => 28, 'maxlength' => 128]);
 
 
@@ -284,25 +284,9 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
             'placeholder' => ts('- Select Account -'),
         ], FALSE);
 
-        $this->addEntityRef('transaction_account_id', E::ts('Account'), [
-            'api' => [
-                'search_field' => ['id', 'code', 'name', 'description'],
-                'label_field' => "name",
-                'description_field' => [
-                    'code',
-                    'description',
-                ]
-            ],
-            'entity' => 'fund_account',
-            'class' => 'huge',
-            'create' => false,
-            'multiple' => true,
-            'placeholder' => ts('- Select Account -'),
-        ], FALSE);
-
         $this->addEntityRef('transaction_component_id', E::ts('Component'), [
             'api' => [
-                'search_field' => ['id', 'code', 'name', 'description'],
+                'search_field' => ['code', 'name'],
                 'label_field' => "name",
                 'description_field' => [
                     'code',

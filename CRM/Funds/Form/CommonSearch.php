@@ -129,17 +129,22 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
 
         $this->addEntityRef('account_fund_id', E::ts('Fund'), [
             'api' => [
-                'search_field' => ['id', 'code', 'name', 'description'],
-                'label_field' => "name",
+                'search_fields' => ['code', 'name'],
+//                'extra' => ['code', 'name'],
+//                'search_field' => 'code',
                 'description_field' => [
                     'code',
                     'description',
-                ]
+                ],
+                'label_field' => "name",
+                'params' => []
             ],
+            'select' => ['minimumInputLength' => 1],
             'entity' => 'fund',
             'class' => 'huge',
             'create' => false,
             'multiple' => true,
+            'add_wildcard' => false,
             'placeholder' => ts('- Select Fund -'),
         ], FALSE);
 

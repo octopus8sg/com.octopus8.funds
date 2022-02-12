@@ -1,4 +1,5 @@
 <?php
+
 use CRM_Funds_ExtensionUtil as E;
 
 class CRM_Funds_Page_SearchFund extends CRM_Core_Page
@@ -33,8 +34,8 @@ class CRM_Funds_Page_SearchFund extends CRM_Core_Page
     public function getAjax()
     {
 
-//        CRM_Core_Error::debug_var('device_request', $_REQUEST);
-//        CRM_Core_Error::debug_var('device_post', $_POST);
+//        CRM_Core_Error::debug_var('fund_request', $_REQUEST);
+//        CRM_Core_Error::debug_var('fund_post', $_POST);
 
         $cid = CRM_Utils_Request::retrieve('cid', 'Positive');
         //cid = contact for tabset
@@ -42,7 +43,10 @@ class CRM_Funds_Page_SearchFund extends CRM_Core_Page
 
         $contactId = CRM_Utils_Request::retrieve('contact_id', 'String');
 //        CRM_Core_Error::debug_var('contact', $contactId);
-        $device_device_id = CRM_Utils_Request::retrieveValue('device_device_id', 'String', null);
+
+        $fund_id = CRM_Utils_Request::retrieveValue('fund_id', 'String', null);
+
+        $fund_name = CRM_Utils_Request::retrieveValue('fund_name', 'String', null);
 
         $offset = CRM_Utils_Request::retrieveValue('iDisplayStart', 'Positive', 0);
 //        CRM_Core_Error::debug_var('offset', $offset);
@@ -50,21 +54,25 @@ class CRM_Funds_Page_SearchFund extends CRM_Core_Page
         $limit = CRM_Utils_Request::retrieveValue('iDisplayLength', 'Positive', 10);
 //        CRM_Core_Error::debug_var('limit', $limit);
 
-        $device_type_id = CRM_Utils_Request::retrieveValue('device_type_id', 'String', null);
-//        CRM_Core_Error::debug_var('device_type_id', $device_type_id);
 
         if ($cid) {
             $sortMapper = [
                 0 => 'id',
                 1 => 'code',
-                2 => 'device_type',
+                2 => 'name',
+                3 => 'start_date',
+                4 => 'end_date',
+                5 => 'amount',
             ];
         } else {
             $sortMapper = [
                 0 => 'id',
                 1 => 'code',
-                2 => 'device_type',
-                3 => 'sort_name'
+                2 => 'name',
+                3 => 'start_date',
+                4 => 'end_date',
+                5 => 'sort_name',
+                6 => 'amount',
             ];
         }
 
@@ -83,49 +91,47 @@ class CRM_Funds_Page_SearchFund extends CRM_Core_Page
         $nextParamKey = 3;
         $sql = "
     SELECT SQL_CALC_FOUND_ROWS
-      t.id,
-      t.code,
-      dt.label device_type,
+      f.id,
+      f.code,
+      f.name,
       c.sort_name,
-      c.display_name,
-      t.contact_id
-    FROM civicrm_o8_device_device t 
-    INNER JOIN civicrm_contact c on t.contact_id = c.id
-    INNER JOIN civicrm_option_value dt on t.device_type_id = dt.value
-    INNER JOIN civicrm_option_group gdt on dt.option_group_id = gdt.id 
-                                               and gdt.name = 'o8_device_type'    
+      c.organization_name,
+      f.start_date,
+      f.end_date,
+      f.amount,
+      f.contact_id
+    FROM civicrm_o8_fund f 
+    INNER JOIN civicrm_contact c on f.contact_id = c.id
     WHERE 1";
 
         if (isset($cid)) {
             if (is_numeric($cid)) {
                 if (intval($cid) > 0) {
-                    $sql .= " AND t.`contact_id` = " . $cid . " ";
+                    $sql .= " AND f.`contact_id` = " . $cid . " ";
                 }
             }
         } elseif (isset($contactId)) {
             if (strval($contactId) != "") {
-                $sql .= " AND t.`contact_id` in (" . $contactId . ") ";
+                $sql .= " AND f.`contact_id` in (" . $contactId . ") ";
             }
         }
 
-        if (isset($device_device_id)) {
-            if (strval($device_device_id) != "") {
-                $sql .= " AND t.`code` like '%" . strval($device_device_id) . "%' ";
-                if (is_numeric($device_device_id)) {
-                    $sql .= " OR t.`id` = " . intval($device_device_id) . " ";
+        if (isset($fund_id)) {
+            if (strval($fund_id) != "") {
+                $sql .= " AND f.`code` like '%" . strval($fund_id) . "%' ";
+                if (is_numeric($fund_id)) {
+                    $sql .= " OR f.`id` = " . intval($fund_id) . " ";
                 }
             }
         }
 
-        if (isset($device_type_id)) {
-            if (strval($device_type_id) != "") {
-                if (is_numeric($device_type_id)) {
-                    $sql .= " AND t.`device_type_id` = " . $device_type_id . " ";
-                } else {
-                    $sql .= " AND t.`device_type_id` in (" . $device_type_id . ") ";
-                }
+        if (isset($fund_name)) {
+            if (strval($fund_name) != "") {
+                $sql .= " AND f.`name` like '%" . strval($fund_name) . "%' ";
+                $sql .= " OR f.`description` like '%" . strval($fund_name) . "%' ";
             }
         }
+
 
         if ($sort !== NULL) {
             $sql .= " ORDER BY {$sort} {$sortOrder}";
@@ -141,8 +147,7 @@ class CRM_Funds_Page_SearchFund extends CRM_Core_Page
             }
         }
 
-
-//        CRM_Core_Error::debug_var('device_sql', $sql);
+//        CRM_Core_Error::debug_var('fund_sql', $sql);
 
         $dao = CRM_Core_DAO::executeQuery($sql);
         $iFilteredTotal = CRM_Core_DAO::singleValueQuery("SELECT FOUND_ROWS()");
@@ -152,22 +157,25 @@ class CRM_Funds_Page_SearchFund extends CRM_Core_Page
             if (!empty($dao->contact_id)) {
                 $contact = '<a href="' . CRM_Utils_System::url('civicrm/contact/view',
                         ['reset' => 1, 'cid' => $dao->contact_id]) . '">' .
-                    CRM_Contact_BAO_Contact::displayName($dao->contact_id) . '</a>';
+                    $dao->organization_name . '</a>';
             }
 
-            $r_update = CRM_Utils_System::url('civicrm/devices/device',
+            $r_update = CRM_Utils_System::url('civicrm/fund/form',
                 ['action' => 'update', 'id' => $dao->id]);
-            $r_delete = CRM_Utils_System::url('civicrm/devices/device',
+            $r_delete = CRM_Utils_System::url('civicrm/fund/form',
                 ['action' => 'delete', 'id' => $dao->id]);
-            $update = '<a class="update-device action-item crm-hover-button" target="_blank" href="' . $r_update . '"><i class="crm-i fa-pencil"></i>&nbsp;Edit</a>';
-            $delete = '<a class="delete-device action-item crm-hover-button" target="_blank" href="' . $r_delete . '"><i class="crm-i fa-trash"></i>&nbsp;Delete</a>';
+            $update = '<a class="update-fund action-item crm-hover-button" target="_blank" href="' . $r_update . '"><i class="crm-i fa-pencil"></i>&nbsp;Edit</a>';
+            $delete = '<a class="delete-fund action-item crm-hover-button" target="_blank" href="' . $r_delete . '"><i class="crm-i fa-trash"></i>&nbsp;Delete</a>';
             $action = "<span>$update $delete</span>";
             $rows[$count][] = $dao->id;
             $rows[$count][] = $dao->code;
-            $rows[$count][] = $dao->device_type;
+            $rows[$count][] = $dao->name;
+            $rows[$count][] = date_format(date_create($dao->start_date), 'j-M-Y');
+            $rows[$count][] = date_format(date_create($dao->end_date), 'j-M-Y');
             if ($cid === null) {
                 $rows[$count][] = $contact;
             }
+            $rows[$count][] = CRM_Utils_Money::formatLocaleNumericRoundedForDefaultCurrency($dao->amount);
             $rows[$count][] = $action;
             $count++;
         }

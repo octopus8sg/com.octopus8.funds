@@ -94,6 +94,7 @@ class CRM_Funds_Page_SearchFund extends CRM_Core_Page
       f.id,
       f.code,
       f.name,
+      f.description,
       c.sort_name,
       c.organization_name,
       f.start_date,

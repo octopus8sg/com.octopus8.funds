@@ -44,18 +44,6 @@ CRM.$(function ($) {
                     hm_table.draw();
                 });
             });
-            $("a.add-fund").click(function (event) {
-                event.preventDefault();
-                var href = $(this).attr('href');
-                // alert(href);
-                var $el = CRM.loadForm(href, {
-                    dialog: {width: '50%', height: '50%'}
-                }).on('crmFormSuccess', function () {
-                    var hm_tab = $('.selector-funds');
-                    var hm_table = hm_tab.DataTable();
-                    hm_table.draw();
-                });
-            });
             // $("a.update-fund").css('background','blue');
             $("a.update-fund").click(function (event) {
                 event.preventDefault();

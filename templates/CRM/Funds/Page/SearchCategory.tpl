@@ -14,7 +14,7 @@
             <div class="crm-search-results">
                 {include file="CRM/common/enableDisableApi.tpl"}
                 {include file="CRM/common/jsortable.tpl"}
-                <table class="selector-categorys row-highlight pagerDisplay" id="Categorys" name="Categorys">
+                <table class="selector-categorys row-highlight pagerDisplay" id="Categoreis" name="Categorys">
                     <thead class="sticky">
                     <tr>
                         <th id="sortable" scope="col">
@@ -33,5 +33,5 @@
             </div>
         </div>
     </div>
-    {*{crmScript ext=com.octopus8.funds file=js/funds.js}*}
+    {crmScript ext=com.octopus8.funds file=js/category.js}
 {/crmScope}

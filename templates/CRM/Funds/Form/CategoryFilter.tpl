@@ -5,7 +5,7 @@
             <div class="crm-accordion-header crm-master-accordion-header">{ts}Filter Category Data{/ts}</div>
             <!-- /.crm-accordion-header -->
             <div class="crm-accordion-body">
-                <table class="form-layout alarm-filter">
+                <table class="form-layout category-filter">
                     <tbody>
                     <tr>
                         <td class="label">{$form.category_id.label}</td>

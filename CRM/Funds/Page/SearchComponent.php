@@ -33,16 +33,23 @@ class CRM_Funds_Page_SearchComponent extends CRM_Core_Page
     public function getAjax()
     {
 
-//        CRM_Core_Error::debug_var('device_request', $_REQUEST);
-//        CRM_Core_Error::debug_var('device_post', $_POST);
+//        CRM_Core_Error::debug_var('component_request', $_REQUEST);
+//        CRM_Core_Error::debug_var('component_post', $_POST);
+        /*
+         *
+            aoData.push({ "name": "component_id",
+                "value": $('#component_id').val() });
+            aoData.push({ "name": "component_name",
+                "value": $('#component_name').val() });
+         */
 
-        $cid = CRM_Utils_Request::retrieve('cid', 'Positive');
-        //cid = contact for tabset
-//        CRM_Core_Error::debug_var('cid', $cid);
+        $component_id = CRM_Utils_Request::retrieveValue('component_id', 'String', null);
 
-        $contactId = CRM_Utils_Request::retrieve('contact_id', 'String');
-//        CRM_Core_Error::debug_var('contact', $contactId);
-        $device_device_id = CRM_Utils_Request::retrieveValue('device_device_id', 'String', null);
+        $component_name = CRM_Utils_Request::retrieveValue('component_name', 'String', null);
+
+
+//        $component_category_id = CRM_Utils_Request::retrieveValue('component_category_id', 'CommaSeparatedIntegers', null);
+//        CRM_Core_Error::debug_var('component_category_id', $component_category_id);
 
         $offset = CRM_Utils_Request::retrieveValue('iDisplayStart', 'Positive', 0);
 //        CRM_Core_Error::debug_var('offset', $offset);
@@ -50,23 +57,12 @@ class CRM_Funds_Page_SearchComponent extends CRM_Core_Page
         $limit = CRM_Utils_Request::retrieveValue('iDisplayLength', 'Positive', 10);
 //        CRM_Core_Error::debug_var('limit', $limit);
 
-        $device_type_id = CRM_Utils_Request::retrieveValue('device_type_id', 'String', null);
-//        CRM_Core_Error::debug_var('device_type_id', $device_type_id);
-
-        if ($cid) {
-            $sortMapper = [
-                0 => 'id',
-                1 => 'code',
-                2 => 'device_type',
-            ];
-        } else {
-            $sortMapper = [
-                0 => 'id',
-                1 => 'code',
-                2 => 'device_type',
-                3 => 'sort_name'
-            ];
-        }
+        $sortMapper = [
+            0 => 'id',
+            1 => 'code',
+            2 => 'name',
+            3 => 'category_code'
+        ];
 
         $sort = isset($_REQUEST['iSortCol_0']) ? CRM_Utils_Array::value(CRM_Utils_Type::escape($_REQUEST['iSortCol_0'], 'Integer'), $sortMapper) : NULL;
         $sortOrder = isset($_REQUEST['sSortDir_0']) ? CRM_Utils_Type::escape($_REQUEST['sSortDir_0'], 'String') : 'asc';
@@ -83,46 +79,42 @@ class CRM_Funds_Page_SearchComponent extends CRM_Core_Page
         $nextParamKey = 3;
         $sql = "
     SELECT SQL_CALC_FOUND_ROWS
-      t.id,
-      t.code,
-      dt.label device_type,
-      c.sort_name,
-      c.display_name,
-      t.contact_id
-    FROM civicrm_o8_device_device t 
-    INNER JOIN civicrm_contact c on t.contact_id = c.id
-    INNER JOIN civicrm_option_value dt on t.device_type_id = dt.value
-    INNER JOIN civicrm_option_group gdt on dt.option_group_id = gdt.id 
-                                               and gdt.name = 'o8_device_type'    
+      a.id,
+      a.code,
+      a.name,
+      a.description,
+      concat(c.code, ': ', c.name) category_name,
+      c.code category_code,
+      a.fund_category_id
+    FROM civicrm_o8_fund_component a 
+    INNER JOIN civicrm_o8_fund_category c on a.fund_category_id = c.id
     WHERE 1";
 
-        if (isset($cid)) {
-            if (is_numeric($cid)) {
-                if (intval($cid) > 0) {
-                    $sql .= " AND t.`contact_id` = " . $cid . " ";
-                }
-            }
-        } elseif (isset($contactId)) {
-            if (strval($contactId) != "") {
-                $sql .= " AND t.`contact_id` in (" . $contactId . ") ";
-            }
-        }
 
-        if (isset($device_device_id)) {
-            if (strval($device_device_id) != "") {
-                $sql .= " AND t.`code` like '%" . strval($device_device_id) . "%' ";
-                if (is_numeric($device_device_id)) {
-                    $sql .= " OR t.`id` = " . intval($device_device_id) . " ";
+
+        if (isset($component_id)) {
+            if (strval($component_id) != "") {
+                $sql .= " AND a.`code` like '%" . strval($component_id) . "%' ";
+                if (is_numeric($component_id)) {
+                    $sql .= " OR a.`id` = " . intval($component_id) . " ";
                 }
             }
         }
 
-        if (isset($device_type_id)) {
-            if (strval($device_type_id) != "") {
-                if (is_numeric($device_type_id)) {
-                    $sql .= " AND t.`device_type_id` = " . $device_type_id . " ";
+        if (isset($component_name)) {
+            if (strval($component_name) != "") {
+                $sql .= " AND a.`name` like '%" . strval($component_name) . "%' ";
+                $sql .= " OR a.`description` like '%" . strval($component_name) . "%' ";
+            }
+        }
+
+
+        if (isset($component_category_id)) {
+            if (strval($component_category_id) != "") {
+                if (is_numeric($component_category_id)) {
+                    $sql .= " AND a.`fund_category_id` = " . $component_category_id . " ";
                 } else {
-                    $sql .= " AND t.`device_type_id` in (" . $device_type_id . ") ";
+                    $sql .= " AND a.`fund_category_id` in (" . $component_category_id . ") ";
                 }
             }
         }
@@ -142,32 +134,30 @@ class CRM_Funds_Page_SearchComponent extends CRM_Core_Page
         }
 
 
-//        CRM_Core_Error::debug_var('device_sql', $sql);
+//        CRM_Core_Error::debug_var('component_sql', $sql);
 
         $dao = CRM_Core_DAO::executeQuery($sql);
         $iFilteredTotal = CRM_Core_DAO::singleValueQuery("SELECT FOUND_ROWS()");
         $rows = array();
         $count = 0;
         while ($dao->fetch()) {
-            if (!empty($dao->contact_id)) {
-                $contact = '<a href="' . CRM_Utils_System::url('civicrm/contact/view',
-                        ['reset' => 1, 'cid' => $dao->contact_id]) . '">' .
-                    CRM_Contact_BAO_Contact::displayName($dao->contact_id) . '</a>';
+            if (!empty($dao->fund_category_id)) {
+                $category = '<a href="' . CRM_Utils_System::url('civicrm/fund/category',
+                        ['reset' => 1, 'id' => $dao->fund_category_id]) . '">' .
+                    $dao->category_name . '</a>';
             }
 
-            $r_update = CRM_Utils_System::url('civicrm/devices/device',
+            $r_update = CRM_Utils_System::url('civicrm/fund/component',
                 ['action' => 'update', 'id' => $dao->id]);
-            $r_delete = CRM_Utils_System::url('civicrm/devices/device',
+            $r_delete = CRM_Utils_System::url('civicrm/fund/component',
                 ['action' => 'delete', 'id' => $dao->id]);
-            $update = '<a class="update-device action-item crm-hover-button" target="_blank" href="' . $r_update . '"><i class="crm-i fa-pencil"></i>&nbsp;Edit</a>';
-            $delete = '<a class="delete-device action-item crm-hover-button" target="_blank" href="' . $r_delete . '"><i class="crm-i fa-trash"></i>&nbsp;Delete</a>';
+            $update = '<a class="update-component action-item crm-hover-button" target="_blank" href="' . $r_update . '"><i class="crm-i fa-pencil"></i>&nbsp;Edit</a>';
+            $delete = '<a class="delete-component action-item crm-hover-button" target="_blank" href="' . $r_delete . '"><i class="crm-i fa-trash"></i>&nbsp;Delete</a>';
             $action = "<span>$update $delete</span>";
             $rows[$count][] = $dao->id;
             $rows[$count][] = $dao->code;
-            $rows[$count][] = $dao->device_type;
-            if ($cid === null) {
-                $rows[$count][] = $contact;
-            }
+            $rows[$count][] = $dao->name;
+            $rows[$count][] = $category;
             $rows[$count][] = $action;
             $count++;
         }

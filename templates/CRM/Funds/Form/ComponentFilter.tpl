@@ -5,7 +5,7 @@
             <div class="crm-accordion-header crm-master-accordion-header">{ts}Filter Component Data{/ts}</div>
             <!-- /.crm-accordion-header -->
             <div class="crm-accordion-body">
-                <table class="form-layout alarm-filter">
+                <table class="form-layout component-filter">
                     <tbody>
                     <tr>
                         <td class="label">{$form.component_id.label}</td>

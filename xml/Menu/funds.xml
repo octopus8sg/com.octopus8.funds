@@ -94,11 +94,11 @@
     <page_callback>CRM_Funds_Page_SearchCategory::getAjax</page_callback>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
-<!--  <item>-->
-<!--    <path>civicrm/fund/alarm_ajax</path>-->
-<!--    <page_callback>CRM_Fund_Page_SearchAlarm::getAjax</page_callback>-->
-<!--    <access_arguments>access CiviCRM</access_arguments>-->
-<!--  </item>-->
+  <item>
+    <path>civicrm/fund/component_ajax</path>
+    <page_callback>CRM_Funds_Page_SearchComponent::getAjax</page_callback>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
 <!--  <item>-->
 <!--    <path>civicrm/fund/alertrule_ajax</path>-->
 <!--    <page_callback>CRM_Fund_Page_SearchAlertRule::getAjax</page_callback>-->

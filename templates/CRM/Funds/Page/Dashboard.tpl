@@ -53,12 +53,9 @@
         <div class="crm-results-block">
             <div class="crm-search-results">
                 <table>
-{*                <table class="selector-contact row-highlight pagerDisplay" id="DashboardContact" name="DashboardContact">*}
+                <table class="selector-contact row-highlight pagerDisplay" id="DashboardContact" name="DashboardContact">
                     <thead class="sticky">
                     <tr>
-                        <th scope="col">
-                            {ts}ID{/ts}
-                        </th>
                         <th scope="col">
                             {ts}Code{/ts}
                         </th>
@@ -72,17 +69,20 @@
                             {ts}End Date{/ts}
                         </th>
                         <th scope="col">
-                            {ts}Source Organisation (Contact){/ts}
+                            {ts}Clients Target{/ts}
                         </th>
                         <th scope="col">
-                            {ts}Amount{/ts}
+                            {ts}Clients Current{/ts}
                         </th>
-                        <th id="nosort">&nbsp;Action</th>
+                        <th id="nosort">Clients Balance</th>
+                        <th scope="col">
+                            {ts}Social Workers{/ts}
+                        </th>
                     </tr>
                     </thead>
                 </table>
             </div>
         </div>
 {crmScript ext=com.octopus8.funds file=js/summary.js}
-{*{crmScript ext=com.octopus8.funds file=js/contact.js}*}
+{crmScript ext=com.octopus8.funds file=js/contact.js}
 {/crmScope}

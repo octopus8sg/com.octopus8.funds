@@ -79,7 +79,7 @@ class CRM_Funds_Page_Dashboard extends CRM_Core_Page
         $queryParams = [];
 
         $join = "";
-        $where = "";
+        $where = " WHERE 1 = 1 ";
         $group_by = "";
 
 //        $isOrQuery = self::isOrQuery();
@@ -118,19 +118,22 @@ FROM civicrm_o8_fund f
 
         if (isset($fund_id)) {
             if (strval($fund_id) != "") {
-                $where .= " AND f.`code` like '%" . strval($fund_id) . "%' ";
                 if (is_numeric($fund_id)) {
-                    $where .= " OR f.`id` = " . intval($fund_id) . " ";
+                    $where .= " AND (f.`code` like '%" . strval($fund_id) . "%' ";
+                    $where .= " OR f.`id` = " . intval($fund_id) . ") ";
+                }else{
+                    $where .= " AND f.`code` like '%" . strval($fund_id) . "%' ";
                 }
             }
         }
 
         if (isset($fund_name)) {
             if (strval($fund_name) != "") {
-                $where .= " AND f.`name` like '%" . strval($fund_name) . "%' ";
-                $where .= " OR f.`description` like '%" . strval($fund_name) . "%' ";
+                $where .= " AND (f.`name` like '%" . strval($fund_name) . "%' ";
+                $where .= " OR f.`description` like '%" . strval($fund_name) . "%') ";
             }
         }
+
 
 
         $endwhere = "";
@@ -153,6 +156,8 @@ FROM civicrm_o8_fund f
         $group_by = "group by f.id, f.code, f.name, f.amount, f.start_date, f.end_date";
         $sql = $sql . " " . $where . " " . $group_by . $endwhere;
         $dao = CRM_Core_DAO::executeQuery($sql);
+        CRM_Core_Error::debug_var('fund_s_sql', $sql);
+
         $iFilteredTotal = CRM_Core_DAO::singleValueQuery("SELECT FOUND_ROWS()");
         $rows = array();
         $count = 0;
@@ -256,7 +261,7 @@ FROM civicrm_o8_fund f
             1 => 'name',
             2 => 'start_date',
             3 => 'end_date',
-            4 => 'client_target',
+            4 => 'target_cases',
             5 => 'client_current',
             6 => 'client_balance',
             7 => 'social_workers',];
@@ -273,7 +278,7 @@ FROM civicrm_o8_fund f
         $queryParams = [];
 
         $join = "";
-        $where = "";
+        $where = " WHERE 1 = 1 ";
         $group_by = "";
 
 //        $isOrQuery = self::isOrQuery();
@@ -312,17 +317,20 @@ FROM civicrm_o8_fund f
 
         if (isset($fund_id)) {
             if (strval($fund_id) != "") {
-                $where .= " AND f.`code` like '%" . strval($fund_id) . "%' ";
+
                 if (is_numeric($fund_id)) {
-                    $where .= " OR f.`id` = " . intval($fund_id) . " ";
+                    $where .= " AND (f.`code` like '%" . strval($fund_id) . "%' ";
+                    $where .= " OR f.`id` = " . intval($fund_id) . ") ";
+                }else{
+                    $where .= " AND f.`code` like '%" . strval($fund_id) . "%' ";
                 }
             }
         }
 
         if (isset($fund_name)) {
             if (strval($fund_name) != "") {
-                $where .= " AND f.`name` like '%" . strval($fund_name) . "%' ";
-                $where .= " OR f.`description` like '%" . strval($fund_name) . "%' ";
+                $where .= " AND (f.`name` like '%" . strval($fund_name) . "%' ";
+                $where .= " OR f.`description` like '%" . strval($fund_name) . "%') ";
             }
         }
 
@@ -343,10 +351,10 @@ FROM civicrm_o8_fund f
         }
 
 
-//        CRM_Core_Error::debug_var('fund_sql', $sql);
 
         $sql = $sql . " " . $where . " " . $group_by . $endwhere;
         $dao = CRM_Core_DAO::executeQuery($sql);
+        CRM_Core_Error::debug_var('fund_c_sql', $sql);
         $iFilteredTotal = CRM_Core_DAO::singleValueQuery("SELECT FOUND_ROWS()");
         $rows = array();
         $count = 0;
@@ -374,9 +382,10 @@ FROM civicrm_o8_fund f
             $rows[$count][] = $clients_count;
             $rows[$count][] = $clients_current;
             $rows[$count][] = $client_balance;
-            if ($cid === null) {
-                $rows[$count][] = $contact;
-            }
+            $rows[$count][] = $dao->social_workers;
+//            if ($cid === null) {
+//                $rows[$count][] = $contact;
+//            }
             $count++;
         }
 

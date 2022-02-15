@@ -7,30 +7,30 @@ CRM.$(function ($) {
         var $el =CRM.loadForm(href, {
             dialog: {width: '50%', height: '50%'}
         }).on('crmFormSuccess', function() {
-            var hm_tab = $('.selector-funds');
+            var hm_tab = $('.selector-contact');
             var hm_table = hm_tab.DataTable();
             hm_table.draw();
         });
     });
 
 
-    var funds_sourceUrl = CRM.vars.source_url['funds_source_url'];
+    var funds_c_sourceUrl = CRM.vars.source_url['contact_source_url'];
 
     $(document).ready(function () {
         //Reset Table, add Filter and Search Possibility
         //funds datatable
-        var funds_tab = $('.selector-funds');
-        var funds_table = funds_tab.DataTable();
-        var funds_dtsettings = funds_table.settings().init();
-        funds_dtsettings.bFilter = true;
+        var funds_c_tab = $('.selector-contact');
+        var funds_c_table = funds_c_tab.DataTable();
+        var funds_c_dtsettings = funds_c_table.settings().init();
+        funds_c_dtsettings.bFilter = true;
         //turn on search
 
-        funds_dtsettings.sDom = '<"crm-datatable-pager-top"lp>Brt<"crm-datatable-pager-bottom"ip>';
+        funds_c_dtsettings.sDom = '<"crm-datatable-pager-top"lp>Brt<"crm-datatable-pager-bottom"ip>';
         //turn of search field
-        funds_dtsettings.sAjaxSource = funds_sourceUrl;
-        funds_dtsettings.fnInitComplete = function (oSettings, json) {
+        funds_c_dtsettings.sAjaxSource = funds_c_sourceUrl;
+        funds_c_dtsettings.fnInitComplete = function (oSettings, json) {
         };
-        funds_dtsettings.fnDrawCallback = function (oSettings) {
+        funds_c_dtsettings.fnDrawCallback = function (oSettings) {
             // $("a.view-fund").css('background','red');
             $("a.view-fund").click(function (event) {
                 event.preventDefault();
@@ -39,7 +39,7 @@ CRM.$(function ($) {
                 var $el = CRM.loadForm(href, {
                     dialog: {width: '50%', height: '50%'}
                 }).on('crmFormSuccess', function () {
-                    var hm_tab = $('.selector-funds');
+                    var hm_tab = $('.selector-contact');
                     var hm_table = hm_tab.DataTable();
                     hm_table.draw();
                 });
@@ -52,7 +52,7 @@ CRM.$(function ($) {
                 var $el = CRM.loadForm(href, {
                     dialog: {width: '50%', height: '50%'}
                 }).on('crmFormSuccess', function () {
-                    var hm_tab = $('.selector-funds');
+                    var hm_tab = $('.selector-contact');
                     var hm_table = hm_tab.DataTable();
                     hm_table.draw();
                 });
@@ -64,13 +64,13 @@ CRM.$(function ($) {
                 var $el = CRM.loadForm(href, {
                     dialog: {width: '50%', height: '50%'}
                 }).on('crmFormSuccess', function () {
-                    var hm_tab = $('.selector-funds');
+                    var hm_tab = $('.selector-contact');
                     var hm_table = hm_tab.DataTable();
                     hm_table.draw();
                 });
             });
         };
-        funds_dtsettings.fnServerData = function ( sSource, aoData, fnCallback ) {
+        funds_c_dtsettings.fnServerData = function ( sSource, aoData, fnCallback ) {
             aoData.push({ "name": "fund_id",
                 "value": $('#fund_id').val() });
             aoData.push({ "name": "fund_name",
@@ -85,11 +85,11 @@ CRM.$(function ($) {
                 "success": fnCallback
             });
         };
-        funds_table.destroy();
-        var new_funds_table = funds_tab.DataTable(funds_dtsettings);
+        funds_c_table.destroy();
+        var new_funds_c_table = funds_c_tab.DataTable(funds_c_dtsettings);
         //End Reset Table
         $('.fund-filter :input').change(function(){
-            new_funds_table.draw();
+            new_funds_c_table.draw();
         });
 
     });

@@ -99,20 +99,21 @@
     <page_callback>CRM_Funds_Page_SearchComponent::getAjax</page_callback>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
+  <item>
+    <path>civicrm/fund/transaction_ajax</path>
+    <page_callback>CRM_Funds_Page_SearchTransaction::getAjax</page_callback>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/fund/dashboard_ajax_funding</path>
+    <page_callback>CRM_Funds_Page_Dashboard::getAjaxFunding</page_callback>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/fund/dashboard_ajax_contact</path>
+    <page_callback>CRM_Funds_Page_Dashboard::getAjaxContact</page_callback>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
 <!--  <item>-->
-<!--    <path>civicrm/fund/alertrule_ajax</path>-->
-<!--    <page_callback>CRM_Fund_Page_SearchAlertRule::getAjax</page_callback>-->
-<!--    <access_arguments>access CiviCRM</access_arguments>-->
-<!--  </item>-->
-<!--  <item>-->
-<!--    <path>civicrm/fund/alert_ajax</path>-->
-<!--    <page_callback>CRM_Fund_Page_SearchAlert::getAjax</page_callback>-->
-<!--    <access_arguments>access CiviCRM</access_arguments>-->
-<!--  </item>-->
-<!--  <item>-->
-<!--    <path>civicrm/fund/chart_ajax</path>-->
-<!--    <page_callback>CRM_Fund_Page_SearchCharts::getAjax</page_callback>-->
-<!--    <access_arguments>access CiviCRM</access_arguments>-->
-<!--  </item>-->
 
 </menu>

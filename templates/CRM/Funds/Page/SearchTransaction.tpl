@@ -32,9 +32,6 @@
                             {ts}Description{/ts}
                         </th>
                         <th scope="col">
-                            {ts}Name{/ts}
-                        </th>
-                        <th scope="col">
                             {ts}Amount{/ts}
                         </th>
                         <th scope="col">
@@ -44,7 +41,10 @@
                             {ts}Component{/ts}
                         </th>
                         <th scope="col">
-                            {ts}Contact{/ts}
+                            {ts}Contact (Social Worker){/ts}
+                        </th>
+                        <th scope="col">
+                            {ts}Contact (Approver){/ts}
                         </th>
                         <th scope="col">
                             {ts}Case{/ts}
@@ -56,5 +56,5 @@
             </div>
         </div>
     </div>
-    {*{crmScript ext=com.octopus8.funds file=js/funds.js}*}
+    {crmScript ext=com.octopus8.funds file=js/transaction.js}
 {/crmScope}

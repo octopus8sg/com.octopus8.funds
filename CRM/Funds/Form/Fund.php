@@ -79,35 +79,15 @@ class CRM_Funds_Form_Fund extends CRM_Core_Form
                 ts('Fund Code should consist of numbers and letters'),
                 'alphanumeric', null, 'client');
             $this->add('text', 'name', E::ts('Name'), ['class' => 'huge'], TRUE);
-//            $this->addDatePickerRange('fund_dateselect',
-//                'Select Date',
-//                FALSE,
-//                TRUE,
-//                "Start Date: ",
-//                "End Date: ",
-//                [],
-//                '_to',
-//                '_from'
-//            );
+
             $this->add('datepicker', 'start_date',
                 E::ts('Start Date: '), CRM_Core_SelectValues::date(NULL, 'Y-m-d H:i:s'), TRUE, ['time' => FALSE]);
+
             $this->add('datepicker', 'end_date',
                 E::ts('End Date: '), CRM_Core_SelectValues::date(NULL, 'Y-m-d H:i:s'), TRUE, ['time' => FALSE]);
-//            $params = ['type' => 'any'];
-//            $allCases = CRM_Case_BAO_Case::getCases(TRUE, $params);
-//            $this->addElement('select',
-//                'target_cases', ts('Target Cases'), $allCases,
-//                ['multiple' => TRUE, 'class' => 'crm-select2 huge']);
-//
-            $this->addEntityRef('target_cases', E::ts('Target Cases'), [
-                'entity' => 'case',
-                'class' => 'huge',
-                'placeholder' => ts('- Select Case -'),
-                'multiple' => TRUE,
-            ], TRUE);
 
-            $this->add('text', 'amount', ts('Minimum Amount'), ['size' => 8, 'maxlength' => 8], TRUE);
-            $this->addRule('amount', ts('Please enter a valid money value (e.g. %1).', [1 => CRM_Utils_Money::formatLocaleNumericRoundedForDefaultCurrency('9.99')]), 'money');
+            $this->add('text', 'target_cases', ts('Target Cases'), ['size' => 8, 'maxlength' => 8], TRUE);
+            $this->addRule('target_cases', ts('Value should be a positive number'), 'integer');
 
             $this->add('text', 'amount', ts('Amount'));
             $this->addRule('amount', ts('Please enter a valid amount.'), 'money');

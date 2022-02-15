@@ -5,7 +5,7 @@
             <div class="crm-accordion-header crm-master-accordion-header">{ts}Filter Transaction Data{/ts}</div>
             <!-- /.crm-accordion-header -->
             <div class="crm-accordion-body">
-                <table class="form-layout alarm-filter">
+                <table class="form-layout transaction-filter">
                     <tbody>
                     <tr>
                         <td class="label">{$form.contact_id_sub.label}</td>

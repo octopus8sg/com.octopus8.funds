@@ -72,22 +72,12 @@
     <field>
         <name>target_cases</name>
         <title>Target Cases</title>
-        <type>varchar</type>
-        <length>1255</length>
+        <type>int unsigned</type>
         <export>true</export>
+        <default>0</default>
+        <required>TRUE</required>
         <import>true</import>
-        <comment>Target Cases.</comment>
-        <pseudoconstant>
-            <table>civicrm_case</table>
-            <keyColumn>id</keyColumn>
-            <labelColumn>subject</labelColumn>
-            <!--            <condition>parent_id IS NOT NULL</condition>-->
-        </pseudoconstant>
-        <html>
-            <type>Select</type>
-            <multiple>1</multiple>
-        </html>
-        <serialize>COMMA</serialize>
+        <comment>Target Cases</comment>
     </field>
 
     <field>

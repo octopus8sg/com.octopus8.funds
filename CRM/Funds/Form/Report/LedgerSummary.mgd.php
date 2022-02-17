@@ -10,7 +10,7 @@ return [
         'params' => [
             'version' => 3,
             'label' => 'Ledger Summary',
-            'description' => 'LedgerSummary (com.octopus8.funds)',
+            'description' => 'Transactions By Customer (Source Organisation)',
             'class_name' => 'CRM_Funds_Form_Report_LedgerSummary',
             'report_url' => 'com.octopus8.funds/ledgersummary',
             'component' => '',

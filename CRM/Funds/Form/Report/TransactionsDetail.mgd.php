@@ -10,7 +10,7 @@ return [
         'params' => [
             'version' => 3,
             'label' => 'Transactions Detail',
-            'description' => 'TransactionsDetail (com.octopus8.funds)',
+            'description' => 'Transactions By Fund',
             'class_name' => 'CRM_Funds_Form_Report_TransactionsDetail',
             'report_url' => 'com.octopus8.funds/transactionsdetail',
             'component' => '',

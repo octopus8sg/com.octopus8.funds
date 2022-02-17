@@ -1,247 +1,517 @@
 <?php
+
 use CRM_Funds_ExtensionUtil as E;
 
-class CRM_Funds_Form_Report_TransactionsDetail extends CRM_Report_Form {
 
-  protected $_addressField = FALSE;
+class CRM_Funds_Form_Report_TransactionsDetail extends CRM_Report_Form
+{
 
-  protected $_emailField = FALSE;
+    protected $_addressField = FALSE;
 
-  protected $_summary = NULL;
+    protected $_emailField = FALSE;
 
-  protected $_customGroupExtends = array('Membership');
-  protected $_customGroupGroupBy = FALSE; function __construct() {
-    $this->_columns = array(
-      'civicrm_contact' => array(
-        'dao' => 'CRM_Contact_DAO_Contact',
-        'fields' => array(
-          'sort_name' => array(
-            'title' => E::ts('Contact Name'),
-            'required' => TRUE,
-            'default' => TRUE,
-            'no_repeat' => TRUE,
-          ),
-          'id' => array(
-            'no_display' => TRUE,
-            'required' => TRUE,
-          ),
-          'first_name' => array(
-            'title' => E::ts('First Name'),
-            'no_repeat' => TRUE,
-          ),
-          'id' => array(
-            'no_display' => TRUE,
-            'required' => TRUE,
-          ),
-          'last_name' => array(
-            'title' => E::ts('Last Name'),
-            'no_repeat' => TRUE,
-          ),
-          'id' => array(
-            'no_display' => TRUE,
-            'required' => TRUE,
-          ),
-        ),
-        'filters' => array(
-          'sort_name' => array(
-            'title' => E::ts('Contact Name'),
-            'operator' => 'like',
-          ),
-          'id' => array(
-            'no_display' => TRUE,
-          ),
-        ),
-        'grouping' => 'contact-fields',
-      ),
-      'civicrm_membership' => array(
-        'dao' => 'CRM_Member_DAO_Membership',
-        'fields' => array(
-          'membership_type_id' => array(
-            'title' => 'Membership Type',
-            'required' => TRUE,
-            'no_repeat' => TRUE,
-          ),
-          'join_date' => array(
-            'title' => E::ts('Join Date'),
-            'default' => TRUE,
-          ),
-          'source' => array('title' => 'Source'),
-        ),
-        'filters' => array(
-          'join_date' => array(
-            'operatorType' => CRM_Report_Form::OP_DATE,
-          ),
-          'owner_membership_id' => array(
-            'title' => E::ts('Membership Owner ID'),
-            'operatorType' => CRM_Report_Form::OP_INT,
-          ),
-          'tid' => array(
-            'name' => 'membership_type_id',
-            'title' => E::ts('Membership Types'),
-            'type' => CRM_Utils_Type::T_INT,
-            'operatorType' => CRM_Report_Form::OP_MULTISELECT,
-            'options' => CRM_Member_PseudoConstant::membershipType(),
-          ),
-        ),
-        'grouping' => 'member-fields',
-      ),
-      'civicrm_membership_status' => array(
-        'dao' => 'CRM_Member_DAO_MembershipStatus',
-        'alias' => 'mem_status',
-        'fields' => array(
-          'name' => array(
-            'title' => E::ts('Status'),
-            'default' => TRUE,
-          ),
-        ),
-        'filters' => array(
-          'sid' => array(
-            'name' => 'id',
-            'title' => E::ts('Status'),
-            'type' => CRM_Utils_Type::T_INT,
-            'operatorType' => CRM_Report_Form::OP_MULTISELECT,
-            'options' => CRM_Member_PseudoConstant::membershipStatus(NULL, NULL, 'label'),
-          ),
-        ),
-        'grouping' => 'member-fields',
-      ),
-      'civicrm_address' => array(
-        'dao' => 'CRM_Core_DAO_Address',
-        'fields' => array(
-          'street_address' => NULL,
-          'city' => NULL,
-          'postal_code' => NULL,
-          'state_province_id' => array('title' => E::ts('State/Province')),
-          'country_id' => array('title' => E::ts('Country')),
-        ),
-        'grouping' => 'contact-fields',
-      ),
-      'civicrm_email' => array(
-        'dao' => 'CRM_Core_DAO_Email',
-        'fields' => array('email' => NULL),
-        'grouping' => 'contact-fields',
-      ),
-    );
-    $this->_groupFilter = TRUE;
-    $this->_tagFilter = TRUE;
-    parent::__construct();
-  }
+    protected $_summary = NULL;
 
-  function preProcess() {
-    $this->assign('reportTitle', E::ts('Membership Detail Report'));
-    parent::preProcess();
-  }
+//  protected $_customGroupExtends = array('Membership');
+    protected $_customGroupGroupBy = FALSE;
 
-  function from() {
-    $this->_from = NULL;
+    function __construct()
+    {
+        $this->_columns = [
+            'civicrm_o8_fund' => [
+                'dao' => 'CRM_Funds_DAO_Fund',
+                'fields' => [
+                    'id' => [
+                        'name' => 'id',
+                        'title' => E::ts('Fund ID'),
+                        'type' => CRM_Utils_Type::T_INT,
+                        'description' => E::ts('Unique Fund ID'),
+//                        'required' => TRUE,
+                    ],
+                    'fund_code' => [
+                        'name' => 'code',
+                        'type' => CRM_Utils_Type::T_STRING,
+                        'title' => E::ts('Fund Code'),
+                        'description' => E::ts('Fund Code'),
+                        'required' => TRUE,
+                    ],
+                    'fund_contact_id' => [
+                        'name' => 'contact_id',
+                        'type' => CRM_Utils_Type::T_INT,
+                        'description' => E::ts('Source Organisation (Contact)'),
+                        'no_display' => TRUE,
+                        'required' => TRUE,
+                    ],
+                    'fund_name' => [
+                        'name' => 'name',
+                        'type' => CRM_Utils_Type::T_STRING,
+                        'title' => E::ts('Fund Name'),
+                        'description' => E::ts('Fund Name'),
+                        'required' => TRUE,
+                    ],
+                    'target_cases' => [
+                        'name' => 'target_cases',
+                        'type' => CRM_Utils_Type::T_INT,
+                        'title' => E::ts('Fund Target Cases'),
+                        'description' => E::ts('Target Cases'),
+//                        'default' => TRUE,
+                    ],
+                    'start_date' => [
+                        'name' => 'start_date',
+                        'type' => CRM_Utils_Type::T_DATE,
+                        'title' => E::ts('Fund Start Date'),
+                        'description' => E::ts('Fund Start Date'),
+//                        'default' => TRUE,
+                    ],
+                    'end_date' => [
+                        'name' => 'end_date',
+                        'type' => CRM_Utils_Type::T_DATE,
+                        'title' => E::ts('Fund End Date'),
+                        'description' => E::ts('Fund End Date'),
+//                        'default' => TRUE,
 
-    $this->_from = "
-         FROM  civicrm_contact {$this->_aliases['civicrm_contact']} {$this->_aclFrom}
-               INNER JOIN civicrm_membership {$this->_aliases['civicrm_membership']}
-                          ON {$this->_aliases['civicrm_contact']}.id =
-                             {$this->_aliases['civicrm_membership']}.contact_id AND {$this->_aliases['civicrm_membership']}.is_test = 0
-               LEFT  JOIN civicrm_membership_status {$this->_aliases['civicrm_membership_status']}
-                          ON {$this->_aliases['civicrm_membership_status']}.id =
-                             {$this->_aliases['civicrm_membership']}.status_id ";
+                    ],
+                    'fund_description' => [
+                        'name' => 'description',
+                        'type' => CRM_Utils_Type::T_TEXT,
+                        'title' => E::ts('Fund Description'),
+                        'description' => E::ts('Optional verbose description of the fund.'),
+                    ],
+                    'fund_amount' => [
+                        'name' => 'amount',
+                        'type' => CRM_Utils_Type::T_MONEY,
+                        'title' => E::ts('Fund Amount'),
+                        'description' => E::ts('Starting Amount of the fund.'),
+                        'default' => TRUE,
+                    ],
+                ],
+                'filters' => [
+                    'fund_name' => [
+                        'name' => 'name',
+                        'title' => E::ts('Fund Name'),
+                        'operator' => 'like',
+                    ],
+                    'fund_code' => [
+                        'name' => 'code',
+                        'title' => E::ts('Fund Code'),
+                        'operator' => 'like',
+                    ],
+                    'fund_description' => [
+                        'name' => 'description',
 
+                        'title' => E::ts('Fund Description'),
+                        'operator' => 'like',
+                    ],
+                    'start_date' => [
+                        'name' => 'start_date',
+                        'title' => E::ts('Start Date'),
+                        'operatorType' => CRM_Report_Form::OP_DATE],
+                    'end_date' => [
+                        'name' => 'end_date',
+                        'title' => E::ts('End Date'),
+                        'operatorType' => CRM_Report_Form::OP_DATE],
+                    'fund_amount' => [
+                        'name' => 'amount',
+                        'title' => ts('Fund Amount'),
+                    ],
+                ],
+                'order_bys' => [
+                    'fund_code' => [
+                        'name' => 'code',
+                        'title' => ts('Fund Code'),
+                        'default' => TRUE,
+                        'default_weight' => '0',
+                        'default_order' => 'ASC',
+                    ],
+                    'start_date' => [
+                        'title' => ts('Fund Start Date'),
+                    ],
+                    'end_date' => [
+                        'title' => ts('Fund End Date'),
+                    ],
+                    'target_cases' => [
+                        'title' => ts('Target Cases'),
+                    ],
+                    'fund_amount' => [
+                        'name' => 'amount',
+                        'title' => ts('Amount'),
+                    ],
+                ],
+                'grouping' => 'fund-fields',
+            ],
+            'civicrm_o8_fund_account' => [
+                'dao' => 'CRM_Funds_DAO_FundAccount',
+                'fields' => [
+                    'ac_id' => [
+                        'name' => 'id',
+                        'title' => E::ts('Account ID'),
+                        'type' => CRM_Utils_Type::T_INT,
+                        'description' => E::ts('Unique Account ID'),
+//                        'required' => TRUE,
+                    ],
+                    'ac_code' => [
+                        'name' => 'code',
+                        'type' => CRM_Utils_Type::T_STRING,
+                        'title' => E::ts('Account Code'),
+                        'description' => E::ts('Account Code'),
+                        'required' => TRUE,
+                    ],
+                    'fund_id' => [
+                        'type' => CRM_Utils_Type::T_INT,
+                        'description' => E::ts('Fund ID'),
+                        'no_display' => TRUE,
+                        'required' => TRUE,
+                    ],
+                    'ac_name' => [
+                        'name' => 'name',
+                        'type' => CRM_Utils_Type::T_STRING,
+                        'title' => E::ts('Account Name'),
+                        'description' => E::ts('Account Name'),
+                        'required' => TRUE,
+                    ],
+                    'ac_description' => [
+                        'name' => 'description',
+                        'type' => CRM_Utils_Type::T_TEXT,
+                        'title' => E::ts('Account Description'),
+                        'description' => E::ts('Optional verbose description.'),
+                    ],
+                ],
+                'filters' => [
+                    'ac_name' => [
+                        'name' => 'name',
+                        'title' => E::ts('Account Name'),
+                        'operator' => 'like',
+                    ],
+                    'ac_code' => [
+                        'name' => 'code',
+                        'title' => E::ts('Account Code'),
+                        'operator' => 'like',
+                    ],
+                    'ac_description' => [
+                        'name' => 'description',
+                        'title' => E::ts('Account Description'),
+                        'operator' => 'like',
+                    ],
+                ],
+                'order_bys' => [
+                    'ac_id' => [
+                        'name' => 'id',
+                        'title' => ts('Account ID'),
+                    ],
+                    'ac_code' => [
+                        'title' => ts('Account Code'),
+                    ],
+                    'created_at' => [
+                        'title' => ts('Account Created At'),
+                    ],
+                    'modified_at' => [
+                        'title' => ts('Account Modified At'),
+                    ],
+                ],
 
-    $this->joinAddressFromContact();
-    $this->joinEmailFromContact();
-  }
+                'grouping' => 'account-fields',
+            ],
+            'civicrm_o8_fund_transaction' => [
+                'dao' => 'CRM_Funds_DAO_FundTransaction',
+                'fields' => [
+                    'tr_id' => [
+                        'name' => 'id',
+                        'title' => E::ts('Transaction ID'),
+                        'type' => CRM_Utils_Type::T_INT,
+                        'required' => TRUE,
+                    ],
+                    'tr_date' => [
+                        'name' => 'date',
+                        'title' => E::ts('Transaction Date'),
+                        'type' => CRM_Utils_Type::T_DATE,
+                        'default' => TRUE],
+                    'tr_amount' => [
+                        'name' => 'amount',
+                        'type' => CRM_Utils_Type::T_MONEY,
+                        'title' => E::ts('Transaction Amount'),
+                        'default' => TRUE,
+                    ],
+                    'tr_description' => [
+                        'name' => 'description',
+                        'type' => CRM_Utils_Type::T_STRING,
+                        'title' => E::ts('Transaction Description'),
+                        'required' => TRUE,
+                    ],
+                    'tr_account_id' => [
+                        'name' => 'account_id',
+                        'type' => CRM_Utils_Type::T_INT,
+                        'description' => E::ts('Account ID'),
+                        'no_display' => TRUE,
+                        'required' => TRUE,
+                    ],
+                    'tr_status_id' => [
+                        'name' => 'status_id',
+                        'title' => E::ts('Status'),
+                        'required' => TRUE,
+                    ],
+                    'tr_case_id' => [
+                        'name' => 'status_id',
+                        'title' => E::ts('Case'),
+                        'required' => TRUE,
+                    ],
+                    'tr_contact_id_sub' => [
+                        'name' => 'contact_id_sub',
+                        'no_display' => TRUE,
+                        'required' => TRUE,
+                    ],
+                    'tr_contact_id_app' => [
+                        'name' => 'contact_id_app',
+                        'no_display' => TRUE,
+                        'required' => TRUE,
+                    ],
+                    'tr_component_id' => [
+                        'name' => 'component_id',
+                        'title' => E::ts('Component'),
+                        'type' => CRM_Utils_Type::T_INT,
+                        'description' => E::ts('Component'),
+//                        'no_display' => TRUE,
+//                        'required' => TRUE,
+                    ],
+                ],
+                'filters' => [
+                    'tr_amount' => [
+                        'name' => 'amount',
+                        'title' => E::ts('Transaction Name'),
+                    ],
+                    'tr_date' => [
+                        'name' => 'date',
+                        'title' => E::ts('Transaction Date'),
+                        'operatorType' => CRM_Report_Form::OP_DATE],
+                    'tr_status_id' => [
+                        'name' => 'status_id',
+                        'title' => E::ts('Transaction Status'),
+                        'operatorType' => CRM_Report_Form::OP_MULTISELECT,
+                        'options' => CRM_Core_PseudoConstant::get('CRM_Funds_DAO_FundTransaction', 'status_id'),
+                    ],
+                    'gender_id' => [
+                        'title' => ts('Gender'),
+                    ],
+                    'tr_description' => [
+                        'name' => 'description',
+                        'title' => E::ts('Transaction Description'),
+                        'operator' => 'like',
+                    ],
+                ],
+                'order_bys' => [
+                    'tr_id' => [
+                        'name' => 'id',
+                        'title' => ts('Transaction ID'),
+                        'default' => TRUE,
+                        'default_weight' => '1',
+                        'default_order' => 'ASC',
+                    ],
+                    'tr_date' => [
+                        'name' => 'date',
+                        'title' => ts('Transaction Date'),
+                    ],
+                    'amount' => [
+                        'title' => ts('Transaction Amount'),
+                    ],
+                    'created_at' => [
+                        'title' => ts('Transaction Created At'),
+                    ],
+                    'modified_at' => [
+                        'title' => ts('Transaction Modified At'),
+                    ],
+                ],
 
-  /**
-   * Add field specific select alterations.
-   *
-   * @param string $tableName
-   * @param string $tableKey
-   * @param string $fieldName
-   * @param array $field
-   *
-   * @return string
-   */
-  function selectClause(&$tableName, $tableKey, &$fieldName, &$field) {
-    return parent::selectClause($tableName, $tableKey, $fieldName, $field);
-  }
+                'grouping' => 'transaction-fields',
+            ],
+            'civicrm_sub' => [
+                'dao' => 'CRM_Contact_DAO_Contact',
+                'fields' => [
+                    'sub_sort_name' => [
+                        'name' => 'sort_name',
+                        'title' => E::ts('Contact (Social Worker)'),
 
-  /**
-   * Add field specific where alterations.
-   *
-   * This can be overridden in reports for special treatment of a field
-   *
-   * @param array $field Field specifications
-   * @param string $op Query operator (not an exact match to sql)
-   * @param mixed $value
-   * @param float $min
-   * @param float $max
-   *
-   * @return null|string
-   */
-  public function whereClause(&$field, $op, $value, $min, $max) {
-    return parent::whereClause($field, $op, $value, $min, $max);
-  }
-
-  function alterDisplay(&$rows) {
-    // custom code to alter rows
-    $entryFound = FALSE;
-    $checkList = array();
-    foreach ($rows as $rowNum => $row) {
-
-      if (!empty($this->_noRepeats) && $this->_outputMode != 'csv') {
-        // not repeat contact display names if it matches with the one
-        // in previous row
-        $repeatFound = FALSE;
-        foreach ($row as $colName => $colVal) {
-          if (CRM_Utils_Array::value($colName, $checkList) &&
-            is_array($checkList[$colName]) &&
-            in_array($colVal, $checkList[$colName])
-          ) {
-            $rows[$rowNum][$colName] = "";
-            $repeatFound = TRUE;
-          }
-          if (in_array($colName, $this->_noRepeats)) {
-            $checkList[$colName][] = $colVal;
-          }
-        }
-      }
-
-      if (array_key_exists('civicrm_membership_membership_type_id', $row)) {
-        if ($value = $row['civicrm_membership_membership_type_id']) {
-          $rows[$rowNum]['civicrm_membership_membership_type_id'] = CRM_Member_PseudoConstant::membershipType($value, FALSE);
-        }
-        $entryFound = TRUE;
-      }
-
-      if (array_key_exists('civicrm_address_state_province_id', $row)) {
-        if ($value = $row['civicrm_address_state_province_id']) {
-          $rows[$rowNum]['civicrm_address_state_province_id'] = CRM_Core_PseudoConstant::stateProvince($value, FALSE);
-        }
-        $entryFound = TRUE;
-      }
-
-      if (array_key_exists('civicrm_address_country_id', $row)) {
-        if ($value = $row['civicrm_address_country_id']) {
-          $rows[$rowNum]['civicrm_address_country_id'] = CRM_Core_PseudoConstant::country($value, FALSE);
-        }
-        $entryFound = TRUE;
-      }
-
-      if (array_key_exists('civicrm_contact_sort_name', $row) &&
-        $rows[$rowNum]['civicrm_contact_sort_name'] &&
-        array_key_exists('civicrm_contact_id', $row)
-      ) {
-        $url = CRM_Utils_System::url("civicrm/contact/view",
-          'reset=1&cid=' . $row['civicrm_contact_id'],
-          $this->_absoluteUrl
-        );
-        $rows[$rowNum]['civicrm_contact_sort_name_link'] = $url;
-        $rows[$rowNum]['civicrm_contact_sort_name_hover'] = E::ts("View Contact Summary for this Contact.");
-        $entryFound = TRUE;
-      }
-
-      if (!$entryFound) {
-        break;
-      }
+                    ],
+                    'id' => [
+                        'name' => 'id',
+                        'no_display' => TRUE,
+                        'required' => TRUE,
+                    ],
+                ],
+                'filters' => [
+                    'sub_sort_name' => [
+                        'name' => 'sort_name',
+                        'title' => E::ts('Contact (Social Worker)'),
+                        'operator' => 'like',
+                    ],
+                    'sub_id' => [
+                        'no_display' => TRUE,
+                    ],
+                ],
+                'grouping' => 'transaction-fields',
+            ],
+            'civicrm_app' => [
+                'dao' => 'CRM_Contact_DAO_Contact',
+                'fields' => [
+                    'app_sort_name' => [
+                        'name' => 'sort_name',
+                        'title' => E::ts('Contact (Approver)'),
+                    ],
+                    'id' => [
+                        'name' => 'id',
+                        'no_display' => TRUE,
+                        'required' => TRUE,
+                    ],
+                ],
+                'filters' => [
+                    'app_sort_name' => [
+                        'name' => 'sort_name',
+                        'title' => E::ts('Contact (Approver)'),
+                        'operator' => 'like',
+                    ],
+                    'id' => [
+                        'no_display' => TRUE,
+                    ],
+                ],
+                'grouping' => 'transaction-fields',
+            ],
+        ];
+//    $this->_groupFilter = TRUE;
+//    $this->_tagFilter = TRUE;
+        parent::__construct();
     }
-  }
+
+    function preProcess()
+    {
+        $this->assign('reportTitle', E::ts('Funds Detail Report'));
+        parent::preProcess();
+    }
+
+    function from()
+    {
+        $this->_from = NULL;
+
+        $this->_from = "
+         FROM  civicrm_o8_fund {$this->_aliases['civicrm_o8_fund']} {$this->_aclFrom}
+               INNER JOIN civicrm_o8_fund_account {$this->_aliases['civicrm_o8_fund_account']}
+                          ON {$this->_aliases['civicrm_o8_fund']}.id =
+                             {$this->_aliases['civicrm_o8_fund_account']}.fund_id
+               INNER JOIN civicrm_o8_fund_transaction {$this->_aliases['civicrm_o8_fund_transaction']}
+                          ON {$this->_aliases['civicrm_o8_fund_account']}.id =
+                             {$this->_aliases['civicrm_o8_fund_transaction']}.account_id
+               INNER JOIN civicrm_contact {$this->_aliases['civicrm_sub']}
+                          ON {$this->_aliases['civicrm_sub']}.id =
+                             {$this->_aliases['civicrm_o8_fund_transaction']}.contact_id_sub
+               INNER JOIN civicrm_contact {$this->_aliases['civicrm_app']}
+                          ON {$this->_aliases['civicrm_app']}.id =
+                             {$this->_aliases['civicrm_o8_fund_transaction']}.contact_id_app
+                             
+                             ";
+
+
+//    $this->joinAddressFromContact();
+//    $this->joinEmailFromContact();
+    }
+
+    /**
+     * Add field specific select alterations.
+     *
+     * @param string $tableName
+     * @param string $tableKey
+     * @param string $fieldName
+     * @param array $field
+     *
+     * @return string
+     */
+    function selectClause(&$tableName, $tableKey, &$fieldName, &$field)
+    {
+        return parent::selectClause($tableName, $tableKey, $fieldName, $field);
+    }
+
+    /**
+     * Add field specific where alterations.
+     *
+     * This can be overridden in reports for special treatment of a field
+     *
+     * @param array $field Field specifications
+     * @param string $op Query operator (not an exact match to sql)
+     * @param mixed $value
+     * @param float $min
+     * @param float $max
+     *
+     * @return null|string
+     */
+    public function whereClause(&$field, $op, $value, $min, $max)
+    {
+        return parent::whereClause($field, $op, $value, $min, $max);
+    }
+
+    function alterDisplay(&$rows)
+    {
+        // custom code to alter rows
+        $entryFound = FALSE;
+        $checkList = [];
+        CRM_Core_Error::debug_var('rows', $rows);
+        foreach ($rows as $rowNum => $row) {
+
+            if (!empty($this->_noRepeats) && $this->_outputMode != 'csv') {
+                // not repeat contact display names if it matches with the one
+                // in previous row
+                $repeatFound = FALSE;
+                foreach ($row as $colName => $colVal) {
+                    if (CRM_Utils_Array::value($colName, $checkList) &&
+                        is_array($checkList[$colName]) &&
+                        in_array($colVal, $checkList[$colName])
+                    ) {
+                        $rows[$rowNum][$colName] = "";
+                        $repeatFound = TRUE;
+                    }
+                    if (in_array($colName, $this->_noRepeats)) {
+                        $checkList[$colName][] = $colVal;
+                    }
+                }
+            }
+
+            if (array_key_exists('civicrm_o8_fund_transaction_tr_status_id', $row)) {
+                if ($value = $row['civicrm_o8_fund_transaction_tr_status_id']) {
+                    $rows[$rowNum]['civicrm_o8_fund_transaction_tr_status_id']
+                        = CRM_Core_PseudoConstant::getLabel("CRM_Funds_DAO_FundTransaction", "status_id", $value);
+                }
+                $entryFound = TRUE;
+            }
+
+            if (array_key_exists('civicrm_o8_fund_transaction_tr_case_id', $row)) {
+                if ($value = $row['civicrm_o8_fund_transaction_tr_case_id']) {
+                    $rows[$rowNum]['civicrm_o8_fund_transaction_tr_case_id']
+                        = CRM_Core_DAO::getFieldValue('CRM_Case_BAO_Case', $value, 'subject');
+                }
+                $entryFound = TRUE;
+            }
+
+            if (array_key_exists('civicrm_o8_fund_transaction_tr_component_id', $row)) {
+                if ($value = $row['civicrm_o8_fund_transaction_tr_component_id']) {
+                    $rows[$rowNum]['civicrm_o8_fund_transaction_tr_component_id']
+                        = CRM_Core_DAO::getFieldValue('CRM_Funds_BAO_FundComponent', $value, 'code') . ': '
+                        . CRM_Core_DAO::getFieldValue('CRM_Funds_BAO_FundComponent', $value, 'name');
+                }
+                $entryFound = TRUE;
+            }
+
+            if (array_key_exists('civicrm_contact_sort_name', $row) &&
+                $rows[$rowNum]['civicrm_contact_sort_name'] &&
+                array_key_exists('civicrm_contact_id', $row)
+            ) {
+                $url = CRM_Utils_System::url("civicrm/contact/view",
+                    'reset=1&cid=' . $row['civicrm_contact_id'],
+                    $this->_absoluteUrl
+                );
+                $rows[$rowNum]['civicrm_contact_sort_name_link'] = $url;
+                $rows[$rowNum]['civicrm_contact_sort_name_hover'] = E::ts("View Contact Summary for this Contact.");
+                $entryFound = TRUE;
+            }
+
+            if (!$entryFound) {
+                break;
+            }
+        }
+    }
 
 }

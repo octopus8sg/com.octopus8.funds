@@ -16,50 +16,39 @@ class CRM_Funds_Form_Report_FundsDetail extends CRM_Report_Form
 
     function __construct()
     {
-        $this->_columns = array(
-            'civicrm_contact' => array(
+        $this->_columns = [
+            'civicrm_contact' => [
                 'dao' => 'CRM_Contact_DAO_Contact',
-                'fields' => array(
-                    'sort_name' => array(
+                'fields' => [
+                    'sort_name' => [
                         'title' => E::ts('Source Organisation (Contact)'),
                         'required' => TRUE,
                         'default' => TRUE,
-//                        'no_repeat' => TRUE,
-                    ),
-                    'id' => array(
+
+                    ],
+                    'id' => [
                         'no_display' => TRUE,
                         'required' => TRUE,
-                    ),
-//                    'organization_name' => array(
-//                        'title' => E::ts('Source Organisation Organisation Name'),
-////                        'no_repeat' => TRUE,
-//                    ),
-                    'first_name' => array(
+                    ],
+
+                    'first_name' => [
                         'title' => E::ts('First Name'),
-//                        'no_repeat' => TRUE,
-                    ),
-                    'id' => array(
-                        'no_display' => TRUE,
-                        'required' => TRUE,
-                    ),
-                    'last_name' => array(
+
+                    ],
+                    'last_name' => [
                         'title' => E::ts('Last Name'),
-//                        'no_repeat' => TRUE,
-                    ),
-                    'id' => array(
-                        'no_display' => TRUE,
-                        'required' => TRUE,
-                    ),
-                ),
-                'filters' => array(
-                    'sort_name' => array(
+
+                    ],
+                ],
+                'filters' => [
+                    'sort_name' => [
                         'title' => E::ts('Contact Name'),
                         'operator' => 'like',
-                    ),
-                    'id' => array(
+                    ],
+                    'id' => [
                         'no_display' => TRUE,
-                    ),
-                ),
+                    ],
+                ],
                 'order_bys' => [
                     'sort_name' => [
                         'title' => ts('Source Organisation (Contact)'),
@@ -69,8 +58,8 @@ class CRM_Funds_Form_Report_FundsDetail extends CRM_Report_Form
                     ],
                 ],
                 'grouping' => 'contact-fields',
-            ),
-            'civicrm_o8_fund' => array(
+            ],
+            'civicrm_o8_fund' => [
                 'dao' => 'CRM_Funds_DAO_Fund',
                 'fields' => [
                     'id' => [
@@ -144,6 +133,7 @@ class CRM_Funds_Form_Report_FundsDetail extends CRM_Report_Form
                     ],
                     'created_by' => [
                         'name' => 'created_by',
+                        'no_display' => TRUE,
                         'type' => CRM_Utils_Type::T_INT,
                         'title' => E::ts('Fund Created Contact'),
                         'description' => E::ts('FK to Created Contact'),
@@ -156,33 +146,34 @@ class CRM_Funds_Form_Report_FundsDetail extends CRM_Report_Form
                     ],
                     'modified_by' => [
                         'name' => 'modified_by',
+                        'no_display' => TRUE,
                         'type' => CRM_Utils_Type::T_INT,
                         'title' => E::ts('Fund Modified Contact'),
                         'description' => E::ts('FK to Modified Contact'),
                     ]
                 ],
-                'filters' => array(
-                        'id' => array(
-                            'title' => E::ts('Fund ID'),
-                        ),
-                        'name' => array(
-                            'title' => E::ts('Fund Name'),
-                            'operator' => 'like',
-                        ),
-                        'code' => array(
-                            'title' => E::ts('Fund Code'),
-                            'operator' => 'like',
-                        ),
-                        'description' => array(
-                            'title' => E::ts('Fund Description'),
-                            'operator' => 'like',
-                        ),
+                'filters' => [
+                    'id' => [
+                        'title' => E::ts('Fund ID'),
+                    ],
+                    'name' => [
+                        'title' => E::ts('Fund Name'),
+                        'operator' => 'like',
+                    ],
+                    'code' => [
+                        'title' => E::ts('Fund Code'),
+                        'operator' => 'like',
+                    ],
+                    'description' => [
+                        'title' => E::ts('Fund Description'),
+                        'operator' => 'like',
+                    ],
                     'start_date' => ['operatorType' => CRM_Report_Form::OP_DATE],
                     'end_date' => ['operatorType' => CRM_Report_Form::OP_DATE],
                     'amount' => [
                         'title' => ts('Amount'),
                     ],
-                ),
+                ],
                 'order_bys' => [
                     'id' => [
 //                        'name' => 'id',
@@ -214,62 +205,59 @@ class CRM_Funds_Form_Report_FundsDetail extends CRM_Report_Form
                     ],
                 ],
                 'grouping' => 'fund-fields',
-            ),
-            'civicrm_created' => array(
+            ],
+            'civicrm_created' => [
                 'dao' => 'CRM_Contact_DAO_Contact',
-                'fields' => array(
-                    'sort_name' => array(
+                'fields' => [
+                    'created_sort_name' => [
                         'name' => 'sort_name',
                         'title' => E::ts('Created By (Contact)'),
-//                        'required' => TRUE,
-//                        'default' => TRUE,
-//                        'no_repeat' => TRUE,
-                    ),
-                    'id' => array(
+
+                    ],
+                    'id' => [
                         'name' => 'id',
                         'no_display' => TRUE,
                         'required' => TRUE,
-                    ),
-                ),
-                'filters' => array(
-                    'sort_name' => array(
+                    ],
+                ],
+                'filters' => [
+                    'created_sort_name' => [
+                        'name' => 'sort_name',
                         'title' => E::ts('Created By'),
                         'operator' => 'like',
-                    ),
-                    'created_id' => array(
+                    ],
+                    'created_id' => [
                         'no_display' => TRUE,
-                    ),
-                ),
+                    ],
+                ],
                 'grouping' => 'fund-fields',
-            ),
-            'civicrm_modified' => array(
+            ],
+            'civicrm_modified' => [
                 'dao' => 'CRM_Contact_DAO_Contact',
-                'fields' => array(
-                    'sort_name' => array(
+                'fields' => [
+                    'modified_sort_name' => [
                         'name' => 'sort_name',
                         'title' => E::ts('Modified By (Contact)'),
-//                        'required' => TRUE,
-//                        'default' => TRUE,
-//                        'no_repeat' => TRUE,
-                    ),
-                    'id' => array(
+                    ],
+                    'id' => [
                         'name' => 'id',
                         'no_display' => TRUE,
                         'required' => TRUE,
-                    ),
-                ),
-                'filters' => array(
-                    'sort_name' => array(
+                    ],
+                ],
+                'filters' => [
+                    'modified_sort_name' => [
+                        'name' => 'sort_name',
                         'title' => E::ts('Modified By'),
                         'operator' => 'like',
-                    ),
-                    'id' => array(
+                    ],
+                    'id' => [
                         'no_display' => TRUE,
-                    ),
-                ),
+                    ],
+                ],
                 'grouping' => 'fund-fields',
-            ),
-        );
+            ],
+        ];
 //    $this->_groupFilter = TRUE;
 //    $this->_tagFilter = TRUE;
         parent::__construct();
@@ -297,11 +285,7 @@ class CRM_Funds_Form_Report_FundsDetail extends CRM_Report_Form
                           ON {$this->_aliases['civicrm_modified']}.id =
                              {$this->_aliases['civicrm_o8_fund']}.modified_by
                              
-                             "
-
-
-
-        ;
+                             ";
 
 
 //    $this->joinAddressFromContact();
@@ -345,7 +329,7 @@ class CRM_Funds_Form_Report_FundsDetail extends CRM_Report_Form
     {
         // custom code to alter rows
         $entryFound = FALSE;
-        $checkList = array();
+        $checkList = [];
         CRM_Core_Error::debug_var('rows', $rows);
         foreach ($rows as $rowNum => $row) {
 

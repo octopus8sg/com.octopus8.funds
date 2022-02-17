@@ -29,7 +29,7 @@ class CRM_Funds_Form_Report_AccountsDetail extends CRM_Report_Form
                     'code' => [
                         'name' => 'code',
                         'type' => CRM_Utils_Type::T_STRING,
-                        'title' => E::ts('Code'),
+                        'title' => E::ts('Fund Code'),
                         'description' => E::ts('Fund Code'),
                         'required' => TRUE,
                     ],
@@ -43,28 +43,28 @@ class CRM_Funds_Form_Report_AccountsDetail extends CRM_Report_Form
                     'name' => [
                         'name' => 'name',
                         'type' => CRM_Utils_Type::T_STRING,
-                        'title' => E::ts('Name'),
+                        'title' => E::ts('Fund Name'),
                         'description' => E::ts('Fund Name'),
                         'required' => TRUE,
                     ],
                     'target_cases' => [
                         'name' => 'target_cases',
                         'type' => CRM_Utils_Type::T_INT,
-                        'title' => E::ts('Target Cases'),
+                        'title' => E::ts('Fund Target Cases'),
                         'description' => E::ts('Target Cases'),
                         'default' => TRUE,
                     ],
                     'start_date' => [
                         'name' => 'start_date',
                         'type' => CRM_Utils_Type::T_DATE,
-                        'title' => E::ts('Start Date'),
+                        'title' => E::ts('Fund Start Date'),
                         'description' => E::ts('Fund Start Date'),
                         'default' => TRUE,
                     ],
                     'end_date' => [
                         'name' => 'end_date',
                         'type' => CRM_Utils_Type::T_DATE,
-                        'title' => E::ts('End Date'),
+                        'title' => E::ts('Fund End Date'),
                         'description' => E::ts('Fund End Date'),
                         'default' => TRUE,
 
@@ -72,36 +72,61 @@ class CRM_Funds_Form_Report_AccountsDetail extends CRM_Report_Form
                     'description' => [
                         'name' => 'description',
                         'type' => CRM_Utils_Type::T_TEXT,
-                        'title' => E::ts('Description'),
+                        'title' => E::ts('Fund Description'),
                         'description' => E::ts('Optional verbose description of the fund.'),
                     ],
                     'amount' => [
                         'name' => 'amount',
                         'type' => CRM_Utils_Type::T_MONEY,
-                        'title' => E::ts('Amount'),
+                        'title' => E::ts('Fund Amount'),
                         'description' => E::ts('Starting Amount of the fund.'),
                         'default' => TRUE,
                     ],
                 ],
                 'filters' => array(
-                    'name' => array(
+                    'fund_name' => array(
+                        'name' => 'name',
                         'title' => E::ts('Fund Name'),
                         'operator' => 'like',
                     ),
-                    'code' => array(
+                    'fund_code' => array(
+                        'name' => 'code',
                         'title' => E::ts('Fund Code'),
                         'operator' => 'like',
                     ),
-                    'description' => array(
+                    'fund_description' => array(
+                        'name' => 'description',
+
                         'title' => E::ts('Fund Description'),
                         'operator' => 'like',
                     ),
                     'start_date' => ['operatorType' => CRM_Report_Form::OP_DATE],
                     'end_date' => ['operatorType' => CRM_Report_Form::OP_DATE],
                     'amount' => [
-                        'title' => ts('Amount'),
+                        'title' => ts('Fund Amount'),
                     ],
                 ),
+                'order_bys' => [
+                    'fund_code' => [
+                        'name' => 'code',
+                        'title' => ts('Fund Code'),
+                        'default' => TRUE,
+                        'default_weight' => '0',
+                        'default_order' => 'ASC',
+                    ],
+                    'start_date' => [
+                        'title' => ts('Fund Start Date'),
+                    ],
+                    'end_date' => [
+                        'title' => ts('Fund End Date'),
+                    ],
+                    'target_cases' => [
+                        'title' => ts('Target Cases'),
+                    ],
+                    'amount' => [
+                        'title' => ts('Amount'),
+                    ],
+                ],
                 'grouping' => 'fund-fields',
             ),
             'civicrm_o8_fund_account' => array(
@@ -121,8 +146,7 @@ class CRM_Funds_Form_Report_AccountsDetail extends CRM_Report_Form
                         'description' => E::ts('Account Code'),
                         'required' => TRUE,
                     ],
-                    'ac_fund_id' => [
-                        'name' => 'fund_id',
+                    'fund_id' => [
                         'type' => CRM_Utils_Type::T_INT,
                         'description' => E::ts('Fund ID'),
                         'no_display' => TRUE,
@@ -141,25 +165,26 @@ class CRM_Funds_Form_Report_AccountsDetail extends CRM_Report_Form
                         'title' => E::ts('Account Description'),
                         'description' => E::ts('Optional verbose description.'),
                     ],
-                    'ac_created_at' => [
-                        'name' => 'created_at',
+                    'created_at' => [
                         'type' => CRM_Utils_Type::T_TIMESTAMP,
                         'title' => E::ts('Account Created Date'),
                         'description' => E::ts('Date and time the fund was created'),
                     ],
-                    'ac_created_by' => [
+                    'created_by' => [
+                        'no_display' => TRUE,
                         'name' => 'created_by',
                         'type' => CRM_Utils_Type::T_INT,
                         'title' => E::ts('Account Created Contact'),
                         'description' => E::ts('FK to Created Contact'),
                     ],
-                    'ac_modified_at' => [
+                    'modified_at' => [
                         'name' => 'modified_at',
                         'type' => CRM_Utils_Type::T_TIMESTAMP,
                         'title' => E::ts('Account Modified Date'),
                         'description' => E::ts('Date and time the fund was modified'),
                     ],
-                    'ac_modified_by' => [
+                    'modified_by' => [
+                        'no_display' => TRUE,
                         'name' => 'modified_by',
                         'type' => CRM_Utils_Type::T_INT,
                         'title' => E::ts('Account Modified Contact'),
@@ -167,21 +192,42 @@ class CRM_Funds_Form_Report_AccountsDetail extends CRM_Report_Form
                     ]
                 ],
                 'filters' => array(
-                    'ac_name' => array(
-                        'title' => E::ts('Fund Name'),
+                    'name' => array(
+                        'title' => E::ts('Account Name'),
                         'operator' => 'like',
                     ),
-                    'ac_code' => array(
-                        'title' => E::ts('Fund Code'),
+                    'code' => array(
+                        'title' => E::ts('Account Code'),
                         'operator' => 'like',
                     ),
-                    'ac_description' => array(
-                        'title' => E::ts('Fund Description'),
+                    'description' => array(
+                        'title' => E::ts('Account Description'),
                         'operator' => 'like',
                     ),
-                    'ac_created_at' => ['operatorType' => CRM_Report_Form::OP_DATE],
-                    'ac_modified_at' => ['operatorType' => CRM_Report_Form::OP_DATE],
+                    'created_at' => ['title' => ts('Account Created At'),
+                        'operatorType' => CRM_Report_Form::OP_DATE],
+                    'modified_at' => ['title' => ts('Account Created At'),
+                        'operatorType' => CRM_Report_Form::OP_DATE],
                 ),
+                'order_bys' => [
+                    'id' => [
+//                        'name' => 'id',
+                        'title' => ts('Account ID'),
+                        'default' => TRUE,
+                        'default_weight' => '1',
+                        'default_order' => 'ASC',
+                    ],
+                    'code' => [
+                        'title' => ts('Account Code'),
+                    ],
+                    'created_at' => [
+                        'title' => ts('Account Created At'),
+                    ],
+                    'modified_at' => [
+                        'title' => ts('Account Modified At'),
+                    ],
+                ],
+
                 'grouping' => 'account-fields',
             ),
             'civicrm_created' => array(
@@ -190,11 +236,9 @@ class CRM_Funds_Form_Report_AccountsDetail extends CRM_Report_Form
                     'created_sort_name' => array(
                         'name' => 'sort_name',
                         'title' => E::ts('Created By (Contact)'),
-//                        'required' => TRUE,
-//                        'default' => TRUE,
-//                        'no_repeat' => TRUE,
+
                     ),
-                    'created_id' => array(
+                    'id' => array(
                         'name' => 'id',
                         'no_display' => TRUE,
                         'required' => TRUE,
@@ -202,6 +246,7 @@ class CRM_Funds_Form_Report_AccountsDetail extends CRM_Report_Form
                 ),
                 'filters' => array(
                     'created_sort_name' => array(
+                        'name' => 'sort_name',
                         'title' => E::ts('Created By'),
                         'operator' => 'like',
                     ),
@@ -217,11 +262,8 @@ class CRM_Funds_Form_Report_AccountsDetail extends CRM_Report_Form
                     'modified_sort_name' => array(
                         'name' => 'sort_name',
                         'title' => E::ts('Modified By (Contact)'),
-//                        'required' => TRUE,
-//                        'default' => TRUE,
-//                        'no_repeat' => TRUE,
                     ),
-                    'modified_id' => array(
+                    'id' => array(
                         'name' => 'id',
                         'no_display' => TRUE,
                         'required' => TRUE,
@@ -229,10 +271,11 @@ class CRM_Funds_Form_Report_AccountsDetail extends CRM_Report_Form
                 ),
                 'filters' => array(
                     'modified_sort_name' => array(
+                        'name' => 'sort_name',
                         'title' => E::ts('Modified By'),
                         'operator' => 'like',
                     ),
-                    'modified_id' => array(
+                    'id' => array(
                         'no_display' => TRUE,
                     ),
                 ),

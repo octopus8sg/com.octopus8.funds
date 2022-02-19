@@ -68,7 +68,9 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
 
         $component_id = CRM_Utils_Request::retrieveValue('component_id', 'CommaSeparatedIntegers', null);
 
-        $contact_id_app = CRM_Utils_Request::retrieveValue('contact_id_app', 'CommaSeparatedIntegers', null);
+        $status_id = CRM_Utils_Request::retrieveValue('status_id', 'CommaSeparatedIntegers', null);
+
+        $contact_id_sub = CRM_Utils_Request::retrieveValue('contact_id_app', 'CommaSeparatedIntegers', null);
 
         $contact_id_app = CRM_Utils_Request::retrieveValue('contact_id_sub', 'CommaSeparatedIntegers', null);
 
@@ -107,7 +109,7 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
             7 => 'cs_name',
             8 => 'ca_name',
             9 => 'case_name',
-//            10 => 'amount'
+            10 => 'status_name'
         ];
 
         $sort = isset($_REQUEST['iSortCol_0']) ? CRM_Utils_Array::value(CRM_Utils_Type::escape($_REQUEST['iSortCol_0'], 'Integer'), $sortMapper) : NULL;
@@ -129,6 +131,8 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
       t.id,
       t.description,
       t.amount,
+      s.label status_name,
+      t.status_id,
       concat(cm.code, ': ', cm.name) component_name,
       concat(a.code, ': ', a.name) account_name,
       concat(c.id, ': ', c.subject) case_name,
@@ -151,6 +155,9 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
     INNER JOIN civicrm_o8_fund_component cm on t.component_id = cm.id
     INNER JOIN civicrm_contact cs on t.contact_id_sub = cs.id
     INNER JOIN civicrm_contact ca on t.contact_id_app = ca.id
+    INNER JOIN civicrm_option_value s on t.status_id = s.value
+    INNER JOIN civicrm_option_group sdt on s.option_group_id = sdt.id 
+                                               and sdt.name = 'o8_fund_trxn_status'    
     WHERE 1";
 
 
@@ -183,6 +190,16 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
                     $sql .= " AND t.`case_id` = " . $case_id . " ";
                 } else {
                     $sql .= " AND t.`case_id` in (" . $case_id . ") ";
+                }
+            }
+        }
+
+        if (isset($status_id)) {
+            if (strval($status_id) != "") {
+                if (is_numeric($status_id)) {
+                    $sql .= " AND t.`status_id` = " . $status_id . " ";
+                } else {
+                    $sql .= " AND t.`status_id` in (" . $status_id . ") ";
                 }
             }
         }
@@ -289,6 +306,7 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
             7 => 'cs_name',
             8 => 'ca_name',
             9 => 'case_name',
+            10 => 'status_name',
 
              *  */
             $date = date_format(date_create($dao->date), 'j-M-Y');
@@ -342,6 +360,7 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
             $rows[$count][] = $contact_sub;
             $rows[$count][] = $contact_app;
             $rows[$count][] = $dao->case_name;
+            $rows[$count][] = $dao->status_name;
             $rows[$count][] = $action;
             $count++;
         }

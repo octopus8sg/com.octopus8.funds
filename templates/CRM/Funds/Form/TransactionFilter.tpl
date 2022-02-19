@@ -14,12 +14,14 @@
                         <td>{$form.contact_id_app.html}</td>
                     </tr>
                     <tr>
+                        <td class="label">{$form.transaction_status_id.label}</td>
+                        <td>{$form.transaction_status_id.html}</td>
                         <td class="label">{$form.transaction_case_id.label}</td>
                         <td>{$form.transaction_case_id.html}</td>
-                        <td class="label">{$form.transaction_account_id.label}</td>
-                        <td>{$form.transaction_account_id.html}</td>
                     </tr>
                     <tr>
+                        <td class="label">{$form.transaction_account_id.label}</td>
+                        <td>{$form.transaction_account_id.html}</td>
                         <td class="label">{$form.transaction_component_id.label}</td>
                         <td>{$form.transaction_component_id.html}</td>
                     </tr>

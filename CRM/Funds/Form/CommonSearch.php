@@ -34,7 +34,7 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
 
         // add device type filter
         $statuses = CRM_Core_OptionGroup::values('o8_fund_trxn_status');
-        $this->_statuses = $statuses;
+        $this->_trnx_statuses = $statuses;
         $this->_cid = CRM_Utils_Request::retrieve('cid', 'Positive');
         //
         $this->fund_filter();
@@ -313,10 +313,10 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
 
         $this->add('select', 'transaction_status_id',
             E::ts('Status'),
-            $this->_device_types,
+            $this->_trnx_statuses,
             FALSE,
             ['class' => 'huge crm-select2',
-                'data-option-edit-path' => 'civicrm/admin/options/o8_device_type',
+                'data-option-edit-path' => 'civicrm/admin/options/o8_fund_trxn_status',
                 'multiple' => TRUE,
                 'placeholder' => ts('- Select Status -'),
                 'select' => ['minimumInputLength' => 0]

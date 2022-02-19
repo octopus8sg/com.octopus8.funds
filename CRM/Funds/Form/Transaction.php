@@ -327,6 +327,8 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
                         $buttons[] = $reject;
                     }
                     if($this->_isAdmin){
+                        $buttons[] = $accept;
+                        $buttons[] = $reject;
                         $buttons[] = $changeit;
                     }else{
                         $status->freeze();
@@ -336,9 +338,10 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
                     if($this->_isAdmin){
                         $buttons[] = $changeit;
                     }
-                }
-                else{
+                }else{ //is accepted
                     if($this->_isAdmin){
+//                        $buttons[] = $accept;
+                        $buttons[] = $reject;
                         $buttons[] = $changeit;
                     }else{
                         $status->freeze();

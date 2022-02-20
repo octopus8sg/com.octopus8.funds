@@ -96,9 +96,11 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
                 $this->_myentity = $entity;
 //                CRM_Core_Error::debug_var('entity', $entity);
 
-                $isApprover = intval($entity['contact_id_app']);
-                if ($currentUserId == $isApprover) {
-                    $this->_isApprover = TRUE;
+                if (isset($entity['contact_id_app'])) {
+                    $isApprover = intval($entity['contact_id_app']);
+                    if ($currentUserId == $isApprover) {
+                        $this->_isApprover = TRUE;
+                    }
                 }
                 $isSocial = intval($entity['contact_id_sub']);
                 if ($currentUserId == $isSocial) {
@@ -201,7 +203,7 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
                 'class' => 'huge',
                 'placeholder' => ts('- Select Case -'),
 //                'multiple' => TRUE,
-            ], TRUE);
+            ], FALSE);
             if ($this->_isApproved) {
                 $case->freeze();
             }
@@ -213,13 +215,13 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
             if ($this->_isApproved) {
                 $contact_id_sub->freeze();
             }
-            if($this->_isSocial){
+            if ($this->_isSocial) {
                 $contact_id_sub->freeze();
             }
 
             //9
             $contact_id_app = $this->addEntityRef('contact_id_app',
-                E::ts('Contact (Approver)'), $props, TRUE);
+                E::ts('Contact (Approver)'), $props, FALSE);
             if ($this->_isApproved) {
                 $contact_id_app->freeze();
             }
@@ -319,34 +321,34 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
                 $cancel = [
                     'type' => 'cancel',
                     'name' => E::ts('Cancel')];
-                    $buttons[] = $cancel;
-                if($this->_isPendingApproval){
-                    if($this->_isSocial){
+                $buttons[] = $cancel;
+                if ($this->_isPendingApproval) {
+                    if ($this->_isSocial) {
                         $buttons[] = $accept;
                         $buttons[] = $changeit;
                         $buttons[] = $reject;
                     }
-                    if($this->_isAdmin){
+                    if ($this->_isAdmin) {
                         $buttons[] = $accept;
                         $buttons[] = $reject;
                         $buttons[] = $changeit;
-                    }else{
+                    } else {
                         $status->freeze();
                     }
 
-                }elseif($this->_isRejected){
-                    if($this->_isAdmin){
+                } elseif ($this->_isRejected) {
+                    if ($this->_isAdmin) {
                         $buttons[] = $changeit;
                     }
-                }else{ //is accepted
-                    if($this->_isAdmin){
+                } else { //is accepted
+                    if ($this->_isAdmin) {
 //                        $buttons[] = $accept;
                         $buttons[] = $reject;
                         $buttons[] = $changeit;
-                    }else{
+                    } else {
                         $status->freeze();
                     }
-                    if($this->_isApprover){
+                    if ($this->_isApprover) {
                         $buttons[] = $reject;
                         $buttons[] = $accept;
                         $status->unfreeze();

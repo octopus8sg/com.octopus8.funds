@@ -130,23 +130,23 @@
 
   <!-- component -->
   <field>
-    <name>component_id</name>
-    <title>Component</title>
+    <name>sub_account_id</name>
+    <title>SubAccount</title>
     <type>int unsigned</type>
-    <comment>FK to civicrm_o8_fund_component</comment>
+    <comment>FK to civicrm_o8_fund_sub_account</comment>
     <pseudoconstant>
-      <table>civicrm_o8_fund_component</table>
+      <table>civicrm_o8_fund_sub_account</table>
       <keyColumn>id</keyColumn>
       <labelColumn>name</labelColumn>
     </pseudoconstant>
     <html>
-      <label>Component</label>
+      <label>SubAccount</label>
       <type>Select</type>
     </html>
   </field>
   <foreignKey>
-    <name>component_id</name>
-    <table>civicrm_o8_fund_component</table>
+    <name>sub_account_id</name>
+    <table>civicrm_o8_fund_sub_account</table>
     <key>id</key>
     <onDelete>RESTRICT</onDelete>
   </foreignKey>

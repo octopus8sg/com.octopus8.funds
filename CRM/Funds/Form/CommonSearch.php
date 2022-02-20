@@ -40,13 +40,13 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
         $this->fund_filter();
         $this->account_filter();
         $this->category_filter();
-        $this->component_filter();
+        $this->sub_account_filter();
         $this->transaction_filter();
 //        if ($this->_cid) {
 //            $this->fund_filter();
 //            $this->account_filter();
 //            $this->category_filter();
-//            $this->component_filter();
+//            $this->sub_account_filter();
 //            $this->transaction_filter();
 //        }
         $this->assign('suppressForm', FALSE);
@@ -178,28 +178,28 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
 
     }
 
-    function component_filter()
+    function sub_account_filter()
     {
         // ID or Code
         // Contact (Owner)
         /*
          *
-            aoData.push({ "name": "component_id",
-                "value": $('#component_id').val() });
-            aoData.push({ "name": "component_name",
-                "value": $('#component_name').val() });
+            aoData.push({ "name": "sub_account_id",
+                "value": $('#sub_account_id').val() });
+            aoData.push({ "name": "sub_account_name",
+                "value": $('#sub_account_name').val() });
          */
 
         $this->add(
             'text',
-            'component_id',
-            ts('Component ID or Code'),
+            'sub_account_id',
+            ts('SubAccount ID or Code'),
             ['size' => 28, 'maxlength' => 128]);
 
         $this->add(
             'text',
-            'component_name',
-            ts('Component Name or Description'),
+            'sub_account_name',
+            ts('SubAccount Name or Description'),
             ['size' => 28, 'maxlength' => 128]);
 
 //        CRM_Core_Error::debug_var('cid', $this->_cid);
@@ -220,8 +220,8 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
                 "value": $('#contact_id_sub').val() });
             aoData.push({ "name": "account_id",
                 "value": $('#transaction_account_id').val() });
-            aoData.push({ "name": "component_id",
-                "value": $('#transaction_component_id').val() });
+            aoData.push({ "name": "sub_account_id",
+                "value": $('#transaction_sub_account_id').val() });
             aoData.push({ "name": "dateselect_from",
                 "value": $('#transaction_dateselect_from').val() });
             aoData.push({ "name": "dateselect_to",
@@ -284,7 +284,7 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
             'placeholder' => ts('- Select Account -'),
         ], FALSE);
 
-        $this->addEntityRef('transaction_component_id', E::ts('Component'), [
+        $this->addEntityRef('transaction_sub_account_id', E::ts('SubAccount'), [
             'api' => [
                 'search_field' => ['code', 'name'],
                 'label_field' => "name",
@@ -293,11 +293,11 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
                     'description',
                 ]
             ],
-            'entity' => 'fund_component',
+            'entity' => 'fund_sub_account',
             'class' => 'huge',
             'create' => false,
             'multiple' => true,
-            'placeholder' => ts('- Select Component -'),
+            'placeholder' => ts('- Select SubAccount -'),
         ], FALSE);
 
         $this->addDatePickerRange('transaction_dateselect',

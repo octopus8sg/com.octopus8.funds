@@ -16,7 +16,7 @@
 SET FOREIGN_KEY_CHECKS=0;
 
 DROP TABLE IF EXISTS `civicrm_o8_fund_transaction`;
-DROP TABLE IF EXISTS `civicrm_o8_fund_component`;
+DROP TABLE IF EXISTS `civicrm_o8_fund_sub_account`;
 DROP TABLE IF EXISTS `civicrm_o8_fund_category`;
 DROP TABLE IF EXISTS `civicrm_o8_fund_account`;
 DROP TABLE IF EXISTS `civicrm_o8_fund`;

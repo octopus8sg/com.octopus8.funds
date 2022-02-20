@@ -38,7 +38,7 @@
                             {ts}Account{/ts}
                         </th>
                         <th scope="col">
-                            {ts}Component{/ts}
+                            {ts}SubAccount{/ts}
                         </th>
                         <th scope="col">
                             {ts}Contact (Social Worker){/ts}

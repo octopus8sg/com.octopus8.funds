@@ -264,11 +264,11 @@ class CRM_Funds_Form_Report_TransactionsDetail extends CRM_Report_Form
                         'no_display' => TRUE,
                         'required' => TRUE,
                     ],
-                    'tr_component_id' => [
-                        'name' => 'component_id',
-                        'title' => E::ts('Component'),
+                    'tr_sub_account_id' => [
+                        'name' => 'sub_account_id',
+                        'title' => E::ts('SubAccount'),
                         'type' => CRM_Utils_Type::T_INT,
-                        'description' => E::ts('Component'),
+                        'description' => E::ts('SubAccount'),
 //                        'no_display' => TRUE,
 //                        'required' => TRUE,
                     ],
@@ -486,11 +486,11 @@ class CRM_Funds_Form_Report_TransactionsDetail extends CRM_Report_Form
                 $entryFound = TRUE;
             }
 
-            if (array_key_exists('civicrm_o8_fund_transaction_tr_component_id', $row)) {
-                if ($value = $row['civicrm_o8_fund_transaction_tr_component_id']) {
-                    $rows[$rowNum]['civicrm_o8_fund_transaction_tr_component_id']
-                        = CRM_Core_DAO::getFieldValue('CRM_Funds_BAO_FundComponent', $value, 'code') . ': '
-                        . CRM_Core_DAO::getFieldValue('CRM_Funds_BAO_FundComponent', $value, 'name');
+            if (array_key_exists('civicrm_o8_fund_transaction_tr_sub_account_id', $row)) {
+                if ($value = $row['civicrm_o8_fund_transaction_tr_sub_account_id']) {
+                    $rows[$rowNum]['civicrm_o8_fund_transaction_tr_sub_account_id']
+                        = CRM_Core_DAO::getFieldValue('CRM_Funds_BAO_FundSubAccount', $value, 'code') . ': '
+                        . CRM_Core_DAO::getFieldValue('CRM_Funds_BAO_FundSubAccount', $value, 'name');
                 }
                 $entryFound = TRUE;
             }

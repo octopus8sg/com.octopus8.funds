@@ -18,7 +18,7 @@
 SET FOREIGN_KEY_CHECKS=0;
 
 DROP TABLE IF EXISTS `civicrm_o8_fund_transaction`;
-DROP TABLE IF EXISTS `civicrm_o8_fund_component`;
+DROP TABLE IF EXISTS `civicrm_o8_fund_sub_account`;
 DROP TABLE IF EXISTS `civicrm_o8_fund_category`;
 DROP TABLE IF EXISTS `civicrm_o8_fund_account`;
 DROP TABLE IF EXISTS `civicrm_o8_fund`;
@@ -115,27 +115,27 @@ ENGINE=InnoDB;
 
 -- /*******************************************************
 -- *
--- * civicrm_o8_fund_component
+-- * civicrm_o8_fund_sub_account
 -- *
--- * Fund Component
+-- * Fund SubAccount
 -- *
 -- *******************************************************/
-CREATE TABLE `civicrm_o8_fund_component` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT 'Unique FundComponent ID',
-  `code` varchar(255) NOT NULL COMMENT 'Component Code',
-  `name` varchar(255) NOT NULL COMMENT 'Component Name',
-  `description` text COMMENT 'Optional verbose description of the component.',
+CREATE TABLE `civicrm_o8_fund_sub_account` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT 'Unique FundSubAccount ID',
+  `code` varchar(255) NOT NULL COMMENT 'SubAccount Code',
+  `name` varchar(255) NOT NULL COMMENT 'SubAccount Name',
+  `description` text COMMENT 'Optional verbose description of the subaccount.',
   `fund_category_id` int unsigned NOT NULL COMMENT 'FK to civicrm_o8_fund_category',
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Date and time the component was created',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Date and time the subaccount was created',
   `created_by` int unsigned COMMENT 'FK to Created Contact',
-  `modified_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Date and time the component was modified',
+  `modified_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Date and time the subaccount was modified',
   `modified_by` int unsigned COMMENT 'FK to Modified Contact',
   PRIMARY KEY (`id`),
   UNIQUE INDEX `index_code`(code),
   INDEX `index_name`(code),
-  CONSTRAINT FK_civicrm_o8_fund_component_fund_category_id FOREIGN KEY (`fund_category_id`) REFERENCES `civicrm_o8_fund_category`(`id`),
-  CONSTRAINT FK_civicrm_o8_fund_component_created_by FOREIGN KEY (`created_by`) REFERENCES `civicrm_contact`(`id`) ON DELETE RESTRICT,
-  CONSTRAINT FK_civicrm_o8_fund_component_modified_by FOREIGN KEY (`modified_by`) REFERENCES `civicrm_contact`(`id`) ON DELETE RESTRICT
+  CONSTRAINT FK_civicrm_o8_fund_sub_account_fund_category_id FOREIGN KEY (`fund_category_id`) REFERENCES `civicrm_o8_fund_category`(`id`),
+  CONSTRAINT FK_civicrm_o8_fund_sub_account_created_by FOREIGN KEY (`created_by`) REFERENCES `civicrm_contact`(`id`) ON DELETE RESTRICT,
+  CONSTRAINT FK_civicrm_o8_fund_sub_account_modified_by FOREIGN KEY (`modified_by`) REFERENCES `civicrm_contact`(`id`) ON DELETE RESTRICT
 )
 ENGINE=InnoDB;
 
@@ -155,7 +155,7 @@ CREATE TABLE `civicrm_o8_fund_transaction` (
   `case_id` int unsigned COMMENT 'FK to civicrm_case',
   `contact_id_sub` int unsigned COMMENT 'FK to Contact',
   `contact_id_app` int unsigned COMMENT 'FK to Contact',
-  `component_id` int unsigned COMMENT 'FK to civicrm_o8_fund_component',
+  `sub_account_id` int unsigned COMMENT 'FK to civicrm_o8_fund_sub_account',
   `account_id` int unsigned COMMENT 'FK to civicrm_o8_fund_account',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Date and time the transaction was created',
   `created_by` int unsigned COMMENT 'FK to Created Contact',
@@ -165,7 +165,7 @@ CREATE TABLE `civicrm_o8_fund_transaction` (
   CONSTRAINT FK_civicrm_o8_fund_transaction_case_id FOREIGN KEY (`case_id`) REFERENCES `civicrm_case`(`id`) ON DELETE RESTRICT,
   CONSTRAINT FK_civicrm_o8_fund_transaction_contact_id_sub FOREIGN KEY (`contact_id_sub`) REFERENCES `civicrm_contact`(`id`) ON DELETE RESTRICT,
   CONSTRAINT FK_civicrm_o8_fund_transaction_contact_id_app FOREIGN KEY (`contact_id_app`) REFERENCES `civicrm_contact`(`id`) ON DELETE RESTRICT,
-  CONSTRAINT FK_civicrm_o8_fund_transaction_component_id FOREIGN KEY (`component_id`) REFERENCES `civicrm_o8_fund_component`(`id`) ON DELETE RESTRICT,
+  CONSTRAINT FK_civicrm_o8_fund_transaction_sub_account_id FOREIGN KEY (`sub_account_id`) REFERENCES `civicrm_o8_fund_sub_account`(`id`) ON DELETE RESTRICT,
   CONSTRAINT FK_civicrm_o8_fund_transaction_account_id FOREIGN KEY (`account_id`) REFERENCES `civicrm_o8_fund_account`(`id`) ON DELETE RESTRICT,
   CONSTRAINT FK_civicrm_o8_fund_transaction_created_by FOREIGN KEY (`created_by`) REFERENCES `civicrm_contact`(`id`) ON DELETE RESTRICT,
   CONSTRAINT FK_civicrm_o8_fund_transaction_modified_by FOREIGN KEY (`modified_by`) REFERENCES `civicrm_contact`(`id`) ON DELETE RESTRICT

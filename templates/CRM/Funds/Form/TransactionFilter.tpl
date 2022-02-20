@@ -22,8 +22,8 @@
                     <tr>
                         <td class="label">{$form.transaction_account_id.label}</td>
                         <td>{$form.transaction_account_id.html}</td>
-                        <td class="label">{$form.transaction_component_id.label}</td>
-                        <td>{$form.transaction_component_id.html}</td>
+                        <td class="label">{$form.transaction_sub_account_id.label}</td>
+                        <td>{$form.transaction_sub_account_id.html}</td>
                     </tr>
                     <tr>
                         <td class="label">{$form.transaction_dateselect_from.label}</td>

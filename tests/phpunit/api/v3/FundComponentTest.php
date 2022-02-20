@@ -5,10 +5,10 @@ use Civi\Test\HookInterface;
 use Civi\Test\TransactionalInterface;
 
 /**
- * FundComponent API Test Case
+ * FundSubAccount API Test Case
  * @group headless
  */
-class api_v3_FundComponentTest extends \PHPUnit\Framework\TestCase implements HeadlessInterface, HookInterface, TransactionalInterface {
+class api_v3_FundSubAccountTest extends \PHPUnit\Framework\TestCase implements HeadlessInterface, HookInterface, TransactionalInterface {
   use \Civi\Test\Api3TestTrait;
 
   /**
@@ -28,8 +28,8 @@ class api_v3_FundComponentTest extends \PHPUnit\Framework\TestCase implements He
    * The setup() method is executed before the test is executed (optional).
    */
   public function setUp() {
-    $table = CRM_Core_DAO_AllCoreTables::getTableForEntityName('FundComponent');
-    $this->assertTrue($table && CRM_Core_DAO::checkTableExists($table), 'There was a problem with extension installation. Table for ' . 'FundComponent' . ' not found.');
+    $table = CRM_Core_DAO_AllCoreTables::getTableForEntityName('FundSubAccount');
+    $this->assertTrue($table && CRM_Core_DAO::checkTableExists($table), 'There was a problem with extension installation. Table for ' . 'FundSubAccount' . ' not found.');
     parent::setUp();
   }
 
@@ -50,16 +50,16 @@ class api_v3_FundComponentTest extends \PHPUnit\Framework\TestCase implements He
     // Boilerplate entity has one data field -- 'contact_id'.
     // Put some data in, read it back out, and delete it.
 
-    $created = $this->callAPISuccess('FundComponent', 'create', [
+    $created = $this->callAPISuccess('FundSubAccount', 'create', [
       'contact_id' => 1,
     ]);
     $this->assertTrue(is_numeric($created['id']));
 
-    $get = $this->callAPISuccess('FundComponent', 'get', []);
+    $get = $this->callAPISuccess('FundSubAccount', 'get', []);
     $this->assertEquals(1, $get['count']);
     $this->assertEquals(1, $get['values'][$created['id']]['contact_id']);
 
-    $this->callAPISuccess('FundComponent', 'delete', [
+    $this->callAPISuccess('FundSubAccount', 'delete', [
       'id' => $created['id'],
     ]);
   }

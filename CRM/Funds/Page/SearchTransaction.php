@@ -48,8 +48,8 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
                 "value": $('#contact_id_sub').val() });
             aoData.push({ "name": "account_id",
                 "value": $('#transaction_account_id').val() });
-            aoData.push({ "name": "component_id",
-                "value": $('#transaction_component_id').val() });
+            aoData.push({ "name": "sub_account_id",
+                "value": $('#transaction_sub_account_id').val() });
             aoData.push({ "name": "dateselect_from",
                 "value": $('#transaction_dateselect_from').val() });
             aoData.push({ "name": "dateselect_to",
@@ -66,7 +66,7 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
 
         $account_id = CRM_Utils_Request::retrieveValue('account_id', 'CommaSeparatedIntegers', null);
 
-        $component_id = CRM_Utils_Request::retrieveValue('component_id', 'CommaSeparatedIntegers', null);
+        $sub_account_id = CRM_Utils_Request::retrieveValue('sub_account_id', 'CommaSeparatedIntegers', null);
 
         $status_id = CRM_Utils_Request::retrieveValue('status_id', 'CommaSeparatedIntegers', null);
 
@@ -105,7 +105,7 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
             2 => 'description',
             3 => 'amount',
             5 => 'account_name',
-            6 => 'component_name',
+            6 => 'sub_account_name',
             7 => 'cs_name',
             8 => 'ca_name',
             9 => 'case_name',
@@ -133,26 +133,26 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
       t.amount,
       s.label status_name,
       t.status_id,
-      concat(cm.code, ': ', cm.name) component_name,
+      concat(cm.code, ': ', cm.name) sub_account_name,
       concat(a.code, ': ', a.name) account_name,
       concat(c.id, ': ', c.subject) case_name,
       cs.sort_name cs_name,
       ca.sort_name ca_name,
-      cm.code component_code,
+      cm.code sub_account_code,
       a.code account_code,
       c.subject case_code,
       t.contact_id_app,
       t.contact_id_sub,
-      t.component_id,
+      t.sub_account_id,
       t.account_id,
       t.case_id,
-      t.component_id,
+      t.sub_account_id,
       t.contact_id_sub,
       t.contact_id_app
     FROM civicrm_o8_fund_transaction t 
     INNER JOIN civicrm_case c on t.case_id = c.id
     INNER JOIN civicrm_o8_fund_account a on t.account_id = a.id
-    INNER JOIN civicrm_o8_fund_component cm on t.component_id = cm.id
+    INNER JOIN civicrm_o8_fund_sub_account cm on t.sub_account_id = cm.id
     INNER JOIN civicrm_contact cs on t.contact_id_sub = cs.id
     INNER JOIN civicrm_contact ca on t.contact_id_app = ca.id
     INNER JOIN civicrm_option_value s on t.status_id = s.value
@@ -177,7 +177,7 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
             }
         }
 
-//        $component_id = CRM_Utils_Request::retrieveValue('component_id', 'CommaSeparatedIntegers', null);
+//        $sub_account_id = CRM_Utils_Request::retrieveValue('sub_account_id', 'CommaSeparatedIntegers', null);
 //
 //        $contact_id_app = CRM_Utils_Request::retrieveValue('contact_id_app', 'CommaSeparatedIntegers', null);
 //
@@ -214,12 +214,12 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
             }
         }
 
-        if (isset($component_id)) {
-            if (strval($component_id) != "") {
-                if (is_numeric($component_id)) {
-                    $sql .= " AND t.`component_id` = " . $component_id . " ";
+        if (isset($sub_account_id)) {
+            if (strval($sub_account_id) != "") {
+                if (is_numeric($sub_account_id)) {
+                    $sql .= " AND t.`sub_account_id` = " . $sub_account_id . " ";
                 } else {
-                    $sql .= " AND t.`component_id` in (" . $component_id . ") ";
+                    $sql .= " AND t.`sub_account_id` in (" . $sub_account_id . ") ";
                 }
             }
         }
@@ -302,7 +302,7 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
             2 => 'description',
             3 => 'amount',
             5 => 'account_name',
-            6 => 'component_name',
+            6 => 'sub_account_name',
             7 => 'cs_name',
             8 => 'ca_name',
             9 => 'case_name',
@@ -317,7 +317,7 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
                 $amount = $dao->amount;
             }
             $account = "";
-            $component = "";
+            $subaccount = "";
             $contact_app = "";
             $contact_sub = "";
             if (!empty($dao->account_id)) {
@@ -326,10 +326,10 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
                     $dao->account_name . '</a>';
             }
 
-            if (!empty($dao->component_id)) {
-                $component = '<a target="_blank" href="' . CRM_Utils_System::url('civicrm/fund/component',
-                        ['reset' => 1, 'id' => $dao->component_id]) . '">' .
-                    $dao->component_name . '</a>';
+            if (!empty($dao->sub_account_id)) {
+                $subaccount = '<a target="_blank" href="' . CRM_Utils_System::url('civicrm/fund/subaccount',
+                        ['reset' => 1, 'id' => $dao->sub_account_id]) . '">' .
+                    $dao->sub_account_name . '</a>';
             }
 
             if (!empty($dao->contact_id_app)) {
@@ -356,7 +356,7 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
             $rows[$count][] = $dao->description;
             $rows[$count][] = $amount;
             $rows[$count][] = $account;
-            $rows[$count][] = $component;
+            $rows[$count][] = $subaccount;
             $rows[$count][] = $contact_sub;
             $rows[$count][] = $contact_app;
             $rows[$count][] = $dao->case_name;

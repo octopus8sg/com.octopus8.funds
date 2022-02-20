@@ -146,7 +146,7 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
 //            7 - case_id
 //            8 - contact_id_sub
 //            9 - contact_id_app
-//            10 - component_id
+//            10 - sub_account_id
 //            11 - account_id
 //            12 - created_by
 //            13 - created_on
@@ -228,8 +228,8 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
 
 
             //10
-            $component_id = $this->addEntityRef('component_id', E::ts('Component'), [
-                'entity' => 'fund_component',
+            $sub_account_id = $this->addEntityRef('sub_account_id', E::ts('SubAccount'), [
+                'entity' => 'fund_sub_account',
                 'api' => [
                     'search_fields' => ['code', 'name'],
                     'label_field' => "name",
@@ -239,11 +239,11 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
                     ]
                 ],
                 'class' => 'huge',
-                'placeholder' => ts('- Select Component -'),
+                'placeholder' => ts('- Select SubAccount -'),
 //                'multiple' => TRUE,
             ], TRUE);
             if ($this->_isApproved) {
-                $component_id->freeze();
+                $sub_account_id->freeze();
             }
             //11
             $account_id = $this->addEntityRef('account_id', E::ts('Account'), [

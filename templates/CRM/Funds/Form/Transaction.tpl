@@ -56,8 +56,8 @@
     </div>
 
     <div class="crm-section">
-      <div class="label">{$form.component_id.label}</div>
-      <div class="content">{$form.component_id.html}</div>
+      <div class="label">{$form.sub_account_id.label}</div>
+      <div class="content">{$form.sub_account_id.html}</div>
       <div class="clear"></div>
     </div>
 

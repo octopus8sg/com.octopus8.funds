@@ -68,8 +68,8 @@ CRM.$(function ($) {
                 "value": $('#contact_id_sub').val() });
             aoData.push({ "name": "account_id",
                 "value": $('#transaction_account_id').val() });
-            aoData.push({ "name": "component_id",
-                "value": $('#transaction_component_id').val() });
+            aoData.push({ "name": "sub_account_id",
+                "value": $('#transaction_sub_account_id').val() });
             aoData.push({ "name": "dateselect_from",
                 "value": $('#transaction_dateselect_from').val() });
             aoData.push({ "name": "dateselect_to",

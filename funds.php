@@ -230,18 +230,18 @@ function funds_civicrm_navigationMenu(&$menu) {
     ));
     _funds_civix_navigationMenu($menu);
     _funds_civix_insert_navigation_menu($menu, 'o8_funds', array(
-        'label' => E::ts('Find Component'),
-        'name' => 'o8_funds_component_search',
-        'url' => 'civicrm/fund/componentsearch',
+        'label' => E::ts('Find SubAccount'),
+        'name' => 'o8_funds_sub_account_search',
+        'url' => 'civicrm/fund/subaccountsearch',
         'permission' => 'access CiviCRM',
         'operator' => 'OR',
         'separator' => 0,
     ));
     _funds_civix_navigationMenu($menu);
     _funds_civix_insert_navigation_menu($menu, 'o8_funds', array(
-        'label' => E::ts('Add Component'),
-        'name' => 'o8_funds_component_add',
-        'url' => 'civicrm/fund/component?reset=1&action=add',
+        'label' => E::ts('Add SubAccount'),
+        'name' => 'o8_funds_sub_account_add',
+        'url' => 'civicrm/fund/subaccount?reset=1&action=add',
         'permission' => 'access CiviCRM',
         'operator' => 'OR',
         'separator' => 0,

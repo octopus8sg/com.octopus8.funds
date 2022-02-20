@@ -49,15 +49,15 @@
     <access_arguments>access CiviCRM</access_arguments>
   </item>
   <item>
-    <path>civicrm/fund/component</path>
-    <page_callback>CRM_Funds_Form_Component</page_callback>
-    <title>Component</title>
+    <path>civicrm/fund/subaccount</path>
+    <page_callback>CRM_Funds_Form_SubAccount</page_callback>
+    <title>SubAccount</title>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
   <item>
-    <path>civicrm/fund/componentsearch</path>
-    <page_callback>CRM_Funds_Page_SearchComponent</page_callback>
-    <title>SearchComponent</title>
+    <path>civicrm/fund/subaccountsearch</path>
+    <page_callback>CRM_Funds_Page_SearchSubAccount</page_callback>
+    <title>SearchSubAccount</title>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
   <item>
@@ -95,8 +95,8 @@
     <access_arguments>access CiviCRM</access_arguments>
   </item>
   <item>
-    <path>civicrm/fund/component_ajax</path>
-    <page_callback>CRM_Funds_Page_SearchComponent::getAjax</page_callback>
+    <path>civicrm/fund/subaccount_ajax</path>
+    <page_callback>CRM_Funds_Page_SearchSubAccount::getAjax</page_callback>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
   <item>

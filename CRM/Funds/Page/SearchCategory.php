@@ -33,7 +33,7 @@ class CRM_Funds_Page_SearchCategory extends CRM_Core_Page
     public function getAjax()
     {
 
-        CRM_Core_Error::debug_var('category_request', $_REQUEST);
+//        CRM_Core_Error::debug_var('category_request', $_REQUEST);
 //        CRM_Core_Error::debug_var('category_post', $_POST);
         /*
          *

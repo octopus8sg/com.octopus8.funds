@@ -449,7 +449,7 @@ class CRM_Funds_Form_Report_TransactionsDetail extends CRM_Report_Form
         // custom code to alter rows
         $entryFound = FALSE;
         $checkList = [];
-        CRM_Core_Error::debug_var('rows', $rows);
+//        CRM_Core_Error::debug_var('rows', $rows);
         foreach ($rows as $rowNum => $row) {
 
             if (!empty($this->_noRepeats) && $this->_outputMode != 'csv') {

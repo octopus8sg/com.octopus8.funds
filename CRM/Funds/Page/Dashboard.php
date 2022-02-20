@@ -156,7 +156,7 @@ FROM civicrm_o8_fund f
         $group_by = "group by f.id, f.code, f.name, f.amount, f.start_date, f.end_date";
         $sql = $sql . " " . $where . " " . $group_by . $endwhere;
         $dao = CRM_Core_DAO::executeQuery($sql);
-        CRM_Core_Error::debug_var('fund_s_sql', $sql);
+//        CRM_Core_Error::debug_var('fund_s_sql', $sql);
 
         $iFilteredTotal = CRM_Core_DAO::singleValueQuery("SELECT FOUND_ROWS()");
         $rows = array();
@@ -354,7 +354,7 @@ FROM civicrm_o8_fund f
 
         $sql = $sql . " " . $where . " " . $group_by . $endwhere;
         $dao = CRM_Core_DAO::executeQuery($sql);
-        CRM_Core_Error::debug_var('fund_c_sql', $sql);
+//        CRM_Core_Error::debug_var('fund_c_sql', $sql);
         $iFilteredTotal = CRM_Core_DAO::singleValueQuery("SELECT FOUND_ROWS()");
         $rows = array();
         $count = 0;

@@ -1,14 +1,8 @@
 {crmScope extensionKey='com.octopus8.funds'}
     <h3 class="crm-content-block">
-        <div class="action-link">
             {*                    {debug}*}
-            <a class="button add-fund" href="{crmURL p="civicrm/fund/form" q="reset=1&action=add" }">
-                <i class="crm-i fa-plus-circle">&nbsp;</i>
-                {ts}Add Fund{/ts}
-            </a>
-        </div>
         <div class="clear"></div>
-        {include file="CRM/Funds/Form/FundFilter.tpl"}
+        {include file="CRM/Funds/Form/FundDashboardFilter.tpl"}
         <div class="clear"></div>
         <h3>Funding Summary</h3>
         <div class="crm-results-block">

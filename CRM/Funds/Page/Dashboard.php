@@ -65,7 +65,8 @@ class CRM_Funds_Page_Dashboard extends CRM_Core_Page
             3 => 'end_date',
             4 => 'amount',
             5 => 'expenditure',
-            6 => 'residue',];
+            6 => 'leftmoney',
+            7 => 'residue',];
 
         $sort = isset($_REQUEST['iSortCol_0'])
             ? CRM_Utils_Array::value(CRM_Utils_Type::escape($_REQUEST['iSortCol_0'], 'Integer'), $sortMapper) : NULL;
@@ -92,6 +93,7 @@ class CRM_Funds_Page_Dashboard extends CRM_Core_Page
     f.name,
     f.amount,
     sum(t.amount) as expenditure,
+    f.amount - sum(t.amount) as leftmoney,
     round(( ((f.amount - sum(t.amount))/f.amount) * 100 ),2) as residue,
     concat(round(( ((f.amount - sum(t.amount))/f.amount) * 100 ),2),'%') AS balance,
     f.start_date,
@@ -183,6 +185,11 @@ FROM civicrm_o8_fund f
             } else {
                 $amount = "0";
             }
+            if (is_numeric($dao->leftmoney)) {
+                $leftmoney = CRM_Utils_Money::formatLocaleNumericRoundedForDefaultCurrency($dao->leftmoney);
+            } else {
+                $leftmoney = "0";
+            }
             if (is_numeric($dao->residue)) {
                 $balance = ($dao->balance);
             } else {
@@ -207,6 +214,7 @@ FROM civicrm_o8_fund f
             $rows[$count][] = date_format(date_create($dao->end_date), 'j-M-Y');
             $rows[$count][] = $amount;
             $rows[$count][] = $expenditure;
+            $rows[$count][] = $leftmoney;
             $rows[$count][] = $balance;
             $rows[$count][] = $projection;
             if ($cid === null) {

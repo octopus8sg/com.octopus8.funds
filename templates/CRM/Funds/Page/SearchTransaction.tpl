@@ -4,7 +4,6 @@
         {include file="CRM/Funds/Form/TransactionFilter.tpl"}
         <div class="clear"></div>
         <div class="action-link">
-            <p><a href="javascript:void(0)" id="delete-rows">Delete selected rows</a></p>
             {*                    {debug}*}
             <a class="button add-transaction" href="{crmURL p="civicrm/fund/transaction" q="reset=1&action=add" }">
                 <i class="crm-i fa-plus">&nbsp;</i>

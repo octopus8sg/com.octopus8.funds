@@ -4,14 +4,25 @@
         {include file="CRM/Funds/Form/TransactionFilter.tpl"}
         <div class="clear"></div>
         <div class="action-link">
+            <p><a href="javascript:void(0)" id="delete-rows">Delete selected rows</a></p>
             {*                    {debug}*}
             <a class="button add-transaction" href="{crmURL p="civicrm/fund/transaction" q="reset=1&action=add" }">
-                <i class="crm-i fa-plus-circle">&nbsp;</i>
+                <i class="crm-i fa-plus">&nbsp;</i>
                 {ts}Add Transaction{/ts}
             </a>
             <a class="button add-transaction" href="{crmURL p="civicrm/fund/transaction" q="reset=1&action=add" }">
                 <i class="crm-i fa-plus-circle">&nbsp;</i>
                 {ts}Import Transaction{/ts}
+            </a>
+            <a class="button select-all-transactions" href="#" }">
+            <i class="crm-i fa-check">&nbsp;</i>{ts}Select All{/ts}
+            </a>
+            <a class="button approve-transactions" href="#" }">
+            <i class="crm-i fa-circle">&nbsp;</i>{ts}Approve Selected{/ts}
+            </a>
+            </a>
+            <a class="button reject-transactions" href="#" }">
+            <i class="crm-i fa-times">&nbsp;</i>{ts}Reject Selected{/ts}
             </a>
         </div>
         <div class="clear"></div>

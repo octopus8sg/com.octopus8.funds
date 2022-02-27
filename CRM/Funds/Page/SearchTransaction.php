@@ -151,11 +151,11 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
       t.contact_id_sub,
       t.contact_id_app
     FROM civicrm_o8_fund_transaction t 
-    INNER JOIN civicrm_case c on t.case_id = c.id
-    INNER JOIN civicrm_o8_fund_account a on t.account_id = a.id
-    INNER JOIN civicrm_o8_fund_sub_account cm on t.sub_account_id = cm.id
-    INNER JOIN civicrm_contact cs on t.contact_id_sub = cs.id
-    INNER JOIN civicrm_contact ca on t.contact_id_app = ca.id
+    LEFT JOIN civicrm_case c on t.case_id = c.id
+    LEFT JOIN civicrm_o8_fund_account a on t.account_id = a.id
+    LEFT JOIN civicrm_o8_fund_sub_account cm on t.sub_account_id = cm.id
+    LEFT JOIN civicrm_contact cs on t.contact_id_sub = cs.id
+    LEFT JOIN civicrm_contact ca on t.contact_id_app = ca.id
     INNER JOIN civicrm_option_value s on t.status_id = s.value
     INNER JOIN civicrm_option_group sdt on s.option_group_id = sdt.id 
                                                and sdt.name = 'o8_fund_trxn_status'    

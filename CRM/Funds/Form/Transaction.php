@@ -134,6 +134,11 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
     {
         $this->assign('id', $this->getEntityId());
         $this->add('hidden', 'id'); // 1
+        $this->add('hidden', 'created_by'); // 1
+        $this->add('hidden', 'created_at'); // 1
+        $this->add('hidden', 'modified_by'); // 1
+        $this->add('hidden', 'modified_at'); // 1
+
         $editfields = TRUE;
         if ($this->_action != CRM_Core_Action::DELETE) {
 //            $props = ['api' => ['params' => ['contact_type' => 'Organization']]];
@@ -423,7 +428,7 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
             if ($action == 'update') {
                 $attach = CRM_Core_BAO_File::formatAttachment($values, $values, 'civicrm_o8_fund_transaction', $this->getEntityId());
                 $values['modified_by'] = CRM_Core_Session::getLoggedInContactID();
-                $values['modified_date'] = date('YmdHis');
+                $values['modified_at'] = date('YmdHis');
                 if ($reject) {
                     $values['status_id'] = 3; //status values to constants?
                 }
@@ -436,9 +441,9 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
 //                CRM_Core_Error::debug_var('attach', $attach);
             } else {
                 $values['modified_by'] = CRM_Core_Session::getLoggedInContactID();
-                $values['modified_date'] = date('YmdHis');
+                $values['modified_at'] = date('YmdHis');
                 $values['created_by'] = CRM_Core_Session::getLoggedInContactID();
-                $values['created_date'] = date('YmdHis');
+                $values['created_at'] = date('YmdHis');
 //                if (!isset($values['status_id'])) {
 //                    $values['status_id'] = 1;
 //                }

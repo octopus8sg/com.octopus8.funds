@@ -195,7 +195,7 @@ function funds_civicrm_post($op, $objectName, $objectId, &$objectRef)
         $email_sbj .= "- DELETED Transaction";
     }
     $r_update = CRM_Utils_System::url('civicrm/fund/transaction',
-        ['action' => 'update', 'id' => $id]);;
+        ['action' => 'update', 'id' => $id], TRUE);
     $update = '<a class="update-transaction action-item crm-hover-button" target="_blank" href="' .
         $r_update . '"><i class="crm-i fa-pencil"></i>&nbsp;Update</a>';
 

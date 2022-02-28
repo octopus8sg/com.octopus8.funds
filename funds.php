@@ -186,20 +186,19 @@ function funds_civicrm_post($op, $objectName, $objectId, &$objectRef)
 //    CRM_Core_Error::debug_var('objectRef', $objectRef);
     $email_sbj = $messagehtml = $message = "";
     if ($op == 'create' && $objectName == 'FundTransaction') {
-        $email_sbj .= "- ADDED NEW Transaction";
+        $email_sbj .= "Fund Transaction - Added";
     }
     if ($op == 'edit' && $objectName == 'FundTransaction') {
-        $email_sbj .= "- EDITED Transaction";
+        $email_sbj .= "Fund Transaction - Edited";
     }
     if ($op == 'delete' && $objectName == 'FundTransaction') {
-        $email_sbj .= "- DELETED Transaction";
+        $email_sbj .= "Fund Transaction - Deleted";
     }
     $r_update = CRM_Utils_System::url('civicrm/fund/transaction',
         ['action' => 'update', 'id' => $id], TRUE);
     $update = '<a class="update-transaction action-item crm-hover-button" target="_blank" href="' .
         $r_update . '"><i class="crm-i fa-pencil"></i>&nbsp;Update</a>';
 
-    $messagehtml .= "<h1>TRANSACTION</h1>\n";
     $messagehtml .= "<table>\n";
     $messagehtml .= "<tr><td>ID</td><td>$id</td></tr>\n";
     $messagehtml .= "<tr><td>DATE</td><td>$date</td></tr>\n";
@@ -213,7 +212,7 @@ function funds_civicrm_post($op, $objectName, $objectId, &$objectRef)
     $messagehtml .= "<tr><td>CREATED BY</td><td>$creater</td></tr>\n";
     $messagehtml .= "<tr><td>CREATED AT</td><td>$created_at</td></tr>\n";
     $messagehtml .= "<tr><td>MODIFIED BY</td><td>$modifier</td></tr>\n";
-    $messagehtml .= "<tr><td>MODIFIED BY</td><td>$modified_at</td></tr>\n";
+    $messagehtml .= "<tr><td>MODIFIED AT</td><td>$modified_at</td></tr>\n";
     $messagehtml .= "<tr><td>LINK TO VIEW/UPDATE</td><td>$update</td></tr>\n";
     $messagehtml .= "";
     $messagehtml .= "</table>";
@@ -318,6 +317,11 @@ function funds_civicrm_themes(&$themes)
 //function funds_civicrm_preProcess($formName, &$form) {
 //
 //}
+
+function authx_civicrm_permission(&$permissions) {
+    $permissions['access o8 funds module'] = E::ts('Access o8 Funds Module');
+    $permissions['create o8 funds transaction'] = E::ts('Create o8 Funds Transaction');
+}
 
 /**
  * Implements hook_civicrm_navigationMenu().

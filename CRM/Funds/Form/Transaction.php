@@ -356,6 +356,7 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
                     if ($this->_isApprover) {
                         $buttons[] = $reject;
                         $buttons[] = $accept;
+                        $amount->freeze();
                         $status->unfreeze();
                     }
 

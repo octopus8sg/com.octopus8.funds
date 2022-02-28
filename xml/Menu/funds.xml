@@ -114,6 +114,17 @@
     <page_callback>CRM_Funds_Page_Dashboard::getAjaxContact</page_callback>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
-<!--  <item>-->
-
+  <!--  <item>-->
+  <item>
+    <path>civicrm/fund/accounttype</path>
+    <page_callback>CRM_Funds_Form_AccountType</page_callback>
+    <title>AccountType</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/fund/accounttypesearch</path>
+    <page_callback>CRM_Funds_Page_SearchAccountType</page_callback>
+    <title>SearchAccountType</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
 </menu>

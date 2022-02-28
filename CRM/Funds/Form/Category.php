@@ -132,13 +132,13 @@ class CRM_Funds_Form_Category extends CRM_Core_Form
             // add attachments as needed
             if ($action == 'update') {
                 $params['modified_by'] = CRM_Core_Session::getLoggedInContactID();
-                $params['modified_date'] = date('YmdHis');
+                $params['modified_at'] = date('YmdHis');
 //                CRM_Core_Error::debug_var('attach', $attach);
             } else {
                 $params['modified_by'] = CRM_Core_Session::getLoggedInContactID();
-                $params['modified_date'] = date('YmdHis');
+                $params['modified_at'] = date('YmdHis');
                 $params['created_by'] = CRM_Core_Session::getLoggedInContactID();
-                $params['created_date'] = date('YmdHis');
+                $params['created_at'] = date('YmdHis');
 //                CRM_Core_Error::debug_var('attach', $attach);
             }
 //            CRM_Funds_BAO_Fund::create($values);

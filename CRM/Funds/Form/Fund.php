@@ -167,13 +167,13 @@ class CRM_Funds_Form_Fund extends CRM_Core_Form
             if ($action == 'update') {
                 $attach = CRM_Core_BAO_File::formatAttachment($values, $values, 'civicrm_o8_fund', $this->getEntityId());
                 $values['modified_by'] = CRM_Core_Session::getLoggedInContactID();
-                $values['modified_date'] = date('YmdHis');
+                $values['modified_at'] = date('YmdHis');
 //                CRM_Core_Error::debug_var('attach', $attach);
             } else {
                 $values['modified_by'] = CRM_Core_Session::getLoggedInContactID();
-                $values['modified_date'] = date('YmdHis');
+                $values['modified_at'] = date('YmdHis');
                 $values['created_by'] = CRM_Core_Session::getLoggedInContactID();
-                $values['created_date'] = date('YmdHis');
+                $values['created_at'] = date('YmdHis');
                 $attach = CRM_Core_BAO_File::formatAttachment($values, $values, 'civicrm_o8_fund');
 //                CRM_Core_Error::debug_var('attach', $attach);
             }

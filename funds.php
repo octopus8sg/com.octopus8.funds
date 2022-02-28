@@ -197,23 +197,23 @@ function funds_civicrm_post($op, $objectName, $objectId, &$objectRef)
     $r_update = CRM_Utils_System::url('civicrm/fund/transaction',
         ['action' => 'update', 'id' => $id], TRUE);
     $update = '<a class="update-transaction action-item crm-hover-button" target="_blank" href="' .
-        $r_update . '"><i class="crm-i fa-pencil"></i>&nbsp;Update</a>';
+        $r_update . '"><i class="crm-i fa-pencil"></i>&nbsp;VIEW/UPDATE</a>';
 
     $messagehtml .= "<table>\n";
-    $messagehtml .= "<tr><td>ID</td><td>$id</td></tr>\n";
-    $messagehtml .= "<tr><td>DATE</td><td>$date</td></tr>\n";
-    $messagehtml .= "<tr><td>DESCRIPTION</td><td>$description</td></tr>\n";
-    $messagehtml .= "<tr><td>AMOUNT</td><td>$amount</td></tr>\n";
-    $messagehtml .= "<tr><td>STATUS</td><td>$status</td></tr>\n";
-    $messagehtml .= "<tr><td>CASE</td><td>$caseDetails</td></tr>\n";
-    $messagehtml .= "<tr><td>SOCIAL WORKER</td><td>$contact_sub</td></tr>\n";
-    $messagehtml .= "<tr><td>SUBACCOUNT</td><td>$sub_account</td></tr>\n";
-    $messagehtml .= "<tr><td>ACCOUNT</td><td>$account</td></tr>\n";
-    $messagehtml .= "<tr><td>CREATED BY</td><td>$creater</td></tr>\n";
-    $messagehtml .= "<tr><td>CREATED AT</td><td>$created_at</td></tr>\n";
-    $messagehtml .= "<tr><td>MODIFIED BY</td><td>$modifier</td></tr>\n";
-    $messagehtml .= "<tr><td>MODIFIED AT</td><td>$modified_at</td></tr>\n";
-    $messagehtml .= "<tr><td>LINK TO VIEW/UPDATE</td><td>$update</td></tr>\n";
+    $messagehtml .= "<tr><td>ID</td><td>&nbsp;$id</td></tr>\n";
+    $messagehtml .= "<tr><td>DATE</td><td>&nbsp;$date</td></tr>\n";
+    $messagehtml .= "<tr><td>DESCRIPTION</td><td>&nbsp;$description</td></tr>\n";
+    $messagehtml .= "<tr><td>AMOUNT</td><td>&nbsp;$amount</td></tr>\n";
+    $messagehtml .= "<tr><td>STATUS</td><td>&nbsp;$status</td></tr>\n";
+    $messagehtml .= "<tr><td>CASE</td><td>&nbsp;$caseDetails</td></tr>\n";
+    $messagehtml .= "<tr><td>SOCIAL WORKER</td><td>&nbsp;$contact_sub</td></tr>\n";
+    $messagehtml .= "<tr><td>SUBACCOUNT</td><td>&nbsp;$sub_account</td></tr>\n";
+    $messagehtml .= "<tr><td>ACCOUNT</td><td>&nbsp;$account</td></tr>\n";
+    $messagehtml .= "<tr><td>CREATED BY</td><td>&nbsp;$creater</td></tr>\n";
+    $messagehtml .= "<tr><td>CREATED AT</td><td>&nbsp;$created_at</td></tr>\n";
+    $messagehtml .= "<tr><td>MODIFIED BY</td><td>&nbsp;$modifier</td></tr>\n";
+    $messagehtml .= "<tr><td>MODIFIED AT</td><td>&nbsp;$modified_at</td></tr>\n";
+    $messagehtml .= "<tr><td>ACTION</td><td>$update</td></tr>\n";
     $messagehtml .= "";
     $messagehtml .= "</table>";
 

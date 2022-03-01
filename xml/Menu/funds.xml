@@ -118,7 +118,7 @@
   <item>
     <path>civicrm/fund/accounttype</path>
     <page_callback>CRM_Funds_Form_AccountType</page_callback>
-    <title>AccountType</title>
+    <title>FundAccountType</title>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
   <item>

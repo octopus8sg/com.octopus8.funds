@@ -4,7 +4,7 @@ namespace Civi\Api4;
 /**
  * Fund entity.
  *
- * Provided by the FIXME extension.
+ * Provided by the Funds extension.
  *
  * @package Civi\Api4
  */

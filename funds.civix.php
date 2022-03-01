@@ -450,11 +450,6 @@ function _funds_civix_civicrm_alterSettingsFolders(&$metaDataFolders = NULL) {
  */
 function _funds_civix_civicrm_entityTypes(&$entityTypes) {
   $entityTypes = array_merge($entityTypes, [
-    'CRM_Funds_DAO_AccountType' => [
-      'name' => 'AccountType',
-      'class' => 'CRM_Funds_DAO_AccountType',
-      'table' => 'civicrm_o8_fund_account_type',
-    ],
     'CRM_Funds_DAO_Fund' => [
       'name' => 'Fund',
       'class' => 'CRM_Funds_DAO_Fund',
@@ -464,6 +459,11 @@ function _funds_civix_civicrm_entityTypes(&$entityTypes) {
       'name' => 'FundAccount',
       'class' => 'CRM_Funds_DAO_FundAccount',
       'table' => 'civicrm_o8_fund_account',
+    ],
+    'CRM_Funds_DAO_FundAccountType' => [
+      'name' => 'FundAccountType',
+      'class' => 'CRM_Funds_DAO_FundAccountType',
+      'table' => 'civicrm_o8_fund_account_type',
     ],
     'CRM_Funds_DAO_FundCategory' => [
       'name' => 'FundCategory',

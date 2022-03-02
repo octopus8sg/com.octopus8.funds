@@ -27,6 +27,12 @@ class CRM_Funds_Form_Report_TransactionsDetail extends CRM_Report_Form
                         'type' => CRM_Utils_Type::T_INT,
                         'required' => TRUE,
                     ],
+                    'fund_id' => [
+                        'type' => CRM_Utils_Type::T_INT,
+                        'description' => E::ts('Fund ID'),
+                        'no_display' => TRUE,
+                        'required' => TRUE,
+                    ],
                     'tr_date' => [
                         'name' => 'date',
                         'title' => E::ts('Transaction Date'),
@@ -262,12 +268,6 @@ class CRM_Funds_Form_Report_TransactionsDetail extends CRM_Report_Form
                         'type' => CRM_Utils_Type::T_STRING,
                         'title' => E::ts('Account Code'),
                         'description' => E::ts('Account Code'),
-                        'required' => TRUE,
-                    ],
-                    'fund_id' => [
-                        'type' => CRM_Utils_Type::T_INT,
-                        'description' => E::ts('Fund ID'),
-                        'no_display' => TRUE,
                         'required' => TRUE,
                     ],
                     'ac_name' => [

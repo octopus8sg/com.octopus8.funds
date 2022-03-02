@@ -89,9 +89,9 @@ class CRM_Funds_Form_Report_AccountsDetail extends CRM_Report_Form
                         'description' => E::ts('Account Code'),
                         'required' => TRUE,
                     ],
-                    'fund_id' => [
+                    'type_id' => [
                         'type' => CRM_Utils_Type::T_INT,
-                        'description' => E::ts('Fund ID'),
+                        'description' => E::ts('Type ID'),
                         'no_display' => TRUE,
                         'required' => TRUE,
                     ],
@@ -243,7 +243,7 @@ class CRM_Funds_Form_Report_AccountsDetail extends CRM_Report_Form
         $this->_from = "
          FROM  civicrm_o8_fund_account_type {$this->_aliases['civicrm_o8_fund_account_type']} {$this->_aclFrom}
                INNER JOIN civicrm_o8_fund_account {$this->_aliases['civicrm_o8_fund_account']}
-                          ON {$this->_aliases['civicrm_o8_fund']}.id =
+                          ON {$this->_aliases['civicrm_o8_fund_account_type']}.id =
                              {$this->_aliases['civicrm_o8_fund_account']}.type_id
                INNER JOIN civicrm_contact {$this->_aliases['civicrm_created']}
                           ON {$this->_aliases['civicrm_created']}.id =

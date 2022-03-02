@@ -27,7 +27,7 @@
                             {ts}Name{/ts}
                         </th>
                         <th scope="col">
-                            {ts}Fund{/ts}
+                            {ts}Type{/ts}
                         </th>
                         <th id="nosort">&nbsp;Action</th>
                     </tr>

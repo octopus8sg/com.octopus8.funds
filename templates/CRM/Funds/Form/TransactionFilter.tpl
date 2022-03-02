@@ -16,6 +16,10 @@
                     <tr>
                         <td class="label">{$form.transaction_status_id.label}</td>
                         <td>{$form.transaction_status_id.html}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">{$form.transaction_fund_id.label}</td>
+                        <td>{$form.transaction_fund_id.html}</td>
                         <td class="label">{$form.transaction_case_id.label}</td>
                         <td>{$form.transaction_case_id.html}</td>
                     </tr>

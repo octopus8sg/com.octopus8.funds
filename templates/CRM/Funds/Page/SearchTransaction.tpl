@@ -60,6 +60,9 @@
                             {ts}Case{/ts}
                         </th>
                         <th scope="col">
+                            {ts}Fund{/ts}
+                        </th>
+                        <th scope="col">
                             {ts}Status{/ts}
                         </th>
                         <th id="nosort">&nbsp;Action</th>

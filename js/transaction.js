@@ -84,6 +84,10 @@ CRM.$(function ($) {
                 "value": $('#transaction_account_id').val()
             });
             aoData.push({
+                "name": "fund_id",
+                "value": $('#transaction_fund_id').val()
+            });
+            aoData.push({
                 "name": "sub_account_id",
                 "value": $('#transaction_sub_account_id').val()
             });

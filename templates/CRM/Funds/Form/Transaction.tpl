@@ -20,6 +20,12 @@
     </div>
 
     <div class="crm-section">
+      <div class="label">{$form.fund_id.label}</div>
+      <div class="content">{$form.fund_id.html}</div>
+      <div class="clear"></div>
+    </div>
+
+    <div class="crm-section">
       <div class="label">{$form.description.label}</div>
       <div class="content">{$form.description.html}</div>
       <div class="clear"></div>

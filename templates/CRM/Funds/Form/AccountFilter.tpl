@@ -16,8 +16,8 @@
                         <td>{$form.account_name.html}</td>
                     </tr>
                     <tr>
-                        <td class="label">{$form.account_fund_id.label}</td>
-                        <td>{$form.account_fund_id.html}</td>
+                        <td class="label">{$form.account_account_type_id.label}</td>
+                        <td>{$form.account_account_type_id.html}</td>
                     </tr>
                     </tbody>
                 </table>

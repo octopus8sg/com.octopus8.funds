@@ -75,7 +75,7 @@ class CRM_Funds_Form_Account extends CRM_Core_Form
                 ts('Code should consist of numbers and letters'),
                 'alphanumeric', null, 'client');
             $this->add('text', 'name', E::ts('Name'), ['class' => 'huge'], TRUE);
-            $this->addEntityRef('fund_id', E::ts('Fund'), [
+            $this->addEntityRef('type_id', E::ts('Type'), [
                 'api' => [
                     'search_fields' => ['code', 'name'],
                     'label_field' => "name",
@@ -84,9 +84,9 @@ class CRM_Funds_Form_Account extends CRM_Core_Form
                         'description',
                     ]
                 ],
-                'entity' => 'fund',
+                'entity' => 'fund_account_type',
                 'class' => 'huge',
-                'placeholder' => ts('- Select Fund -'),
+                'placeholder' => ts('- Select Type -'),
             ], TRUE);
 
             $noteAttrib = CRM_Core_DAO::getAttribute('CRM_Core_DAO_Note');
@@ -141,7 +141,7 @@ class CRM_Funds_Form_Account extends CRM_Core_Form
             }
             $params['name'] = $values['name'];
             $params['code'] = $values['code'];
-            $params['fund_id'] = $values['fund_id'];
+            $params['type_id'] = $values['type_id'];
             $params['description'] = $values['description'];
             // add attachments as needed
             if ($action == 'update') {

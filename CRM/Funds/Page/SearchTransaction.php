@@ -65,6 +65,8 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
 
         $case_id = CRM_Utils_Request::retrieveValue('case_id', 'CommaSeparatedIntegers', null);
 
+        $fund_id = CRM_Utils_Request::retrieveValue('fund_id', 'CommaSeparatedIntegers', null);
+
         $account_id = CRM_Utils_Request::retrieveValue('account_id', 'CommaSeparatedIntegers', null);
 
         $sub_account_id = CRM_Utils_Request::retrieveValue('sub_account_id', 'CommaSeparatedIntegers', null);
@@ -110,7 +112,8 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
             7 => 'cs_name',
             8 => 'ca_name',
             9 => 'case_name',
-            10 => 'status_name'
+            10 => 'fund_name',
+            11 => 'status_name'
         ];
 
         $sort = isset($_REQUEST['iSortCol_0']) ? CRM_Utils_Array::value(CRM_Utils_Type::escape($_REQUEST['iSortCol_0'], 'Integer'), $sortMapper) : NULL;
@@ -137,6 +140,7 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
       concat(cm.code, ': ', cm.name) sub_account_name,
       concat(a.code, ': ', a.name) account_name,
       concat(c.id, ': ', c.subject) case_name,
+      concat(f.code, ': ', f.name) fund_name,
       cs.sort_name cs_name,
       ca.sort_name ca_name,
       cm.code sub_account_code,
@@ -147,11 +151,13 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
       t.sub_account_id,
       t.account_id,
       t.case_id,
+      t.fund_id,
       t.sub_account_id,
       t.contact_id_sub,
       t.contact_id_app
     FROM civicrm_o8_fund_transaction t 
     LEFT JOIN civicrm_case c on t.case_id = c.id
+    INNER JOIN civicrm_o8_fund f on t.fund_id = f.id
     LEFT JOIN civicrm_o8_fund_account a on t.account_id = a.id
     LEFT JOIN civicrm_o8_fund_sub_account cm on t.sub_account_id = cm.id
     LEFT JOIN civicrm_contact cs on t.contact_id_sub = cs.id
@@ -191,6 +197,16 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
                     $sql .= " AND t.`case_id` = " . $case_id . " ";
                 } else {
                     $sql .= " AND t.`case_id` in (" . $case_id . ") ";
+                }
+            }
+        }
+
+        if (isset($fund_id)) {
+            if (strval($fund_id) != "") {
+                if (is_numeric($fund_id)) {
+                    $sql .= " AND t.`fund_id` = " . $fund_id . " ";
+                } else {
+                    $sql .= " AND t.`fund_id` in (" . $fund_id . ") ";
                 }
             }
         }
@@ -327,6 +343,12 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
                     $dao->account_name . '</a>';
             }
 
+            if (!empty($dao->fund_id)) {
+                $fund = '<a target="_blank" href="' . CRM_Utils_System::url('civicrm/fund/form',
+                        ['reset' => 1, 'id' => $dao->fund_id]) . '">' .
+                    $dao->fund_name . '</a>';
+            }
+
             if (!empty($dao->sub_account_id)) {
                 $subaccount = '<a target="_blank" href="' . CRM_Utils_System::url('civicrm/fund/subaccount',
                         ['reset' => 1, 'id' => $dao->sub_account_id]) . '">' .
@@ -361,6 +383,7 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
             $rows[$count][] = $contact_sub;
             $rows[$count][] = $contact_app;
             $rows[$count][] = $dao->case_name;
+            $rows[$count][] = $fund;
             $rows[$count][] = $dao->status_name;
             $rows[$count][] = $action;
             $count++;

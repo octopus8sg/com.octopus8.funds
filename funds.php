@@ -158,6 +158,11 @@ function funds_civicrm_post($op, $objectName, $objectId, &$objectRef)
         $account = CRM_Core_DAO::getFieldValue('CRM_Funds_BAO_FundAccount', $account_id, 'code') . ': '
             . CRM_Core_DAO::getFieldValue('CRM_Funds_BAO_FundAccount', $account_id, 'name');
     }
+    $fund_id = $objectRef->fund_id;
+    if ($fund_id != null) {
+        $fund = CRM_Core_DAO::getFieldValue('CRM_Funds_BAO_Fund', $fund_id, 'code') . ': '
+            . CRM_Core_DAO::getFieldValue('CRM_Funds_BAO_Fund', $fund_id, 'name');
+    }
 //    [created_at] => 20220227120005
     $created_at = date_format(date_create($objectRef->created_at), 'j-M-Y');
 //    [created_by] => 202
@@ -202,6 +207,7 @@ function funds_civicrm_post($op, $objectName, $objectId, &$objectRef)
     $messagehtml .= "<table>\n";
     $messagehtml .= "<tr><td>ID</td><td>&nbsp;$id</td></tr>\n";
     $messagehtml .= "<tr><td>DATE</td><td>&nbsp;$date</td></tr>\n";
+    $messagehtml .= "<tr><td>FUND</td><td>&nbsp;$fund</td></tr>\n";
     $messagehtml .= "<tr><td>DESCRIPTION</td><td>&nbsp;$description</td></tr>\n";
     $messagehtml .= "<tr><td>AMOUNT</td><td>&nbsp;$amount</td></tr>\n";
     $messagehtml .= "<tr><td>STATUS</td><td>&nbsp;$status</td></tr>\n";
@@ -380,6 +386,24 @@ function funds_civicrm_navigationMenu(&$menu)
         'label' => E::ts('Add Account'),
         'name' => 'o8_funds_account_add',
         'url' => 'civicrm/fund/account?reset=1&action=add',
+        'permission' => 'access CiviCRM',
+        'operator' => 'OR',
+        'separator' => 0,
+    ));
+    _funds_civix_navigationMenu($menu);
+    _funds_civix_insert_navigation_menu($menu, 'o8_funds', array(
+        'label' => E::ts('Find Account Type'),
+        'name' => 'o8_funds_account_type_search',
+        'url' => 'civicrm/fund/accounttypesearch',
+        'permission' => 'access CiviCRM',
+        'operator' => 'OR',
+        'separator' => 0,
+    ));
+    _funds_civix_navigationMenu($menu);
+    _funds_civix_insert_navigation_menu($menu, 'o8_funds', array(
+        'label' => E::ts('Add Account Type'),
+        'name' => 'o8_funds_account_type_add',
+        'url' => 'civicrm/fund/accounttype?reset=1&action=add',
         'permission' => 'access CiviCRM',
         'operator' => 'OR',
         'separator' => 0,

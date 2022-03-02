@@ -14,8 +14,8 @@
   <div class="crm-block crm-form-block">
 
     <div class="crm-section">
-      <div class="label">{$form.fund_id.label}</div>
-      <div class="content">{$form.fund_id.html}</div>
+      <div class="label">{$form.type_id.label}</div>
+      <div class="content">{$form.type_id.html}</div>
       <div class="clear"></div>
     </div>
 

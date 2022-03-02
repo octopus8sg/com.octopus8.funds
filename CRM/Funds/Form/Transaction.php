@@ -247,8 +247,26 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
                 'placeholder' => ts('- Select SubAccount -'),
 //                'multiple' => TRUE,
             ], TRUE);
+            $fund_id = $this->addEntityRef('fund_id', E::ts('Fund'), [
+                'entity' => 'fund',
+                'api' => [
+                    'search_fields' => ['code', 'name'],
+                    'label_field' => "name",
+                    'description_field' => [
+                        'code',
+                        'description',
+                    ]
+                ],
+                'class' => 'huge',
+                'placeholder' => ts('- Select Fund -'),
+//                'multiple' => TRUE,
+            ], TRUE);
+
             if ($this->_isApproved) {
                 $sub_account_id->freeze();
+            }
+            if ($this->_isApproved) {
+                $fund_id->freeze();
             }
             //11
             $account_id = $this->addEntityRef('account_id', E::ts('Account'), [
@@ -259,8 +277,8 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
                     'description_field' => [
                         'code',
 //                        'description',
-                        'fund_id.code',
-                        'fund_id.name',
+                        'type_id.code',
+                        'type_id.name',
                     ]
                 ],
                 'class' => 'huge',

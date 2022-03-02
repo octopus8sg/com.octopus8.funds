@@ -566,7 +566,7 @@ class CRM_Funds_Form_Report_TransactionsDetail extends CRM_Report_Form
                           ON {$this->_aliases['civicrm_o8_fund_transaction']}.account_id =
                              {$this->_aliases['civicrm_o8_fund_account']}.id
                LEFT JOIN  civicrm_o8_fund {$this->_aliases['civicrm_o8_fund']} {$this->_aclFrom}
-                          ON {$this->_aliases['civicrm_o8_fund_account']}.fund_id =
+                          ON {$this->_aliases['civicrm_o8_fund_transaction']}.fund_id =
                              {$this->_aliases['civicrm_o8_fund']}.id
                LEFT JOIN civicrm_o8_fund_sub_account {$this->_aliases['civicrm_o8_fund_sub_account']}
                           ON {$this->_aliases['civicrm_o8_fund_transaction']}.sub_account_id =

@@ -16,115 +16,58 @@ class CRM_Funds_Form_Report_AccountsDetail extends CRM_Report_Form
     function __construct()
     {
         $this->_columns = array(
-            'civicrm_o8_fund' => array(
+            'civicrm_o8_fund_account_type' => array(
                 'dao' => 'CRM_Funds_DAO_Fund',
                 'fields' => [
                     'id' => [
                         'name' => 'id',
-                        'title' => E::ts('Fund ID'),
+                        'title' => E::ts('Type ID'),
                         'type' => CRM_Utils_Type::T_INT,
-                        'description' => E::ts('Unique Fund ID'),
                         'required' => TRUE,
                     ],
                     'code' => [
                         'name' => 'code',
                         'type' => CRM_Utils_Type::T_STRING,
-                        'title' => E::ts('Fund Code'),
-                        'description' => E::ts('Fund Code'),
-                        'required' => TRUE,
-                    ],
-                    'contact_id' => [
-                        'name' => 'contact_id',
-                        'type' => CRM_Utils_Type::T_INT,
-                        'description' => E::ts('Source Organisation (Contact)'),
-                        'no_display' => TRUE,
+                        'title' => E::ts('Type Code'),
                         'required' => TRUE,
                     ],
                     'name' => [
                         'name' => 'name',
                         'type' => CRM_Utils_Type::T_STRING,
-                        'title' => E::ts('Fund Name'),
-                        'description' => E::ts('Fund Name'),
+                        'title' => E::ts('Type Name'),
+                        'description' => E::ts('Type Name'),
                         'required' => TRUE,
-                    ],
-                    'target_cases' => [
-                        'name' => 'target_cases',
-                        'type' => CRM_Utils_Type::T_INT,
-                        'title' => E::ts('Fund Target Cases'),
-                        'description' => E::ts('Target Cases'),
-                        'default' => TRUE,
-                    ],
-                    'start_date' => [
-                        'name' => 'start_date',
-                        'type' => CRM_Utils_Type::T_DATE,
-                        'title' => E::ts('Fund Start Date'),
-                        'description' => E::ts('Fund Start Date'),
-                        'default' => TRUE,
-                    ],
-                    'end_date' => [
-                        'name' => 'end_date',
-                        'type' => CRM_Utils_Type::T_DATE,
-                        'title' => E::ts('Fund End Date'),
-                        'description' => E::ts('Fund End Date'),
-                        'default' => TRUE,
-
                     ],
                     'description' => [
                         'name' => 'description',
                         'type' => CRM_Utils_Type::T_TEXT,
-                        'title' => E::ts('Fund Description'),
-                        'description' => E::ts('Optional verbose description of the fund.'),
-                    ],
-                    'amount' => [
-                        'name' => 'amount',
-                        'type' => CRM_Utils_Type::T_MONEY,
-                        'title' => E::ts('Fund Amount'),
-                        'description' => E::ts('Starting Amount of the fund.'),
-                        'default' => TRUE,
+                        'title' => E::ts('Type Description'),
                     ],
                 ],
                 'filters' => array(
-                    'fund_name' => array(
+                    'type_name' => array(
                         'name' => 'name',
-                        'title' => E::ts('Fund Name'),
+                        'title' => E::ts('Type Name'),
                         'operator' => 'like',
                     ),
-                    'fund_code' => array(
+                    'type_code' => array(
                         'name' => 'code',
-                        'title' => E::ts('Fund Code'),
+                        'title' => E::ts('Type Code'),
                         'operator' => 'like',
                     ),
-                    'fund_description' => array(
+                    'type_description' => array(
                         'name' => 'description',
-
-                        'title' => E::ts('Fund Description'),
+                        'title' => E::ts('Type Description'),
                         'operator' => 'like',
                     ),
-                    'start_date' => ['operatorType' => CRM_Report_Form::OP_DATE],
-                    'end_date' => ['operatorType' => CRM_Report_Form::OP_DATE],
-                    'amount' => [
-                        'title' => ts('Fund Amount'),
-                    ],
                 ),
                 'order_bys' => [
-                    'fund_code' => [
+                    'type_code' => [
                         'name' => 'code',
-                        'title' => ts('Fund Code'),
+                        'title' => ts('Type Code'),
                         'default' => TRUE,
                         'default_weight' => '0',
                         'default_order' => 'ASC',
-                    ],
-                    'start_date' => [
-                        'title' => ts('Fund Start Date'),
-                    ],
-                    'end_date' => [
-                        'title' => ts('Fund End Date'),
-                    ],
-                    'target_cases' => [
-                        'title' => ts('Target Cases'),
-                    ],
-                    'amount' => [
-                        'title' => ts('Amount'),
                     ],
                 ],
                 'grouping' => 'fund-fields',
@@ -298,10 +241,10 @@ class CRM_Funds_Form_Report_AccountsDetail extends CRM_Report_Form
         $this->_from = NULL;
 
         $this->_from = "
-         FROM  civicrm_o8_fund {$this->_aliases['civicrm_o8_fund']} {$this->_aclFrom}
+         FROM  civicrm_o8_fund_account_type {$this->_aliases['civicrm_o8_fund_account_type']} {$this->_aclFrom}
                INNER JOIN civicrm_o8_fund_account {$this->_aliases['civicrm_o8_fund_account']}
                           ON {$this->_aliases['civicrm_o8_fund']}.id =
-                             {$this->_aliases['civicrm_o8_fund_account']}.fund_id
+                             {$this->_aliases['civicrm_o8_fund_account']}.type_id
                INNER JOIN civicrm_contact {$this->_aliases['civicrm_created']}
                           ON {$this->_aliases['civicrm_created']}.id =
                              {$this->_aliases['civicrm_o8_fund_account']}.created_by
@@ -377,27 +320,6 @@ class CRM_Funds_Form_Report_AccountsDetail extends CRM_Report_Form
                         $checkList[$colName][] = $colVal;
                     }
                 }
-            }
-
-            if (array_key_exists('civicrm_membership_membership_type_id', $row)) {
-                if ($value = $row['civicrm_membership_membership_type_id']) {
-                    $rows[$rowNum]['civicrm_membership_membership_type_id'] = CRM_Member_PseudoConstant::membershipType($value, FALSE);
-                }
-                $entryFound = TRUE;
-            }
-
-            if (array_key_exists('civicrm_address_state_province_id', $row)) {
-                if ($value = $row['civicrm_address_state_province_id']) {
-                    $rows[$rowNum]['civicrm_address_state_province_id'] = CRM_Core_PseudoConstant::stateProvince($value, FALSE);
-                }
-                $entryFound = TRUE;
-            }
-
-            if (array_key_exists('civicrm_address_country_id', $row)) {
-                if ($value = $row['civicrm_address_country_id']) {
-                    $rows[$rowNum]['civicrm_address_country_id'] = CRM_Core_PseudoConstant::country($value, FALSE);
-                }
-                $entryFound = TRUE;
             }
 
             if (array_key_exists('civicrm_contact_sort_name', $row) &&

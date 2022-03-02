@@ -102,8 +102,7 @@ class CRM_Funds_Page_Dashboard extends CRM_Core_Page
     f.contact_id
 FROM civicrm_o8_fund f
          INNER JOIN civicrm_contact c on f.contact_id = c.id
-         LEFT JOIN civicrm_o8_fund_account a on a.fund_id = f.id
-         LEFT JOIN civicrm_o8_fund_transaction t on t.account_id = a.id
+         INNER JOIN civicrm_o8_fund_transaction t on t.fund_id = f.id
 ";
 
         if (isset($cid)) {
@@ -305,8 +304,8 @@ FROM civicrm_o8_fund f
     f.contact_id
     FROM civicrm_o8_fund f
          INNER JOIN civicrm_contact c on f.contact_id = c.id
-         LEFT JOIN civicrm_o8_fund_account a on a.fund_id = f.id
-         LEFT JOIN civicrm_o8_fund_transaction t on t.account_id = a.id
+         LEFT JOIN civicrm_o8_fund_transaction t on t.fund_id = f.id
+         LEFT JOIN civicrm_o8_fund_account a on t.account_id = a.id
 ";
 
         $group_by = "group by f.id, f.code, f.name, f.start_date, f.end_date, f.target_cases";

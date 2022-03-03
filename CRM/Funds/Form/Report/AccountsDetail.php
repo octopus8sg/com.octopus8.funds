@@ -245,10 +245,10 @@ class CRM_Funds_Form_Report_AccountsDetail extends CRM_Report_Form
                INNER JOIN civicrm_o8_fund_account {$this->_aliases['civicrm_o8_fund_account']}
                           ON {$this->_aliases['civicrm_o8_fund_account_type']}.id =
                              {$this->_aliases['civicrm_o8_fund_account']}.type_id
-               INNER JOIN civicrm_contact {$this->_aliases['civicrm_created']}
+               LEFT JOIN civicrm_contact {$this->_aliases['civicrm_created']}
                           ON {$this->_aliases['civicrm_created']}.id =
                              {$this->_aliases['civicrm_o8_fund_account']}.created_by
-               INNER JOIN civicrm_contact {$this->_aliases['civicrm_modified']}
+               LEFT JOIN civicrm_contact {$this->_aliases['civicrm_modified']}
                           ON {$this->_aliases['civicrm_modified']}.id =
                              {$this->_aliases['civicrm_o8_fund_account']}.modified_by
                              

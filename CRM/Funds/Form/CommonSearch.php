@@ -71,13 +71,13 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
         $this->add(
             'text',
             'fund_id',
-            ts('Fund ID or Code'),
+            ts('Fund Code'),
             ['size' => 28, 'maxlength' => 128]);
 
         $this->add(
             'text',
             'fund_name',
-            ts('Fund Name or Description'),
+            ts('Fund Name'),
             ['size' => 28, 'maxlength' => 128]);
 
 //        CRM_Core_Error::debug_var('cid', $this->_cid);

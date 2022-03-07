@@ -120,16 +120,16 @@ class CRM_Funds_Page_SearchFund extends CRM_Core_Page
         if (isset($fund_id)) {
             if (strval($fund_id) != "") {
                 $sql .= " AND f.`code` like '%" . strval($fund_id) . "%' ";
-                if (is_numeric($fund_id)) {
-                    $sql .= " OR f.`id` = " . intval($fund_id) . " ";
-                }
+//                if (is_numeric($fund_id)) {
+//                    $sql .= " OR f.`id` = " . intval($fund_id) . " ";
+//                }
             }
         }
 
         if (isset($fund_name)) {
             if (strval($fund_name) != "") {
                 $sql .= " AND f.`name` like '%" . strval($fund_name) . "%' ";
-                $sql .= " OR f.`description` like '%" . strval($fund_name) . "%' ";
+//                $sql .= " OR f.`description` like '%" . strval($fund_name) . "%' ";
             }
         }
 

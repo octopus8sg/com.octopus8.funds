@@ -61,6 +61,9 @@ class CRM_Funds_Form_Category extends CRM_Core_Form
             $session = CRM_Core_Session::singleton();
             $session->replaceUserContext(CRM_Utils_System::url('civicrm/fund/category',
                 ['id' => $this->getEntityId(), 'action' => 'update']));
+        }else{
+            $session = CRM_Core_Session::singleton();
+            $session->replaceUserContext(CRM_Utils_System::url('civicrm/fund/categorysearch'));
         }
     }
 

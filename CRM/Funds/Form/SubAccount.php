@@ -61,6 +61,10 @@ class CRM_Funds_Form_SubAccount extends CRM_Core_Form
             $session = CRM_Core_Session::singleton();
             $session->replaceUserContext(CRM_Utils_System::url('civicrm/fund/subaccount',
                 ['id' => $this->getEntityId(), 'action' => 'update']));
+        }else{
+            $session = CRM_Core_Session::singleton();
+            $session->replaceUserContext(CRM_Utils_System::url('civicrm/fund/subaccountsearch'));
+
         }
     }
 

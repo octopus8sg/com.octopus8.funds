@@ -3,7 +3,6 @@
 use CRM_Funds_ExtensionUtil as E;
 
 
-
 /**
  * Form controller class
  *
@@ -64,33 +63,11 @@ class CRM_Funds_Form_Fund extends CRM_Core_Form
             $session = CRM_Core_Session::singleton();
             $session->replaceUserContext(CRM_Utils_System::url('civicrm/fund/form',
                 ['id' => $this->getEntityId(), 'action' => 'update']));
-        }else{
+        } else {
             $session = CRM_Core_Session::singleton();
             $session->replaceUserContext(CRM_Utils_System::url('civicrm/fund/search'));
         }
     }
-
-// register amount-related rules
-
-    /**
-     * @param $value
-     *
-     * @return bool
-     */
-    public static function positiveDecimal($value) {
-        CRM_Core_Error::debug_var('value', $value);
-        if (is_float($value)) {
-            return !($value < 0);
-        }
-        // CRM-13460
-        // ensure number passed is always a string numeral
-        if (!is_numeric($value)) {
-            return FALSE;
-        }
-
-        return (bool) preg_match('/^[+]?((\d+(\.\d{0,2})?)|(\.\d{0,2}))$/', $value);
-    }
-
 
     public function buildQuickForm()
     {
@@ -171,6 +148,8 @@ class CRM_Funds_Form_Fund extends CRM_Core_Form
         if ($this->_action == CRM_Core_Action::DELETE) {
             civicrm_api4('Fund', 'delete', ['where' => [['id', '=', $this->_id]]]);
             CRM_Core_Session::setStatus(E::ts('Removed The Fund'), E::ts('Fund'), 'success');
+            $session = CRM_Core_Session::singleton();
+            $session->replaceUserContext(CRM_Utils_System::url('civicrm/fund/search'));
         } else {
 
             $values = $this->controller->exportValues();
@@ -213,7 +192,6 @@ class CRM_Funds_Form_Fund extends CRM_Core_Form
         }
         parent::postProcess();
     }
-
 
 
 }

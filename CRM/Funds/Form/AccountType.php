@@ -61,6 +61,9 @@ class CRM_Funds_Form_AccountType extends CRM_Core_Form
             $session = CRM_Core_Session::singleton();
             $session->replaceUserContext(CRM_Utils_System::url('civicrm/fund/accounttype',
                 ['id' => $this->getEntityId(), 'action' => 'update']));
+        }else{
+            $session = CRM_Core_Session::singleton();
+            $session->replaceUserContext(CRM_Utils_System::url('civicrm/fund/accounttypesearch'));
         }
     }
 
@@ -116,6 +119,8 @@ class CRM_Funds_Form_AccountType extends CRM_Core_Form
         if ($this->_action == CRM_Core_Action::DELETE) {
             civicrm_api4('FundAccountType', 'delete', ['where' => [['id', '=', $this->_id]]]);
             CRM_Core_Session::setStatus(E::ts('Removed Account Type'), E::ts('Account Type'), 'success');
+            $session = CRM_Core_Session::singleton();
+            $session->replaceUserContext(CRM_Utils_System::url('civicrm/fund/accounttypesearch'));
         } else {
 
             $values = $this->controller->exportValues();

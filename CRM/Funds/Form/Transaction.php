@@ -417,7 +417,7 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
     public function postProcess()
     {
         if ($this->_action == CRM_Core_Action::DELETE) {
-            civicrm_api4('Fund', 'delete', ['where' => [['id', '=', $this->_id]]]);
+            civicrm_api4('FundTransaction', 'delete', ['where' => [['id', '=', $this->_id]]]);
             CRM_Core_Session::setStatus(E::ts('Removed The Fund'), E::ts('Fund'), 'success');
         } else {
             $post = $_POST;

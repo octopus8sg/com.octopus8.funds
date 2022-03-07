@@ -129,7 +129,7 @@ function funds_civicrm_post($op, $objectName, $objectId, &$objectRef)
     $status = CRM_Core_PseudoConstant::getLabel("CRM_Funds_DAO_FundTransaction", "status_id", $status_id);
     $case_id = $objectRef->case_id;
     $caseDetails = "";
-    if ($case_id != null) {
+    if (intval($case_id) > 0) {
         $case = civicrm_api3('Case', 'getsingle', [
             'id' => $case_id,
             'check_permissions' => TRUE,
@@ -146,24 +146,24 @@ function funds_civicrm_post($op, $objectName, $objectId, &$objectRef)
     }
     $contact_sub = "";
     $contact_id_sub = $objectRef->contact_id_sub;
-    if ($contact_id_sub != null) {
+    if (intval($contact_id_sub) > 0) {
         $contact_sub = CRM_Contact_BAO_Contact::displayName($contact_id_sub);
     }
 
     $sub_account_id = $objectRef->sub_account_id;
-    if ($sub_account_id != null) {
+    if (intval($sub_account_id) > 0) {
         $sub_account = CRM_Core_DAO::getFieldValue('CRM_Funds_BAO_FundSubAccount', $sub_account_id, 'code') . ': '
             . CRM_Core_DAO::getFieldValue('CRM_Funds_BAO_FundSubAccount', $sub_account_id, 'name');
     }
 
     //    [account_id] => 1
     $account_id = $objectRef->account_id;
-    if ($account_id != null) {
+    if (intval($account_id) > 0) {
         $account = CRM_Core_DAO::getFieldValue('CRM_Funds_BAO_FundAccount', $account_id, 'code') . ': '
             . CRM_Core_DAO::getFieldValue('CRM_Funds_BAO_FundAccount', $account_id, 'name');
     }
     $fund_id = $objectRef->fund_id;
-    if ($fund_id != null) {
+    if (intval($fund_id) > 0) {
         $fund = CRM_Core_DAO::getFieldValue('CRM_Funds_BAO_Fund', $fund_id, 'code') . ': '
             . CRM_Core_DAO::getFieldValue('CRM_Funds_BAO_Fund', $fund_id, 'name');
     }
@@ -172,7 +172,7 @@ function funds_civicrm_post($op, $objectName, $objectId, &$objectRef)
 //    [created_by] => 202
     $created_by = $objectRef->created_by;
     $creater = "";
-    if ($created_by != null) {
+    if (intval($created_by) > 0) {
         $creater = CRM_Contact_BAO_Contact::displayName($created_by);
     }
 //    [modified_at] => 20220227120449
@@ -180,7 +180,7 @@ function funds_civicrm_post($op, $objectName, $objectId, &$objectRef)
 //    [modified_by] => 202
     $modified_by = $objectRef->modified_by;
     $modifier = "";
-    if ($modified_by != null) {
+    if (intval($modified_by) > 0) {
         $modifier = CRM_Contact_BAO_Contact::displayName($modified_by);
     }
 

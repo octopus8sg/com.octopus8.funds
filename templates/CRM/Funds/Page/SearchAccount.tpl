@@ -29,6 +29,9 @@
                         <th scope="col">
                             {ts}Type{/ts}
                         </th>
+                        <th scope="col">
+                            {ts}Description{/ts}
+                        </th>
                         <th id="nosort">&nbsp;Action</th>
                     </tr>
                     </thead>

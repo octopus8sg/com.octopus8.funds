@@ -25,7 +25,7 @@
                             {ts}END DATE{/ts}
                         </th>
                         <th scope="col">
-                            {ts}FUND BUDJET{/ts}
+                            {ts}FUND BUDGET{/ts}
                         </th>
                         <th scope="col">
                             {ts}FUND EXPENDITURE{/ts}

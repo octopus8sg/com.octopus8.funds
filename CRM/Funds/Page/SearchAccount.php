@@ -160,6 +160,7 @@ class CRM_Funds_Page_SearchAccount extends CRM_Core_Page
             $rows[$count][] = $dao->code;
             $rows[$count][] = $dao->name;
             $rows[$count][] = $fund;
+            $rows[$count][] = $dao->description;
             $rows[$count][] = $action;
             $count++;
         }

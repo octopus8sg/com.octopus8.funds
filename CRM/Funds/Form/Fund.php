@@ -2,6 +2,8 @@
 
 use CRM_Funds_ExtensionUtil as E;
 
+
+
 /**
  * Form controller class
  *
@@ -62,7 +64,31 @@ class CRM_Funds_Form_Fund extends CRM_Core_Form
             $session = CRM_Core_Session::singleton();
             $session->replaceUserContext(CRM_Utils_System::url('civicrm/fund/form',
                 ['id' => $this->getEntityId(), 'action' => 'update']));
+        }else{
+            $session = CRM_Core_Session::singleton();
+            $session->replaceUserContext(CRM_Utils_System::url('civicrm/fund/search'));
         }
+    }
+
+// register amount-related rules
+
+    /**
+     * @param $value
+     *
+     * @return bool
+     */
+    public static function positiveDecimal($value) {
+        CRM_Core_Error::debug_var('value', $value);
+        if (is_float($value)) {
+            return !($value < 0);
+        }
+        // CRM-13460
+        // ensure number passed is always a string numeral
+        if (!is_numeric($value)) {
+            return FALSE;
+        }
+
+        return (bool) preg_match('/^[+]?((\d+(\.\d{0,2})?)|(\.\d{0,2}))$/', $value);
     }
 
 
@@ -87,10 +113,14 @@ class CRM_Funds_Form_Fund extends CRM_Core_Form
                 E::ts('End Date: '), CRM_Core_SelectValues::date(NULL, 'Y-m-d H:i:s'), TRUE, ['time' => FALSE]);
 
             $this->add('text', 'target_cases', ts('Target Cases'), ['size' => 8, 'maxlength' => 8], TRUE);
-            $this->addRule('target_cases', ts('Value should be a positive number'), 'integer');
+            $this->addRule('target_cases', ts('Value should be a positive number'), 'positiveInteger');
 
             $this->add('text', 'amount', ts('Amount'));
-            $this->addRule('amount', ts('Please enter a valid amount.'), 'money');
+//            $this->registerRule('positiveDecimal', 'callback', 'positiveDecimal', 'CRM_Funds_Form_Fund');
+            $this->addRule('amount', ts('Amount should be a positive decimal number, like "100.25"'), 'regex', '/^[+]?((\d+(\.\d{0,2})?)|(\.\d{0,2}))$/');
+//            $this->addRule('amount', ts('Please enter a valid amount.'), 'money', null, 'client');
+            $rules = HTML_QuickForm::getRegisteredRules();
+            CRM_Core_Error::debug_var('rules', $rules);
             // todo will be changed by transaction api or by hook?
             $this->add('text', 'residue', ts('Residue'))->freeze();
             $this->add('text', 'expenditure', ts('Expenditure'))->freeze();
@@ -184,4 +214,8 @@ class CRM_Funds_Form_Fund extends CRM_Core_Form
         parent::postProcess();
     }
 
+
+
 }
+
+

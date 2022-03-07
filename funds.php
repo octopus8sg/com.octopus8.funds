@@ -185,7 +185,7 @@ function funds_civicrm_post($op, $objectName, $objectId, &$objectRef)
 //                    = CRM_Core_DAO::getFieldValue('CRM_Funds_BAO_FundSubAccount', $value, 'code') . ': '
 //                    . CRM_Core_DAO::getFieldValue('CRM_Funds_BAO_FundSubAccount', $value, 'name');
 
-//    CRM_Core_Error::debug_var('op', $op);
+
 //    CRM_Core_Error::debug_var('objectName', $objectName);
 //    CRM_Core_Error::debug_var('objectId', $objectId);
 //    CRM_Core_Error::debug_var('objectRef', $objectRef);
@@ -473,3 +473,4 @@ function funds_civicrm_navigationMenu(&$menu)
     ));
     _funds_civix_navigationMenu($menu);
 }
+

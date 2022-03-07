@@ -104,11 +104,15 @@ function funds_civicrm_post($op, $objectName, $objectId, &$objectRef)
     if ($objectName != 'FundTransaction') {
         return;
     }
-    if ($objectRef->contact_id_app == null) {
+    if ($objectRef->contact_id_app === null) {
         return;
     }
     $approverId = $objectRef->contact_id_app;
-    $groupName = 'Activity Email Sender';
+//    CRM_Core_Error::debug_var('vapproverId', intval($approverId));
+    if(intval($approverId) <= 0){
+        return;
+    }
+        $groupName = 'Activity Email Sender';
     $from = CRM_Contact_BAO_Contact::getPrimaryEmail($objectRef->modified_by);
     $toName = CRM_Contact_BAO_Contact::displayName($approverId);
     $toEmail = CRM_Contact_BAO_Contact::getPrimaryEmail($approverId);
@@ -185,7 +189,7 @@ function funds_civicrm_post($op, $objectName, $objectId, &$objectRef)
 //                    = CRM_Core_DAO::getFieldValue('CRM_Funds_BAO_FundSubAccount', $value, 'code') . ': '
 //                    . CRM_Core_DAO::getFieldValue('CRM_Funds_BAO_FundSubAccount', $value, 'name');
 
-
+//    CRM_Core_Error::debug_var('op', $op);
 //    CRM_Core_Error::debug_var('objectName', $objectName);
 //    CRM_Core_Error::debug_var('objectId', $objectId);
 //    CRM_Core_Error::debug_var('objectRef', $objectRef);
@@ -324,7 +328,8 @@ function funds_civicrm_themes(&$themes)
 //
 //}
 
-function authx_civicrm_permission(&$permissions) {
+function authx_civicrm_permission(&$permissions)
+{
     $permissions['access o8 funds module'] = E::ts('Access o8 Funds Module');
     $permissions['create o8 funds transaction'] = E::ts('Create o8 Funds Transaction');
 }
@@ -474,3 +479,4 @@ function funds_civicrm_navigationMenu(&$menu)
     _funds_civix_navigationMenu($menu);
 }
 
+// register amount-related rules

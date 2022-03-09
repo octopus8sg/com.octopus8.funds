@@ -134,6 +134,7 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
     SELECT SQL_CALC_FOUND_ROWS
       t.id,
       t.description,
+      t.date,
       t.amount,
       s.label status_name,
       t.status_id,

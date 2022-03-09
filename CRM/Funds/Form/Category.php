@@ -74,6 +74,14 @@ class CRM_Funds_Form_Category extends CRM_Core_Form
         $this->add('hidden', 'id');
         if ($this->_action != CRM_Core_Action::DELETE) {
             $this->add('text', 'code', E::ts('Code'), ['class' => 'huge'], TRUE);
+            $this->addRule('code', ts('Code already exists in Database.'),
+                'objectExists', [
+                    'CRM_Funds_DAO_FundCategory',
+                    $this->_id,
+                    'code',
+                    CRM_Core_Config::domainID(),
+                ]);
+
             $this->addRule('code',
                 ts('Code should consist of numbers and letters'),
                 'alphanumeric', null, 'client');

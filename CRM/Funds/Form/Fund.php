@@ -103,6 +103,13 @@ class CRM_Funds_Form_Fund extends CRM_Core_Form
             $this->addEntityRef('contact_id',
                 E::ts('Source Organisation (Contact)'), $props, TRUE);
             $this->add('text', 'code', E::ts('Code'), ['class' => 'huge'], TRUE);
+            $this->addRule('code', ts('Code already exists in Database.'),
+                'objectExists', [
+                    'CRM_Funds_DAO_Fund',
+                    $this->_id,
+                    'code',
+                    CRM_Core_Config::domainID(),
+                ]);
             $this->addRule('code',
                 ts('Fund Code should consist of numbers and letters'),
                 'alphanumeric', null, 'client');

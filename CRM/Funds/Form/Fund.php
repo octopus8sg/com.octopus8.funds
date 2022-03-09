@@ -68,7 +68,32 @@ class CRM_Funds_Form_Fund extends CRM_Core_Form
             $session->replaceUserContext(CRM_Utils_System::url('civicrm/fund/search'));
         }
     }
+    /**
+     * Global validation rules for the form.
+     *
+     * @param array $values
+     *
+     * @return array
+     *   list of errors to be posted back to the form
+     */
+    public static function formRule($values) {
+        $errors = [];
 
+        if (!empty($values['end_date']) && ($values['end_date'] < $values['start_date'])) {
+            $errors['end_date'] = ts('End date should be after Start date.');
+        }
+
+        //CRM-4286
+//        if (strstr($values['code'], '/')) {
+//            $errors['code'] = ts("Please do not use '/' in Fund Code.");
+//        }
+//
+//        if (strstr($values['name'], '/')) {
+//            $errors['name'] = ts("Please do not use '/' in Fund Name.");
+//        }
+
+        return $errors;
+    }
     public function buildQuickForm()
     {
         $this->assign('id', $this->getEntityId());
@@ -125,6 +150,7 @@ class CRM_Funds_Form_Fund extends CRM_Core_Form
                 ['type' => 'cancel', 'name' => E::ts('Cancel')]
             ]);
         }
+        $this->addFormRule(['CRM_Funds_Form_Fund', 'formRule']);
         parent::buildQuickForm();
     }
 

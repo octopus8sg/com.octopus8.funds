@@ -2,6 +2,9 @@
 use CRM_Funds_ExtensionUtil as E;
 
 class CRM_Funds_BAO_FundTransaction extends CRM_Funds_DAO_FundTransaction {
+    const PENDING_APPROVAL = 1;
+    const APPROVED = 2;
+    const REJECTED = 3;
 
   /**
    * Create a new FundTransaction based on array-data

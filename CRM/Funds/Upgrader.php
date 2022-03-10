@@ -23,18 +23,18 @@ class CRM_Funds_Upgrader extends CRM_Funds_Upgrader_Base {
         $trxnStatusGroupId = $trxnStatusGroup['id'];
 
         $device_type1 = civicrm_api3('OptionValue', 'create',
-            ['value' => 1,
+            ['value' => CRM_Funds_BAO_FundTransaction::PENDING_APPROVAL,
                 'is_default' => '1',
                 'name' => 'Pending_Approval',
                 'label' => E::ts('Pending Approval'),
                 'option_group_id' => $trxnStatusGroupId]);
         civicrm_api3('OptionValue', 'create',
-            ['value' => 2,
+            ['value' => CRM_Funds_BAO_FundTransaction::APPROVED,
                 'name' => 'Approved',
                 'label' => E::ts('Approved'),
                 'option_group_id' => $trxnStatusGroupId]);
         civicrm_api3('OptionValue', 'create',
-            ['value' => 3,
+            ['value' => CRM_Funds_BAO_FundTransaction::REJECTED,
                 'name' => 'Rejected',
                 'label' => E::ts('Rejected'),
                 'option_group_id' => $trxnStatusGroupId]);

@@ -86,6 +86,7 @@ class CRM_Funds_Page_Dashboard extends CRM_Core_Page
 //        $isOrQuery = self::isOrQuery();
 
         $nextParamKey = 3;
+        $approved = CRM_Funds_BAO_FundTransaction::APPROVED;
         $sql = "
     SELECT SQL_CALC_FOUND_ROWS
     f.id,
@@ -102,7 +103,7 @@ class CRM_Funds_Page_Dashboard extends CRM_Core_Page
     f.contact_id
 FROM civicrm_o8_fund f
          INNER JOIN civicrm_contact c on f.contact_id = c.id
-         INNER JOIN civicrm_o8_fund_transaction t on t.fund_id = f.id
+         LEFT JOIN civicrm_o8_fund_transaction t on t.fund_id = f.id and t.status_id = $approved
 ";
 
         if (isset($cid)) {
@@ -291,6 +292,7 @@ FROM civicrm_o8_fund f
 //        $isOrQuery = self::isOrQuery();
 
         $nextParamKey = 3;
+        $approved = CRM_Funds_BAO_FundTransaction::APPROVED;
         $sql = "
     SELECT SQL_CALC_FOUND_ROWS
     f.id,
@@ -304,7 +306,7 @@ FROM civicrm_o8_fund f
     f.contact_id
     FROM civicrm_o8_fund f
          INNER JOIN civicrm_contact c on f.contact_id = c.id
-         LEFT JOIN civicrm_o8_fund_transaction t on t.fund_id = f.id
+         LEFT JOIN civicrm_o8_fund_transaction t on t.fund_id = f.id and t.status_id=$approved
          LEFT JOIN civicrm_o8_fund_account a on t.account_id = a.id
 ";
 

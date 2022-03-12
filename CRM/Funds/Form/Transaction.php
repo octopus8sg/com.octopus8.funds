@@ -81,6 +81,12 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
         if (CRM_Core_Permission::check('administer CiviCRM')) {
             $this->_isAdmin = TRUE;
         }
+        if (CRM_Core_Permission::check('manage o8connect Funds')) {
+            $this->_isApprover = TRUE;
+        }
+        if (CRM_Core_Permission::check('Manage o8connect Transactions')) {
+            $this->_isSocial = TRUE;
+        }
 
         if ($this->_id) {
             CRM_Utils_System::setTitle('Edit Fund Transaction');
@@ -96,16 +102,6 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
                 $this->_myentity = $entity;
 //                CRM_Core_Error::debug_var('entity', $entity);
 
-                if (isset($entity['contact_id_app'])) {
-                    $isApprover = intval($entity['contact_id_app']);
-                    if ($currentUserId == $isApprover) {
-                        $this->_isApprover = TRUE;
-                    }
-                }
-                $isSocial = intval($entity['contact_id_sub']);
-                if ($currentUserId == $isSocial) {
-                    $this->_isSocial = TRUE;
-                }
 
                 if ($entity['status_id'] == 1) {
                     $this->_isPendingApproval = TRUE;
@@ -126,7 +122,7 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
             $session = CRM_Core_Session::singleton();
             $session->replaceUserContext(CRM_Utils_System::url('civicrm/fund/transaction',
                 ['id' => $this->getEntityId(), 'action' => 'update']));
-        }else{
+        } else {
             $session = CRM_Core_Session::singleton();
             $session->replaceUserContext(CRM_Utils_System::url('civicrm/fund/transactionsearch'));
         }
@@ -135,6 +131,7 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
 
     public function buildQuickForm()
     {
+
         $this->assign('id', $this->getEntityId());
         $this->add('hidden', 'id'); // 1
         $this->add('hidden', 'created_by'); // 1
@@ -203,8 +200,9 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
                 TRUE, ['class' => 'huge crm-select2',
 //                    'data-option-edit-path' => 'civicrm/admin/options/o8_fund_trxn_status'
                 ]);
-            if (!$this->_isAdmin) {
+            if (!($this->_isAdmin OR $this->_isApprover)) {
                 $status->freeze();
+
             }
             //7 case
             $case = $this->addEntityRef('case_id', E::ts('Case'), [
@@ -224,8 +222,10 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
             if ($this->_isApproved) {
                 $contact_id_sub->freeze();
             }
-            if ($this->_isSocial) {
-                $contact_id_sub->freeze();
+            if (!($this->_isAdmin OR $this->_isApprover)) {
+                if ($this->_isSocial) {
+                    $contact_id_sub->freeze();
+                }
             }
 
             //9
@@ -411,6 +411,14 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
         if ($this->_myentity) {
             $defaults = $this->_myentity;
         } else {
+            CRM_Core_Error::debug_var('approver', $this->_isApprover);
+            CRM_Core_Error::debug_var('social', $this->_isSocial);
+            if ($this->_isApprover) {
+                $defaults['contact_id_app'] = $this->_contact_id;
+            }
+            if ($this->_isSocial) {
+                $defaults['contact_id_sub'] = $this->_contact_id;
+            }
             $defaults['status_id'] = 1;
             $defaults['date'] = date("Y-m-d H:i:s");
         }

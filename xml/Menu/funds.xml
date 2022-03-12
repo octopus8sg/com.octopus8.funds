@@ -4,132 +4,132 @@
     <path>civicrm/fund/form</path>
     <page_callback>CRM_Funds_Form_Fund</page_callback>
     <title>Fund</title>
-    <access_arguments>access CiviCRM</access_arguments>
+    <access_arguments>manage o8connect Funds</access_arguments>
   </item>
   <item>
     <path>civicrm/fund/search</path>
     <page_callback>CRM_Funds_Page_SearchFund</page_callback>
     <title>SearchFund</title>
-    <access_arguments>access CiviCRM</access_arguments>
+    <access_arguments>manage o8connect Funds</access_arguments>
   </item>
   <item>
     <path>civicrm/fund/commonsearch</path>
     <page_callback>CRM_Funds_Form_CommonSearch</page_callback>
     <title>CommonSearch</title>
-    <access_arguments>access CiviCRM</access_arguments>
+    <access_arguments>manage o8connect Funds;manage o8connect Transactions</access_arguments>
   </item>
   <item>
     <path>civicrm/fund/contacttab</path>
     <page_callback>CRM_Funds_Page_ContactTab</page_callback>
     <title>ContactTab</title>
-    <access_arguments>access CiviCRM</access_arguments>
+    <access_arguments>manage o8connect Transactions;manage o8connect Funds</access_arguments>
   </item>
   <item>
     <path>civicrm/fund/account</path>
     <page_callback>CRM_Funds_Form_Account</page_callback>
     <title>Account</title>
-    <access_arguments>access CiviCRM</access_arguments>
+    <access_arguments>manage o8connect Funds</access_arguments>
   </item>
   <item>
     <path>civicrm/fund/accountsearch</path>
     <page_callback>CRM_Funds_Page_SearchAccount</page_callback>
     <title>SearchAccount</title>
-    <access_arguments>access CiviCRM</access_arguments>
+    <access_arguments>manage o8connect Funds</access_arguments>
   </item>
   <item>
     <path>civicrm/fund/category</path>
     <page_callback>CRM_Funds_Form_Category</page_callback>
     <title>Category</title>
-    <access_arguments>access CiviCRM</access_arguments>
+    <access_arguments>manage o8connect Funds</access_arguments>
   </item>
   <item>
     <path>civicrm/fund/categorysearch</path>
     <page_callback>CRM_Funds_Page_SearchCategory</page_callback>
     <title>SearchCategory</title>
-    <access_arguments>access CiviCRM</access_arguments>
+    <access_arguments>manage o8connect Funds</access_arguments>
   </item>
   <item>
     <path>civicrm/fund/subaccount</path>
     <page_callback>CRM_Funds_Form_SubAccount</page_callback>
     <title>SubAccount</title>
-    <access_arguments>access CiviCRM</access_arguments>
+    <access_arguments>manage o8connect Funds</access_arguments>
   </item>
   <item>
     <path>civicrm/fund/subaccountsearch</path>
     <page_callback>CRM_Funds_Page_SearchSubAccount</page_callback>
     <title>SearchSubAccount</title>
-    <access_arguments>access CiviCRM</access_arguments>
+    <access_arguments>manage o8connect Funds</access_arguments>
   </item>
   <item>
     <path>civicrm/fund/dashboard</path>
     <page_callback>CRM_Funds_Page_Dashboard</page_callback>
     <title>Dashboard</title>
-    <access_arguments>access CiviCRM</access_arguments>
+    <access_arguments>manage o8connect Funds</access_arguments>
   </item>
   <item>
     <path>civicrm/fund/transaction</path>
     <page_callback>CRM_Funds_Form_Transaction</page_callback>
     <title>Transaction</title>
-    <access_arguments>access CiviCRM</access_arguments>
+    <access_arguments>manage o8connect Transactions;manage o8connect Funds</access_arguments>
   </item>
   <item>
     <path>civicrm/fund/transactionsearch</path>
     <page_callback>CRM_Funds_Page_SearchTransaction</page_callback>
     <title>SearchTransaction</title>
-    <access_arguments>access CiviCRM</access_arguments>
+    <access_arguments>manage o8connect Transactions;manage o8connect Funds</access_arguments>
   </item>
   <!--AJAX SEARCHES-->
   <item>
     <path>civicrm/fund/fund_ajax</path>
     <page_callback>CRM_Funds_Page_SearchFund::getAjax</page_callback>
-    <access_arguments>access CiviCRM</access_arguments>
+    <access_arguments>manage o8connect Funds</access_arguments>
   </item>
   <item>
     <path>civicrm/fund/account_ajax</path>
     <page_callback>CRM_Funds_Page_SearchAccount::getAjax</page_callback>
-    <access_arguments>access CiviCRM</access_arguments>
+    <access_arguments>manage o8connect Funds</access_arguments>
   </item>
   <item>
     <path>civicrm/fund/account_type_ajax</path>
     <page_callback>CRM_Funds_Page_SearchAccountType::getAjax</page_callback>
-    <access_arguments>access CiviCRM</access_arguments>
+    <access_arguments>manage o8connect Funds</access_arguments>
   </item>
   <item>
     <path>civicrm/fund/category_ajax</path>
     <page_callback>CRM_Funds_Page_SearchCategory::getAjax</page_callback>
-    <access_arguments>access CiviCRM</access_arguments>
+    <access_arguments>manage o8connect Funds</access_arguments>
   </item>
   <item>
     <path>civicrm/fund/subaccount_ajax</path>
     <page_callback>CRM_Funds_Page_SearchSubAccount::getAjax</page_callback>
-    <access_arguments>access CiviCRM</access_arguments>
+    <access_arguments>manage o8connect Funds</access_arguments>
   </item>
   <item>
     <path>civicrm/fund/transaction_ajax</path>
     <page_callback>CRM_Funds_Page_SearchTransaction::getAjax</page_callback>
-    <access_arguments>access CiviCRM</access_arguments>
+    <access_arguments>manage o8connect Transactions;manage o8connect Funds</access_arguments>
   </item>
   <item>
     <path>civicrm/fund/dashboard_ajax_funding</path>
     <page_callback>CRM_Funds_Page_Dashboard::getAjaxFunding</page_callback>
-    <access_arguments>access CiviCRM</access_arguments>
+    <access_arguments>manage o8connect Funds</access_arguments>
   </item>
   <item>
     <path>civicrm/fund/dashboard_ajax_contact</path>
     <page_callback>CRM_Funds_Page_Dashboard::getAjaxContact</page_callback>
-    <access_arguments>access CiviCRM</access_arguments>
+    <access_arguments>manage o8connect Funds</access_arguments>
   </item>
   <!--  <item>-->
   <item>
     <path>civicrm/fund/accounttype</path>
     <page_callback>CRM_Funds_Form_AccountType</page_callback>
     <title>FundAccountType</title>
-    <access_arguments>access CiviCRM</access_arguments>
+    <access_arguments>manage o8connect Funds</access_arguments>
   </item>
   <item>
     <path>civicrm/fund/accounttypesearch</path>
     <page_callback>CRM_Funds_Page_SearchAccountType</page_callback>
     <title>SearchAccountType</title>
-    <access_arguments>access CiviCRM</access_arguments>
+    <access_arguments>manage o8connect Funds</access_arguments>
   </item>
 </menu>

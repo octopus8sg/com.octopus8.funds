@@ -109,10 +109,10 @@ function funds_civicrm_post($op, $objectName, $objectId, &$objectRef)
     }
     $approverId = $objectRef->contact_id_app;
 //    CRM_Core_Error::debug_var('vapproverId', intval($approverId));
-    if(intval($approverId) <= 0){
+    if (intval($approverId) <= 0) {
         return;
     }
-        $groupName = 'Activity Email Sender';
+    $groupName = 'Activity Email Sender';
     $from = CRM_Contact_BAO_Contact::getPrimaryEmail($objectRef->modified_by);
     $toName = CRM_Contact_BAO_Contact::displayName($approverId);
     $toEmail = CRM_Contact_BAO_Contact::getPrimaryEmail($approverId);
@@ -239,7 +239,7 @@ function funds_civicrm_post($op, $objectName, $objectId, &$objectRef)
         'html' => $messagehtml,
         'attachments' => null,
     ];
-    CRM_Core_Error::debug_var('mailparams', $mailParams);
+//    CRM_Core_Error::debug_var('mailparams', $mailParams);
     if (!CRM_Utils_Mail::send($mailParams)) {
         return FALSE;
     } else {
@@ -327,11 +327,127 @@ function funds_civicrm_themes(&$themes)
 //function funds_civicrm_preProcess($formName, &$form) {
 //
 //}
-
-function authx_civicrm_permission(&$permissions)
+/**
+ * Implementation of hook_civicrm_permission
+ * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_permission/
+ */
+function funds_civicrm_permission(&$permissions)
 {
-    $permissions['access o8 funds module'] = E::ts('Access o8 Funds Module');
-    $permissions['create o8 funds transaction'] = E::ts('Create o8 Funds Transaction');
+    $permissions['manage o8connect Funds'] = E::ts('Manage o8connect Funds');
+    $permissions['manage o8connect Transactions'] = E::ts('Manage o8connect Transactions');
+}
+
+/**
+ * Implementation of hook_civicrm_permission_check
+ * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_permission/
+ */
+
+function funds_civicrm_permission_check($permission, &$granted)
+{
+    //check if the user is in financial manager group
+    $financial_manager_group_id = _find_financial_manager_group_id();
+    $social_worker_group_id = _find_social_worker_group_id();
+    $currentUserId = CRM_Core_Session::getLoggedInContactID();
+    if ($permission === 'manage o8connect Funds') {
+//        CRM_Core_Error::debug_var('financial_manager_group_id', $financial_manager_group_id);
+        if ($financial_manager_group_id < 0) {
+            $granted = FALSE;
+//            return;
+        }
+//    CRM_Core_Error::debug_var('isContactInGroup', CRM_Contact_BAO_GroupContact::isContactInGroup($currentUserId, $financial_manager_group_id));
+
+        $isEnabled = boolval(CRM_Contact_BAO_GroupContact::isContactInGroup($currentUserId, $financial_manager_group_id));
+
+        $granted = $isEnabled;
+    }
+    if ($permission === 'manage o8connect Transactions') {
+//        CRM_Core_Error::debug_var('social_worker_group_id', $social_worker_group_id);
+        if ($social_worker_group_id < 0) {
+            $granted = FALSE;
+//            return;
+        }
+//    CRM_Core_Error::debug_var('isContactInGroup', CRM_Contact_BAO_GroupContact::isContactInGroup($currentUserId, $financial_manager_group_id));
+
+        $isEnabled = boolval(CRM_Contact_BAO_GroupContact::isContactInGroup($currentUserId, $social_worker_group_id));
+        if(!$isEnabled){
+            $isEnabled = boolval(CRM_Contact_BAO_GroupContact::isContactInGroup($currentUserId, $financial_manager_group_id));
+
+        }
+        $granted = $isEnabled;
+    }
+
+}
+
+/**
+ * @return integer
+ * @throws CiviCRM_API3_Exception
+ */
+function _find_financial_manager_group_id()
+{
+    $financial_manager_group_id = -1;
+
+    try {
+        $result = civicrm_api3('Group', 'get', [
+            'return' => "id",
+            'title' => "Financial Managers",
+        ]);
+    } catch (ErrorException $e) {
+//        CRM_Core_Error::debug_var('error', $e->getMessage());
+    }
+    if (isset($result['id'])) {
+        $financial_manager_group_id = $result['id'];
+    } else {
+        $result = civicrm_api3('Group', 'create', [
+            'name' => "financial_managers",
+            'title' => "Financial Managers",
+            'visibility' => "User and User Admin Only",
+            'group_type' => "Access Control",
+            'is_reserved' => 1,
+            'is_hidden' => 0,
+        ]);
+//        CRM_Core_Error::debug_var('result', $result);
+        if (isset($result['id'])) {
+            $financial_manager_group_id = $result['id'];
+        }
+    }
+    return $financial_manager_group_id;
+}
+
+/**
+ * @return integer
+ * @throws CiviCRM_API3_Exception
+ */
+function _find_social_worker_group_id()
+{
+    $social_worker_group_id = -1;
+
+    try {
+        $result = civicrm_api3('Group', 'get', [
+            'return' => "id",
+            'title' => "Social Workers",
+        ]);
+    } catch (ErrorException $e) {
+//        CRM_Core_Error::debug_var('error', $e->getMessage());
+    }
+    if (isset($result['id'])) {
+        $social_worker_group_id = $result['id'];
+    } else {
+        $result = civicrm_api3('Group', 'create', [
+            'name' => "social_workers",
+            'title' => "Social Workers",
+            'visibility' => "User and User Admin Only",
+            'group_type' => "Access Control",
+            'is_reserved' => 1,
+            'is_hidden' => 0,
+        ]);
+//        CRM_Core_Error::debug_var('result', $result);
+        if (isset($result['id'])) {
+            $social_worker_group_id = $result['id'];
+        }
+    }
+
+
+    return $social_worker_group_id;
 }
 
 /**
@@ -345,8 +461,8 @@ function funds_civicrm_navigationMenu(&$menu)
         'label' => E::ts('Funds'),
         'name' => 'o8_funds',
         'icon' => 'crm-i fa-dropbox',
-        'url' => 'civicrm/fund/dashboard',
-        'permission' => 'access CiviCRM',
+//        'url' => 'civicrm/fund/dashboard',
+        'permission' => 'manage o8connect Funds, manage o8connect Transactions',
         'navID' => 10,
         'operator' => 'OR',
         'separator' => 0,
@@ -355,7 +471,7 @@ function funds_civicrm_navigationMenu(&$menu)
         'label' => E::ts('Dashboard'),
         'name' => 'o8_funds_dashboard',
         'url' => 'civicrm/fund/dashboard',
-        'permission' => 'access CiviCRM',
+        'permission' => 'manage o8connect Funds',
         'operator' => 'OR',
         'separator' => 0,
     ));
@@ -364,7 +480,7 @@ function funds_civicrm_navigationMenu(&$menu)
         'label' => E::ts('Find Funds'),
         'name' => 'o8_funds_search',
         'url' => 'civicrm/fund/search',
-        'permission' => 'access CiviCRM',
+        'permission' => 'manage o8connect Funds',
         'operator' => 'OR',
         'separator' => 0,
     ));
@@ -373,7 +489,7 @@ function funds_civicrm_navigationMenu(&$menu)
         'label' => E::ts('Add Fund'),
         'name' => 'o8_funds_add_fund',
         'url' => 'civicrm/fund/form?reset=1&action=add',
-        'permission' => 'access CiviCRM',
+        'permission' => 'manage o8connect Funds',
         'operator' => 'OR',
         'separator' => 0,
     ));
@@ -382,7 +498,7 @@ function funds_civicrm_navigationMenu(&$menu)
         'label' => E::ts('Find Account'),
         'name' => 'o8_funds_account_search',
         'url' => 'civicrm/fund/accountsearch',
-        'permission' => 'access CiviCRM',
+        'permission' => 'manage o8connect Funds',
         'operator' => 'OR',
         'separator' => 0,
     ));
@@ -391,7 +507,7 @@ function funds_civicrm_navigationMenu(&$menu)
         'label' => E::ts('Add Account'),
         'name' => 'o8_funds_account_add',
         'url' => 'civicrm/fund/account?reset=1&action=add',
-        'permission' => 'access CiviCRM',
+        'permission' => 'manage o8connect Funds',
         'operator' => 'OR',
         'separator' => 0,
     ));
@@ -400,7 +516,7 @@ function funds_civicrm_navigationMenu(&$menu)
         'label' => E::ts('Find Account Type'),
         'name' => 'o8_funds_account_type_search',
         'url' => 'civicrm/fund/accounttypesearch',
-        'permission' => 'access CiviCRM',
+        'permission' => 'manage o8connect Funds',
         'operator' => 'OR',
         'separator' => 0,
     ));
@@ -409,7 +525,7 @@ function funds_civicrm_navigationMenu(&$menu)
         'label' => E::ts('Add Account Type'),
         'name' => 'o8_funds_account_type_add',
         'url' => 'civicrm/fund/accounttype?reset=1&action=add',
-        'permission' => 'access CiviCRM',
+        'permission' => 'manage o8connect Funds',
         'operator' => 'OR',
         'separator' => 0,
     ));
@@ -418,7 +534,7 @@ function funds_civicrm_navigationMenu(&$menu)
         'label' => E::ts('Find Category'),
         'name' => 'o8_funds_category_search',
         'url' => 'civicrm/fund/categorysearch',
-        'permission' => 'access CiviCRM',
+        'permission' => 'manage o8connect Funds',
         'operator' => 'OR',
         'separator' => 0,
     ));
@@ -427,7 +543,7 @@ function funds_civicrm_navigationMenu(&$menu)
         'label' => E::ts('Add Category'),
         'name' => 'o8_funds_category_add',
         'url' => 'civicrm/fund/category?reset=1&action=add',
-        'permission' => 'access CiviCRM',
+        'permission' => 'manage o8connect Funds',
         'operator' => 'OR',
         'separator' => 0,
     ));
@@ -436,7 +552,7 @@ function funds_civicrm_navigationMenu(&$menu)
         'label' => E::ts('Find SubAccount'),
         'name' => 'o8_funds_sub_account_search',
         'url' => 'civicrm/fund/subaccountsearch',
-        'permission' => 'access CiviCRM',
+        'permission' => 'manage o8connect Funds',
         'operator' => 'OR',
         'separator' => 0,
     ));
@@ -445,7 +561,7 @@ function funds_civicrm_navigationMenu(&$menu)
         'label' => E::ts('Add SubAccount'),
         'name' => 'o8_funds_sub_account_add',
         'url' => 'civicrm/fund/subaccount?reset=1&action=add',
-        'permission' => 'access CiviCRM',
+        'permission' => 'manage o8connect Funds',
         'operator' => 'OR',
         'separator' => 0,
     ));
@@ -454,7 +570,7 @@ function funds_civicrm_navigationMenu(&$menu)
         'label' => E::ts('Find Transaction'),
         'name' => 'o8_funds_transaction_search',
         'url' => 'civicrm/fund/transactionsearch',
-        'permission' => 'access CiviCRM',
+        'permission' => 'manage o8connect Funds, manage o8connect Transactions',
         'operator' => 'OR',
         'separator' => 0,
     ));
@@ -463,7 +579,7 @@ function funds_civicrm_navigationMenu(&$menu)
         'label' => E::ts('Add Transaction'),
         'name' => 'o8_funds_transaction_add',
         'url' => 'civicrm/fund/transaction?reset=1&action=add',
-        'permission' => 'access CiviCRM',
+        'permission' => 'manage o8connect Funds, manage o8connect Transactions',
         'operator' => 'OR',
         'separator' => 0,
     ));
@@ -472,7 +588,7 @@ function funds_civicrm_navigationMenu(&$menu)
         'label' => E::ts('Fund Reports'),
         'name' => 'o8_funds_report_funds',
         'url' => CRM_Utils_System::url('civicrm/report/list', ['grp' => 'funds', 'reset' => 1]),
-        'permission' => 'access CiviCRM',
+        'permission' => 'manage o8connect Funds',
         'operator' => 'OR',
         'separator' => 2,
     ));

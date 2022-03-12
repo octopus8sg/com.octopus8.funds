@@ -129,7 +129,7 @@ class CRM_Funds_Form_Fund extends CRM_Core_Form
             $this->addRule('amount', ts('Amount should be a positive decimal number, like "100.25"'), 'regex', '/^[+]?((\d+(\.\d{0,2})?)|(\.\d{0,2}))$/');
 //            $this->addRule('amount', ts('Please enter a valid amount.'), 'money', null, 'client');
             $rules = HTML_QuickForm::getRegisteredRules();
-            CRM_Core_Error::debug_var('rules', $rules);
+//            CRM_Core_Error::debug_var('rules', $rules);
             // todo will be changed by transaction api or by hook?
             $this->add('text', 'residue', ts('Residue'))->freeze();
             $this->add('text', 'expenditure', ts('Expenditure'))->freeze();

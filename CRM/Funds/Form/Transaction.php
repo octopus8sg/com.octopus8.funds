@@ -216,9 +216,9 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
             }
 
             //8
-            $props = [];
+            $subprops = ['api' => ['params' => ['group' => 'social_workers']]];
             $contact_id_sub = $this->addEntityRef('contact_id_sub',
-                E::ts('Contact (Social Worker)'), $props, FALSE);
+                E::ts('Contact (Social Worker)'), $subprops, FALSE);
             if ($this->_isApproved) {
                 $contact_id_sub->freeze();
             }
@@ -229,8 +229,9 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
             }
 
             //9
+            $appprops = ['api' => ['params' => ['group' => 'financial_managers']]];
             $contact_id_app = $this->addEntityRef('contact_id_app',
-                E::ts('Contact (Approver)'), $props, FALSE);
+                E::ts('Contact (Approver)'), $appprops, FALSE);
             if ($this->_isApproved) {
                 $contact_id_app->freeze();
             }

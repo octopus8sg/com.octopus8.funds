@@ -58,6 +58,16 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
             aoData.push({ "name": "status_id",
                 "value": $('#transaction_status_id').val() });
          */
+        $currentUserId = CRM_Core_Session::getLoggedInContactID();
+        if (CRM_Core_Permission::check('administer CiviCRM')) {
+            $isAdmin = TRUE;
+        }
+        if (CRM_Core_Permission::check('manage o8connect Funds')) {
+            $isApprover = TRUE;
+        }
+        if (CRM_Core_Permission::check('manage o8connect Transactions')) {
+            $isSocial = TRUE;
+        }
 
         $transaction_id = CRM_Utils_Request::retrieveValue('transaction_id', 'String', null);
 
@@ -190,7 +200,11 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
 //        $contact_id_app = CRM_Utils_Request::retrieveValue('contact_id_app', 'CommaSeparatedIntegers', null);
 //
 //        $contact_id_app = CRM_Utils_Request::retrieveValue('contact_id_sub', 'CommaSeparatedIntegers', null);
-
+        if (!($isAdmin OR $isApprover)) {
+            if ($isSocial) {
+                $sql .= " AND t.`contact_id_sub` = " . strval($currentUserId) . " ";
+            }
+        }
 
         if (isset($case_id)) {
             if (strval($case_id) != "") {

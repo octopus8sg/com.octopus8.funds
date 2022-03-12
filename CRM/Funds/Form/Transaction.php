@@ -84,7 +84,7 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
         if (CRM_Core_Permission::check('manage o8connect Funds')) {
             $this->_isApprover = TRUE;
         }
-        if (CRM_Core_Permission::check('Manage o8connect Transactions')) {
+        if (CRM_Core_Permission::check('manage o8connect Transactions')) {
             $this->_isSocial = TRUE;
         }
 

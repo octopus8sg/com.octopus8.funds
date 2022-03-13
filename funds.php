@@ -342,14 +342,19 @@ function funds_civicrm_permission(&$permissions)
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_permission/
  */
 
-function funds_civicrm_permission_check($permission, &$granted)
+function funds_civicrm_permission_check($permission, &$granted, $contact_id = NULL)
 {
     //check if the user is in financial manager group
     $financial_manager_group_id = _find_financial_manager_group_id();
     $social_worker_group_id = _find_social_worker_group_id();
-    $currentUserId = CRM_Core_Session::getLoggedInContactID();
+    if ($contact_id === NULL) {
+        $currentUserId = CRM_Core_Session::getLoggedInContactID();
+    } else {
+        $currentUserId = $contact_id;
+    }
     if ($permission === 'manage o8connect Funds') {
-//        CRM_Core_Error::debug_var('financial_manager_group_id', $financial_manager_group_id);
+        CRM_Core_Error::debug_var('currentUserId', $currentUserId);
+        CRM_Core_Error::debug_var('contact_id', $contact_id);
         if ($financial_manager_group_id < 0) {
             $granted = FALSE;
 //            return;
@@ -361,6 +366,8 @@ function funds_civicrm_permission_check($permission, &$granted)
         $granted = $isEnabled;
     }
     if ($permission === 'manage o8connect Transactions') {
+        CRM_Core_Error::debug_var('contact_id', $contact_id);
+        CRM_Core_Error::debug_var('currentUserId', $currentUserId);
 //        CRM_Core_Error::debug_var('social_worker_group_id', $social_worker_group_id);
         if ($social_worker_group_id < 0) {
             $granted = FALSE;
@@ -369,7 +376,7 @@ function funds_civicrm_permission_check($permission, &$granted)
 //    CRM_Core_Error::debug_var('isContactInGroup', CRM_Contact_BAO_GroupContact::isContactInGroup($currentUserId, $financial_manager_group_id));
 
         $isEnabled = boolval(CRM_Contact_BAO_GroupContact::isContactInGroup($currentUserId, $social_worker_group_id));
-        if(!$isEnabled){
+        if (!$isEnabled) {
             $isEnabled = boolval(CRM_Contact_BAO_GroupContact::isContactInGroup($currentUserId, $financial_manager_group_id));
 
         }
@@ -593,6 +600,63 @@ function funds_civicrm_navigationMenu(&$menu)
         'separator' => 2,
     ));
     _funds_civix_navigationMenu($menu);
+}
+
+/**
+ * Implementation of hook_civicrm_tabset
+ * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_tabset
+ */
+function funds_civicrm_tabset($path, &$tabs, $context)
+{
+
+    $contactId = $context['contact_id'];
+    $financial_manager_group_id = _find_financial_manager_group_id();
+    $social_worker_group_id = _find_social_worker_group_id();
+//    CRM_Core_Error::debug_var('contactId', $contactId);
+    $isApprover = $isSocial = $isOrganization = FALSE;
+    $isApprover = boolval(CRM_Contact_BAO_GroupContact::isContactInGroup($contactId, $financial_manager_group_id));
+    $isSocial = boolval(CRM_Contact_BAO_GroupContact::isContactInGroup($contactId, $social_worker_group_id));
+    $contact = \Civi\Api4\Contact::get(0)
+        ->addWhere('id', '=', $contactId)
+        ->execute()->single();
+    $contactType = $contact['contact_type'];
+    if ($contactType == 'Organization') {
+        $isOrganization = TRUE;
+    }
+
+    if (!($isApprover or $isSocial or $isOrganization)) {
+        return;
+    }
+
+    if ($path === 'civicrm/contact/view') {
+        // add a tab to the contact summary screen
+        $url = CRM_Utils_System::url('civicrm/fund/contacttab', ['cid' => $contactId]);
+        if ($isApprover) {
+            $myEntities = \Civi\Api4\FundTransaction::get()
+                ->selectRowCount()
+                ->addWhere('contact_id_app', '=', $contactId)
+                ->execute();
+        }
+        if ($isSocial) {
+            $myEntities = \Civi\Api4\FundTransaction::get()
+                ->selectRowCount()
+                ->addWhere('contact_id_sub', '=', $contactId)
+                ->execute();
+        }
+        if ($isOrganization) {
+            $myEntities = \Civi\Api4\FundTransaction::get()
+                ->selectRowCount()
+                ->addJoin('Fund AS fund', 'INNER', ['fund_id', '=', 'fund.id'])
+                ->addWhere('fund.contact_id', '=', $contactId)
+                ->execute();
+//            CRM_Core_Error::debug_var('myEntities', $myEntities);
+        }
+//        CRM_Core_Error::debug_var('myEntities', $myEntities);
+//        CRM_Core_Error::debug_var('isApprover', $isApprover);
+//        CRM_Core_Error::debug_var('isSocial', $isSocial);
+//        CRM_Core_Error::debug_var('isOrganization', $isOrganization);
+
+    }
 }
 
 // register amount-related rules

@@ -652,7 +652,7 @@ function funds_civicrm_tabset($path, &$tabs, $context)
                 ->addWhere('contact_id_sub', '=', $contactId)
                 ->execute();
             $url = CRM_Utils_System::url('civicrm/fund/socialtab', ['cid' => $contactId]);
-            $title = "Fund Transactions (SW)";
+            $title = "Transactions";
             $tabs[] = array(
                 'id' => 'socialtab',
                 'url' => $url,

@@ -72,7 +72,8 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
 
         $contactId = CRM_Utils_Request::retrieve('cid', 'Positive');
 
-        $pagename = CRM_Utils_Request::retrieve('pagename', 'String');
+        $pageName = CRM_Utils_Request::retrieve('pagename', 'String');
+
 
         $transaction_id = CRM_Utils_Request::retrieveValue('transaction_id', 'String', null);
 
@@ -193,17 +194,19 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
             }
         }
 
+        CRM_Core_Error::debug_var('pagename', $pageName);
+        CRM_Core_Error::debug_var('contactId', $contactId);
         if (isset($contactId)) {
-            if (isset($pagename)) {
-                if (strval($pagename) != "") {
+            if (isset($pageName)) {
+                if (strval($pageName) != "") {
                     if (is_numeric($contactId)) {
-                        if ($pagename == 'OrgTab') {
+                        if ($pageName == 'OrgTab') {
                             $sql .= " and f.`contact_id` = " . intval($contactId) . " ";
                         }
-                        if ($pagename == 'SocialTab') {
+                        if ($pageName == 'SocialTab') {
                             $sql .= " and t.`contact_id_sub` = " . intval($contactId) . " ";
                         }
-                        if ($pagename == 'ApproverTab') {
+                        if ($pageName == 'ApproverTab') {
                             $sql .= " and t.`contact_id_app` = " . intval($contactId) . " ";
                         }
                     }
@@ -344,7 +347,7 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
         }
 
 
-//        CRM_Core_Error::debug_var('transaction_sql', $sql);
+        CRM_Core_Error::debug_var('transaction_sql', $sql);
 
         $dao = CRM_Core_DAO::executeQuery($sql);
         $iFilteredTotal = CRM_Core_DAO::singleValueQuery("SELECT FOUND_ROWS()");

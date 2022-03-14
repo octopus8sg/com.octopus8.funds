@@ -11,6 +11,8 @@ class CRM_Funds_Page_ApproverTab extends CRM_Core_Page {
     $urlQry['snippet'] = 4;
     $pagename = 'ApproverTab';
     $urlQry['pagename'] = $pagename;
+    $contactId = CRM_Utils_Request::retrieve('cid', 'Positive');
+    $urlQry['cid'] = $contactId;
     $transactions_source_url = CRM_Utils_System::url('civicrm/fund/transaction_ajax', $urlQry, FALSE, NULL, FALSE);
 //        $transactions_source_url = "";
     $sourceUrl['transactions_source_url'] = $transactions_source_url;

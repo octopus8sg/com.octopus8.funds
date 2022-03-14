@@ -11,6 +11,8 @@ class CRM_Funds_Page_OrgTab extends CRM_Core_Page
 
         // link for datatables
         $urlQry['snippet'] = 4;
+        $contactId = CRM_Utils_Request::retrieve('cid', 'Positive');
+        $urlQry['cid'] = $contactId;
         $pagename = 'OrgTab';
         $urlQry['pagename'] = $pagename;
         $transactions_source_url = CRM_Utils_System::url('civicrm/fund/transaction_ajax', $urlQry, FALSE, NULL, FALSE);

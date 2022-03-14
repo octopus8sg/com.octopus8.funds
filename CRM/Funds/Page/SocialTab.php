@@ -9,13 +9,18 @@ class CRM_Funds_Page_SocialTab extends CRM_Core_Page
     {
         CRM_Utils_System::setTitle(E::ts('Search Transactions'));
 
-        // link for datatables
+// This part differs for different search pages
         $urlQry['snippet'] = 4;
-        $pagename = 'SocialTab';
-        $urlQry['pagename'] = $pagename;
-        $transactions_source_url = CRM_Utils_System::url('civicrm/fund/transaction_ajax', $urlQry, FALSE, NULL, FALSE);
-//        $transactions_source_url = "";
-        $sourceUrl['transactions_source_url'] = $transactions_source_url;
+        $pageName = 'SocialTab';
+        $ajaxSourceName = 'transactions_source_url';
+        $urlQry['snippet'] = 4;
+        $contactId = CRM_Utils_Request::retrieve('cid', 'Positive');
+        $urlQry['cid'] = $contactId;
+        $urlQry['pagename'] = $pageName;
+        $ajaxSourceUrl = CRM_Utils_System::url('civicrm/fund/transaction_ajax', $urlQry, FALSE, NULL, FALSE);
+// End this part differs for different search pages
+
+        $sourceUrl[$ajaxSourceName] = $ajaxSourceUrl;
         $this->assign('useAjax', true);
         CRM_Core_Resources::singleton()->addVars('source_url', $sourceUrl);
 
@@ -27,7 +32,7 @@ class CRM_Funds_Page_SocialTab extends CRM_Core_Page
             FALSE, FALSE, TRUE
         );
         $controller_data->setEmbedded(TRUE);
-        $controller_data->assign('pagename', $pagename);
+        $controller_data->assign('pagename', $pageName);
         $controller_data->run();
         parent::run();
     }

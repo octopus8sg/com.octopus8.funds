@@ -10,6 +10,7 @@ class CRM_Funds_Page_SearchAccount extends CRM_Core_Page
         $pageName ='SearchAccount';
         $ajaxSourceName = 'accounts_source_url';
         $urlQry['snippet'] = 4;
+        $urlQry['pagename'] = $pageName;
         $ajaxSourceUrl = CRM_Utils_System::url('civicrm/fund/account_ajax', $urlQry, FALSE, NULL, FALSE);
 // End this part differs for different search pages
 

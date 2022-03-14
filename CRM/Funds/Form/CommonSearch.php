@@ -453,20 +453,15 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
     {
         if ($this->_cid) {
             $defaults = [];
-//            $defaults['device_contact_id'] =
-//                $this->_cid;
-//            $defaults['device_data_contact_id'] =
-//                $this->_cid;
-//            $defaults['alarm_rule_contact_id'] =
-//                $this->_cid;
-//            $defaults['alarm_contact_id'] =
-//                $this->_cid;
-//            $defaults['alert_rule_contact_id'] =
-//                $this->_cid;
-//            $defaults['alert_contact_id'] =
-//                $this->_cid;
-//            $defaults['chart_contact_id'] =
-//                $this->_cid;
+            if ($this->_pagename == 'ApproverTab') {
+                $defaults['contact_id_app'] =
+                    $this->_cid;
+
+            }
+            if ($this->_pagename == 'SocialTab') {
+                $defaults['contact_id_sub'] =
+                    $this->_cid;
+            }
         }
         return $defaults;
     }

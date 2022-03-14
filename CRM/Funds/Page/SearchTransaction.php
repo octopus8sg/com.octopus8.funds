@@ -194,8 +194,8 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
             }
         }
 
-        CRM_Core_Error::debug_var('pagename', $pageName);
-        CRM_Core_Error::debug_var('contactId', $contactId);
+//        CRM_Core_Error::debug_var('pagename', $pageName);
+//        CRM_Core_Error::debug_var('contactId', $contactId);
         if (isset($contactId)) {
             if (isset($pageName)) {
                 if (strval($pageName) != "") {
@@ -347,7 +347,7 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
         }
 
 
-        CRM_Core_Error::debug_var('transaction_sql', $sql);
+//        CRM_Core_Error::debug_var('transaction_sql', $sql);
 
         $dao = CRM_Core_DAO::executeQuery($sql);
         $iFilteredTotal = CRM_Core_DAO::singleValueQuery("SELECT FOUND_ROWS()");

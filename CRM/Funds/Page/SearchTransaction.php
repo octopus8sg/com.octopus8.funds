@@ -7,14 +7,15 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
 
     public function run()
     {
-        // Example: Set the page-title dynamically; alternatively, declare a static title in xml/Menu/*.xml
+// This part differs for different search pages
         CRM_Utils_System::setTitle(E::ts('Search Transactions'));
-
-        // link for datatables
+        $pageName ='SearchTransaction';
+        $ajaxSourceName = 'transactions_source_url';
         $urlQry['snippet'] = 4;
-        $transactions_source_url = CRM_Utils_System::url('civicrm/fund/transaction_ajax', $urlQry, FALSE, NULL, FALSE);
-//        $transactions_source_url = "";
-        $sourceUrl['transactions_source_url'] = $transactions_source_url;
+        $ajaxSourceUrl = CRM_Utils_System::url('civicrm/fund/transaction_ajax', $urlQry, FALSE, NULL, FALSE);
+// End this part differs for different search pages
+
+        $sourceUrl[$ajaxSourceName] = $ajaxSourceUrl;
         $this->assign('useAjax', true);
         CRM_Core_Resources::singleton()->addVars('source_url', $sourceUrl);
 
@@ -26,8 +27,8 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
             FALSE, FALSE, TRUE
         );
         $controller_data->setEmbedded(TRUE);
+        $controller_data->assign('pagename', $pageName);
         $controller_data->run();
-
         parent::run();
     }
 
@@ -68,6 +69,10 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
         if (CRM_Core_Permission::check('manage o8connect Transactions')) {
             $isSocial = TRUE;
         }
+
+        $contactId = CRM_Utils_Request::retrieve('cid', 'Positive');
+
+        $pagename = CRM_Utils_Request::retrieve('pagename', 'String');
 
         $transaction_id = CRM_Utils_Request::retrieveValue('transaction_id', 'String', null);
 
@@ -184,6 +189,24 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
                 $sql .= " AND t.`code` like '%" . strval($transaction_id) . "%' ";
                 if (is_numeric($transaction_id)) {
                     $sql .= " OR t.`id` = " . intval($transaction_id) . " ";
+                }
+            }
+        }
+
+        if (isset($contactId)) {
+            if (isset($pagename)) {
+                if (strval($pagename) != "") {
+                    if (is_numeric($contactId)) {
+                        if ($pagename == 'OrgTab') {
+                            $sql .= " and f.`contact_id` = " . intval($contactId) . " ";
+                        }
+                        if ($pagename == 'SocialTab') {
+                            $sql .= " and t.`contact_id_sub` = " . intval($contactId) . " ";
+                        }
+                        if ($pagename == 'ApproverTab') {
+                            $sql .= " and t.`contact_id_app` = " . intval($contactId) . " ";
+                        }
+                    }
                 }
             }
         }

@@ -16,7 +16,7 @@
     <path>civicrm/fund/commonsearch</path>
     <page_callback>CRM_Funds_Form_CommonSearch</page_callback>
     <title>CommonSearch</title>
-    <access_arguments>*manage o8connect Funds;*manage o8connect Transactions</access_arguments>
+    <access_arguments>access CiviCRM</access_arguments>
   </item>
   <item>
     <path>civicrm/fund/contacttab</path>

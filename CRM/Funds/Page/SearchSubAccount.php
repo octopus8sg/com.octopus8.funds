@@ -5,14 +5,16 @@ class CRM_Funds_Page_SearchSubAccount extends CRM_Core_Page
 {
     public function run()
     {
-        // Example: Set the page-title dynamically; alternatively, declare a static title in xml/Menu/*.xml
-        CRM_Utils_System::setTitle(E::ts('Search SubAccounts'));
 
-        // link for datatables
+// This part differs for different search pages
+        CRM_Utils_System::setTitle(E::ts('Search SubAccounts'));
+        $pageName ='SearchSubAccount';
+        $ajaxSourceName = 'sub_accounts_source_url';
         $urlQry['snippet'] = 4;
-        $sub_accounts_source_url = CRM_Utils_System::url('civicrm/fund/subaccount_ajax', $urlQry, FALSE, NULL, FALSE);
-//        $sub_accounts_source_url = "";
-        $sourceUrl['sub_accounts_source_url'] = $sub_accounts_source_url;
+        $ajaxSourceUrl = CRM_Utils_System::url('civicrm/fund/subaccount_ajax', $urlQry, FALSE, NULL, FALSE);
+// End this part differs for different search pages
+
+        $sourceUrl[$ajaxSourceName] = $ajaxSourceUrl;
         $this->assign('useAjax', true);
         CRM_Core_Resources::singleton()->addVars('source_url', $sourceUrl);
 
@@ -24,9 +26,10 @@ class CRM_Funds_Page_SearchSubAccount extends CRM_Core_Page
             FALSE, FALSE, TRUE
         );
         $controller_data->setEmbedded(TRUE);
+        $controller_data->assign('pagename', $pageName);
         $controller_data->run();
-
         parent::run();
+
     }
 
 

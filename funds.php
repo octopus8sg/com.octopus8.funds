@@ -353,8 +353,8 @@ function funds_civicrm_permission_check($permission, &$granted, $contact_id = NU
         $currentUserId = $contact_id;
     }
     if ($permission === 'manage o8connect Funds') {
-        CRM_Core_Error::debug_var('currentUserId', $currentUserId);
-        CRM_Core_Error::debug_var('contact_id', $contact_id);
+//        CRM_Core_Error::debug_var('currentUserId', $currentUserId);
+//        CRM_Core_Error::debug_var('contact_id', $contact_id);
         if ($financial_manager_group_id < 0) {
             $granted = FALSE;
 //            return;
@@ -630,18 +630,38 @@ function funds_civicrm_tabset($path, &$tabs, $context)
 
     if ($path === 'civicrm/contact/view') {
         // add a tab to the contact summary screen
-        $url = CRM_Utils_System::url('civicrm/fund/contacttab', ['cid' => $contactId]);
         if ($isApprover) {
             $myEntities = \Civi\Api4\FundTransaction::get()
                 ->selectRowCount()
                 ->addWhere('contact_id_app', '=', $contactId)
                 ->execute();
+            $url = CRM_Utils_System::url('civicrm/fund/approvertab', ['cid' => $contactId]);
+            $title = "Fund Transactions (FM)";
+            $tabs[] = array(
+                'id' => 'approvertab',
+                'url' => $url,
+                'count' => $myEntities->count(),
+                'title' => $title,
+                'weight' => 1000,
+                'icon' => 'crm-i fa-dropbox',
+            );
         }
         if ($isSocial) {
             $myEntities = \Civi\Api4\FundTransaction::get()
                 ->selectRowCount()
                 ->addWhere('contact_id_sub', '=', $contactId)
                 ->execute();
+            $url = CRM_Utils_System::url('civicrm/fund/socialtab', ['cid' => $contactId]);
+            $title = "Fund Transactions (SW)";
+            $tabs[] = array(
+                'id' => 'socialtab',
+                'url' => $url,
+                'count' => $myEntities->count(),
+                'title' => $title,
+                'weight' => 1000,
+                'icon' => 'crm-i fa-dropbox',
+            );
+
         }
         if ($isOrganization) {
             $myEntities = \Civi\Api4\FundTransaction::get()
@@ -649,7 +669,18 @@ function funds_civicrm_tabset($path, &$tabs, $context)
                 ->addJoin('Fund AS fund', 'INNER', ['fund_id', '=', 'fund.id'])
                 ->addWhere('fund.contact_id', '=', $contactId)
                 ->execute();
+            $url = CRM_Utils_System::url('civicrm/fund/orgtab', ['cid' => $contactId]);
+            $title = "Fund Transactions (ORG)";
 //            CRM_Core_Error::debug_var('myEntities', $myEntities);
+            $tabs[] = array(
+                'id' => 'orgtab',
+                'url' => $url,
+                'count' => $myEntities->count(),
+                'title' => $title,
+                'weight' => 1000,
+                'icon' => 'crm-i fa-dropbox',
+            );
+
         }
 //        CRM_Core_Error::debug_var('myEntities', $myEntities);
 //        CRM_Core_Error::debug_var('isApprover', $isApprover);

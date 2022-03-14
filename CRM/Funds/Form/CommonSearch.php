@@ -11,6 +11,7 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
 {
     protected $_trnx_statuses;
     protected $_cid; // cid is contact for contact tab. if it's present, contact is freezed
+    protected $_pagename; // pagename is a name of a page for running a filter
 
     /**
      * Function to get _cid for tabs
@@ -21,7 +22,11 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
         parent::preProcess();
         $cid = CRM_Utils_Request::retrieve('cid', 'Positive', $this, FALSE);
         $this->_cid = $cid;
+        $pagename = $this->get_template_vars('pagename');
+        $this->_pagename = $pagename;
 
+        //        CRM_Core_Error::debug_var('pagename1', $pagename);
+//        CRM_Core_Error::debug_var('allvars1', $this->get_template_vars());
     }
 
 
@@ -31,25 +36,55 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
      */
     public function buildQuickForm()
     {
+        $pagename = $this->_pagename;
+
+//        CRM_Core_Error::debug_var('allvars2', $this->get_template_vars());
 
         // add device type filter
         $statuses = CRM_Core_OptionGroup::values('o8_fund_trxn_status');
         $this->_trnx_statuses = $statuses;
         $this->_cid = CRM_Utils_Request::retrieve('cid', 'Positive');
         //
-        $this->fund_filter();
-        $this->account_filter();
-        $this->category_filter();
-        $this->sub_account_filter();
-        $this->transaction_filter();
-        $this->account_type_filter();
-//        if ($this->_cid) {
-//            $this->fund_filter();
-//            $this->account_filter();
-//            $this->category_filter();
-//            $this->sub_account_filter();
-//            $this->transaction_filter();
-//        }
+        $transactionPages = [
+            'SearchTransaction',
+            'OrgTab',
+            'ApproverTab',
+            'SocialTab',
+        ];
+        $fundPages = [
+            'SearchFund',
+        ];
+        $accountPages = [
+            'SearchAccount',
+        ];
+        $accountTypePages = [
+            'SearchAccountType',
+        ];
+        $subAccountPages = [
+            'SearchSubAccount',
+        ];
+        $categoryPages = [
+            'SearchCategory',
+        ];
+        if (in_array($pagename, $fundPages)) {
+            $this->fund_filter();
+        }
+        if (in_array($pagename, $accountPages)) {
+            $this->account_filter();
+        }
+        if (in_array($pagename, $accountTypePages)) {
+            $this->account_type_filter();
+        }
+        if (in_array($pagename, $subAccountPages)) {
+            $this->sub_account_filter();
+        }
+        if (in_array($pagename, $categoryPages)) {
+            $this->category_filter();
+        }
+        if (in_array($pagename, $transactionPages)) {
+            $this->transaction_filter();
+        }
+
         $this->assign('suppressForm', FALSE);
         parent::buildQuickForm();
     }
@@ -270,10 +305,27 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
 
         $props = ['create' => false, 'multiple' => true, 'class' => 'huge'];
         if ($this->_cid) {
-            $this->addEntityRef('contact_id_sub', E::ts('Contact (Social Worker)'),
-                false)->freeze();
-            $this->addEntityRef('contact_id_app', E::ts('Contact (Approver)'),
-                false)->freeze();
+            if ($this->_pagename == 'SocialTab') {
+                $this->addEntityRef('contact_id_sub', E::ts('Contact (Social Worker)'),
+                    false)->freeze();
+            } else {
+                $this->addEntityRef('contact_id_sub', E::ts('Contact (Social Worker)'),
+                    false);
+
+            }
+            if ($this->_pagename == 'ApproverTab') {
+                $this->addEntityRef('contact_id_app', E::ts('Contact (Approver)'),
+                    false)->freeze();
+            } else {
+                $this->addEntityRef('contact_id_app', E::ts('Contact (Approver)'),
+                    false);
+            }
+            if ($this->_pagename == 'OrgTab') {
+                $this->addEntityRef('contact_id_app', E::ts('Contact (Approver)'),
+                    false);
+                $this->addEntityRef('contact_id_sub', E::ts('Contact (Social Worker)'),
+                    false);
+            }
         } else {
             $this->addEntityRef('contact_id_sub',
                 E::ts('Contact (Social Worker)'), $props);
@@ -351,27 +403,49 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
                 'select' => ['minimumInputLength' => 0]
             ]);
 
-        $this->addEntityRef('transaction_fund_id', E::ts('Fund'), [
-            'api' => [
-                'search_fields' => ['code', 'name'],
+        if ($this->_pagename == 'OrgTab') {
+            $this->addEntityRef('transaction_fund_id', E::ts('My Fund'), [
+                'api' => [
+                    'search_fields' => ['code', 'name'],
+//                'extra' => ['contact_id.organisation_name'],
+//                'search_field' => 'code',
+                    'description_field' => [
+                        'code',
+                        'description'
+                    ],
+                    'label_field' => "name",
+                    'params' => ['contact_id' => $this->_cid]
+                ],
+                'select' => ['minimumInputLength' => 0],
+                'entity' => 'fund',
+                'class' => 'huge',
+                'create' => false,
+                'multiple' => true,
+                'add_wildcard' => false,
+                'placeholder' => ts('- Select Fund -'),
+            ], FALSE);
+        } else {
+            $this->addEntityRef('transaction_fund_id', E::ts('Fund'), [
+                'api' => [
+                    'search_fields' => ['code', 'name'],
 //                'extra' => ['code', 'name'],
 //                'search_field' => 'code',
-                'description_field' => [
-                    'code',
-                    'description',
+                    'description_field' => [
+                        'code',
+                        'description',
+                    ],
+                    'label_field' => "name",
+                    'params' => []
                 ],
-                'label_field' => "name",
-                'params' => []
-            ],
-            'select' => ['minimumInputLength' => 1],
-            'entity' => 'fund',
-            'class' => 'huge',
-            'create' => false,
-            'multiple' => true,
-            'add_wildcard' => false,
-            'placeholder' => ts('- Select Fund -'),
-        ], FALSE);
-
+                'select' => ['minimumInputLength' => 1],
+                'entity' => 'fund',
+                'class' => 'huge',
+                'create' => false,
+                'multiple' => true,
+                'add_wildcard' => false,
+                'placeholder' => ts('- Select Fund -'),
+            ], FALSE);
+        }
 
     }
 

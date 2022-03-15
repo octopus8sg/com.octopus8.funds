@@ -298,6 +298,8 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
                 "value": $('#contact_id_app').val() });
             aoData.push({ "name": "contact_id_sub",
                 "value": $('#contact_id_sub').val() });
+            aoData.push({ "name": "created_by",
+                "value": $('#created_by').val() });
             aoData.push({ "name": "account_id",
                 "value": $('#transaction_account_id').val() });
             aoData.push({ "name": "sub_account_id",
@@ -320,35 +322,17 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
 
 
         $props = ['create' => false, 'multiple' => true, 'class' => 'huge'];
-        if ($this->_cid) {
-            if ($this->_pagename == 'SocialTab') {
-                $this->addEntityRef('contact_id_sub', E::ts('Contact (Social Worker)'),
-                    false)->freeze();
-            } else {
-                $this->addEntityRef('contact_id_sub', E::ts('Contact (Social Worker)'),
-                    false);
+        $contact_id_app = $this->addEntityRef('contact_id_app', E::ts('Contact (Approver)'),
+            false);
+        $created_by = $this->addEntityRef('created_by', E::ts('Contact (Created By)'),
+            false);
+        $contact_id_sub = $this->addEntityRef('contact_id_sub', E::ts('Contact (Social Worker)'),
+            false);
 
-            }
-            if ($this->_pagename == 'ApproverTab') {
-                $this->addEntityRef('contact_id_app', E::ts('Contact (Approver)'),
-                    false)->freeze();
-            } else {
-                $this->addEntityRef('contact_id_app', E::ts('Contact (Approver)'),
-                    false);
-            }
-            if ($this->_pagename == 'OrgTab') {
-                $this->addEntityRef('contact_id_app', E::ts('Contact (Approver)'),
-                    false);
-                $this->addEntityRef('contact_id_sub', E::ts('Contact (Social Worker)'),
-                    false);
-            }
-        } else {
-            $this->addEntityRef('contact_id_sub',
-                E::ts('Contact (Social Worker)'), $props);
-            //9
-            $this->addEntityRef('contact_id_app',
-                E::ts('Contact (Approver)'), $props);
+        if ($this->_cid) {
+            $created_by->freeze();
         }
+
         $this->addEntityRef('transaction_case_id', E::ts('Case'), [
             'api' => [
 //                'search_field' => ['id', 'code', 'name', 'description'],
@@ -617,12 +601,16 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
         if ($this->_cid) {
             $defaults = [];
             if ($this->_pagename == 'ApproverTab') {
-                $defaults['contact_id_app'] =
+                $defaults['fm_contact_id_app'] =
                     $this->_cid;
 
             }
             if ($this->_pagename == 'SocialTab') {
-                $defaults['contact_id_sub'] =
+                $defaults['sw_contact_id_sub'] =
+                    $this->_cid;
+            }
+            if ($this->_pagename == 'ContactTab') {
+                $defaults['created_by'] =
                     $this->_cid;
             }
         }

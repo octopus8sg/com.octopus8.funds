@@ -13,6 +13,19 @@ CRM.$(function ($) {
         });
     });
 
+    $("a.view-transaction").click(function (event) {
+        event.preventDefault();
+        var href = $(this).attr('href');
+        // alert(href);
+        var $el = CRM.loadForm(href, {
+            dialog: {width: '50%', height: '50%'}
+        }).on('crmFormSuccess', function () {
+            var hm_tab = $('.selector-transactions');
+            var hm_table = hm_tab.DataTable();
+            hm_table.draw();
+        });
+    });
+
 
     var transactions_sourceUrl = CRM.vars.source_url['transactions_source_url'];
 
@@ -50,6 +63,18 @@ CRM.$(function ($) {
                 });
             });
             $("a.delete-transaction").click(function (event) {
+                event.preventDefault();
+                var href = $(this).attr('href');
+                // alert(href);
+                var $el = CRM.loadForm(href, {
+                    dialog: {width: '50%', height: '50%'}
+                }).on('crmFormSuccess', function () {
+                    var hm_tab = $('.selector-transactions');
+                    var hm_table = hm_tab.DataTable();
+                    hm_table.draw();
+                });
+            });
+            $("a.view-transaction").click(function (event) {
                 event.preventDefault();
                 var href = $(this).attr('href');
                 // alert(href);

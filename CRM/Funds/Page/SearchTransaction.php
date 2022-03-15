@@ -9,7 +9,7 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
     {
 // This part differs for different search pages
         CRM_Utils_System::setTitle(E::ts('Search Transactions'));
-        $pageName ='SearchTransaction';
+        $pageName = 'SearchTransaction';
         $ajaxSourceName = 'transactions_source_url';
         $urlQry['snippet'] = 4;
         $ajaxSourceUrl = CRM_Utils_System::url('civicrm/fund/transaction_ajax', $urlQry, FALSE, NULL, FALSE);
@@ -63,10 +63,10 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
         if (CRM_Core_Permission::check('administer CiviCRM')) {
             $isAdmin = TRUE;
         }
-        if (CRM_Core_Permission::check('manage o8connect Funds')) {
+        if (CRM_Core_Permission::check('*manage o8connect Funds')) {
             $isApprover = TRUE;
         }
-        if (CRM_Core_Permission::check('manage o8connect Transactions')) {
+        if (CRM_Core_Permission::check('*manage o8connect Transactions')) {
             $isSocial = TRUE;
         }
 
@@ -442,9 +442,21 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
                 ['action' => 'update', 'id' => $dao->id]);
             $r_delete = CRM_Utils_System::url('civicrm/fund/transaction',
                 ['action' => 'delete', 'id' => $dao->id]);
+            $r_view = CRM_Utils_System::url('civicrm/fund/transaction',
+                ['action' => 'view', 'id' => $dao->id]);
             $update = '<a class="update-transaction action-item crm-hover-button" target="_blank" href="' . $r_update . '"><i class="crm-i fa-pencil"></i>&nbsp;Edit</a>';
             $delete = '<a class="delete-transaction action-item crm-hover-button" target="_blank" href="' . $r_delete . '"><i class="crm-i fa-trash"></i>&nbsp;Delete</a>';
+            $view = '<a class="view-transaction action-item crm-hover-button" target="_blank" href="' . $r_view . '"><i class="crm-i fa-eye"></i>&nbsp;View</a>';
             $action = "<span>$update $delete</span>";
+            if (isset($contactId)) {
+                if (isset($pageName)) {
+                    if (strval($pageName) != "") {
+                        if (is_numeric($contactId)) {
+                            $action = "<span>$view</span>";
+                        }
+                    }
+                }
+            }
             $rows[$count][] = $dao->id;
             $rows[$count][] = $date;
             $rows[$count][] = $dao->description;

@@ -623,11 +623,7 @@ function funds_civicrm_tabset($path, &$tabs, $context)
     if ($contactType == 'Organization') {
         $isOrganization = TRUE;
     }
-
-    if (!($isApprover or $isSocial or $isOrganization)) {
-        return;
-    }
-
+    $tab_added = FALSE;
     if ($path === 'civicrm/contact/view') {
         // add a tab to the contact summary screen
         if ($isApprover) {
@@ -645,6 +641,7 @@ function funds_civicrm_tabset($path, &$tabs, $context)
                 'weight' => 1000,
                 'icon' => 'crm-i fa-dropbox',
             );
+            $tab_added = TRUE;
         }
         if ($isSocial) {
             $myEntities = \Civi\Api4\FundTransaction::get()
@@ -682,7 +679,23 @@ function funds_civicrm_tabset($path, &$tabs, $context)
             );
 
         }
-//        CRM_Core_Error::debug_var('myEntities', $myEntities);
+
+            $myEntities = \Civi\Api4\FundTransaction::get()
+                ->selectRowCount()
+                ->addWhere('fund.created_by', '=', $contactId)
+                ->execute();
+            $url = CRM_Utils_System::url('civicrm/fund/contacttab', ['cid' => $contactId]);
+            $title = "My Expences";
+            $tabs[] = array(
+                'id' => 'exptab',
+                'url' => $url,
+                'count' => $myEntities->count(),
+                'title' => $title,
+                'weight' => 1000,
+                'icon' => 'crm-i fa-dropbox',
+            );
+
+        //        CRM_Core_Error::debug_var('myEntities', $myEntities);
 //        CRM_Core_Error::debug_var('isApprover', $isApprover);
 //        CRM_Core_Error::debug_var('isSocial', $isSocial);
 //        CRM_Core_Error::debug_var('isOrganization', $isOrganization);

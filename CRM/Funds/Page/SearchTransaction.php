@@ -91,6 +91,8 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
 
         $contact_id_sub = CRM_Utils_Request::retrieveValue('contact_id_app', 'CommaSeparatedIntegers', null);
 
+        $created_by = CRM_Utils_Request::retrieveValue('created_by', 'CommaSeparatedIntegers', null);
+
         $contact_id_app = CRM_Utils_Request::retrieveValue('contact_id_sub', 'CommaSeparatedIntegers', null);
 
         $dateselect_to = CRM_Utils_Request::retrieveValue('dateselect_to', 'String', null);
@@ -127,9 +129,10 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
             6 => 'sub_account_name',
             7 => 'cs_name',
             8 => 'ca_name',
-            9 => 'case_name',
-            10 => 'fund_name',
-            11 => 'status_name'
+            9 => 'cb_name',
+            10 => 'case_name',
+            11 => 'fund_name',
+            12 => 'status_name'
         ];
 
         $sort = isset($_REQUEST['iSortCol_0']) ? CRM_Utils_Array::value(CRM_Utils_Type::escape($_REQUEST['iSortCol_0'], 'Integer'), $sortMapper) : NULL;
@@ -160,11 +163,13 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
       concat(f.code, ': ', f.name) fund_name,
       cs.sort_name cs_name,
       ca.sort_name ca_name,
+      cb.sort_name cb_name,
       cm.code sub_account_code,
       a.code account_code,
       c.subject case_code,
       t.contact_id_app,
       t.contact_id_sub,
+      t.created_by,
       t.sub_account_id,
       t.account_id,
       t.case_id,
@@ -179,6 +184,7 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
     LEFT JOIN civicrm_o8_fund_sub_account cm on t.sub_account_id = cm.id
     LEFT JOIN civicrm_contact cs on t.contact_id_sub = cs.id
     LEFT JOIN civicrm_contact ca on t.contact_id_app = ca.id
+    LEFT JOIN civicrm_contact cb on t.created_by = cb.id
     INNER JOIN civicrm_option_value s on t.status_id = s.value
     INNER JOIN civicrm_option_group sdt on s.option_group_id = sdt.id 
                                                and sdt.name = 'o8_fund_trxn_status'    
@@ -200,13 +206,20 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
             if (isset($pageName)) {
                 if (strval($pageName) != "") {
                     if (is_numeric($contactId)) {
+                        if ($pageName == 'ContactTab') {
+                            //contact tab for creator
+                            $sql .= " and t.`created_by` = " . intval($contactId) . " ";
+                        }
                         if ($pageName == 'OrgTab') {
+                            //contact tab for organization, fund contact =
                             $sql .= " and f.`contact_id` = " . intval($contactId) . " ";
                         }
                         if ($pageName == 'SocialTab') {
+                            //contact tab for social worker, contact_id_sub =
                             $sql .= " and t.`contact_id_sub` = " . intval($contactId) . " ";
                         }
                         if ($pageName == 'ApproverTab') {
+                            //contact tab for financial manager, contact_id_app =
                             $sql .= " and t.`contact_id_app` = " . intval($contactId) . " ";
                         }
                     }
@@ -289,6 +302,16 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
                     $sql .= " AND t.`contact_id_app` = " . $contact_id_app . " ";
                 } else {
                     $sql .= " AND t.`contact_id_app` in (" . $contact_id_app . ") ";
+                }
+            }
+        }
+
+        if (isset($created_by)) {
+            if (strval($created_by) != "") {
+                if (is_numeric($created_by)) {
+                    $sql .= " AND t.`created_by` = " . $created_by . " ";
+                } else {
+                    $sql .= " AND t.`created_by` in (" . $created_by . ") ";
                 }
             }
         }
@@ -378,6 +401,7 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
             $subaccount = "";
             $contact_app = "";
             $contact_sub = "";
+            $contact_crb = "";
             if (!empty($dao->account_id)) {
                 $account = '<a target="_blank" href="' . CRM_Utils_System::url('civicrm/fund/account',
                         ['reset' => 1, 'id' => $dao->account_id]) . '">' .
@@ -402,6 +426,12 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
                     $dao->ca_name . '</a>';
             }
 
+            if (!empty($dao->created_by)) {
+                $contact_crb = '<a href="' . CRM_Utils_System::url('civicrm/contact/view',
+                        ['reset' => 1, 'cid' => $dao->created_by]) . '">' .
+                    $dao->cb_name . '</a>';
+            }
+
             if (!empty($dao->contact_id_sub)) {
                 $contact_sub = '<a href="' . CRM_Utils_System::url('civicrm/contact/view',
                         ['reset' => 1, 'cid' => $dao->contact_id_sub]) . '">' .
@@ -423,6 +453,7 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
             $rows[$count][] = $subaccount;
             $rows[$count][] = $contact_sub;
             $rows[$count][] = $contact_app;
+            $rows[$count][] = $contact_crb;
             $rows[$count][] = $dao->case_name;
             $rows[$count][] = $fund;
             $rows[$count][] = $dao->status_name;

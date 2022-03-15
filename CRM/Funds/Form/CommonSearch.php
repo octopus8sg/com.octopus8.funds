@@ -47,8 +47,15 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
         //
         $transactionPages = [
             'SearchTransaction',
+            'ContactTab',
+        ];
+        $transactionOrgPages = [
             'OrgTab',
+        ];
+        $transactionFmPages = [
             'ApproverTab',
+        ];
+        $transactionSwPages = [
             'SocialTab',
         ];
         $fundPages = [
@@ -83,6 +90,15 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
         }
         if (in_array($pagename, $transactionPages)) {
             $this->transaction_filter();
+        }
+        if (in_array($pagename, $transactionOrgPages)) {
+            $this->transaction_org_filter();
+        }
+        if (in_array($pagename, $transactionFmPages)) {
+            $this->transaction_fm_filter();
+        }
+        if (in_array($pagename, $transactionSwPages)) {
+            $this->transaction_sw_filter();
         }
 
         $this->assign('suppressForm', FALSE);
@@ -446,6 +462,153 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
                 'placeholder' => ts('- Select Fund -'),
             ], FALSE);
         }
+
+    }
+
+    function transaction_org_filter()
+    {
+        /*
+         *
+            aoData.push({ "name": "transaction_id",
+                "value": $('#transaction_id').val() });
+            aoData.push({ "name": "case_id",
+                "value": $('#transaction_case_id').val() });
+            aoData.push({ "name": "contact_id_app",
+                "value": $('#contact_id_app').val() });
+            aoData.push({ "name": "contact_id_sub",
+                "value": $('#contact_id_sub').val() });
+            aoData.push({ "name": "account_id",
+                "value": $('#transaction_account_id').val() });
+            aoData.push({ "name": "sub_account_id",
+                "value": $('#transaction_sub_account_id').val() });
+            aoData.push({ "name": "dateselect_from",
+                "value": $('#transaction_dateselect_from').val() });
+            aoData.push({ "name": "dateselect_to",
+                "value": $('#transaction_dateselect_to').val() });
+            aoData.push({ "name": "status_id",
+                "value": $('#transaction_status_id').val() });
+         */
+        // ID or Code
+        // Contact (Owner)
+
+        $this->add(
+            'text',
+            'org_transaction_id',
+            ts('Transaction ID'),
+            ['size' => 28, 'maxlength' => 128]);
+
+
+        $props = ['create' => false, 'multiple' => true, 'class' => 'huge'];
+        if ($this->_pagename == 'SocialTab') {
+            $this->addEntityRef('org_contact_id_sub', E::ts('Contact (Social Worker)'),
+                false)->freeze();
+        } else {
+            $this->addEntityRef('org_contact_id_sub', E::ts('Contact (Social Worker)'),
+                false);
+
+        }
+        if ($this->_pagename == 'ApproverTab') {
+            $this->addEntityRef('org_contact_id_app', E::ts('Contact (Approver)'),
+                false)->freeze();
+        } else {
+            $this->addEntityRef('org_contact_id_app', E::ts('Contact (Approver)'),
+                false);
+        }
+        $this->addEntityRef('org_contact_id_app', E::ts('Contact (Approver)'),
+            false);
+        $this->addEntityRef('org_contact_id_sub', E::ts('Contact (Social Worker)'),
+            false);
+        $this->addEntityRef('org_transaction_case_id', E::ts('Case'), [
+            'api' => [
+//                'search_field' => ['id', 'code', 'name', 'description'],
+                'label_field' => "name",
+                'description_field' => [
+                    'code',
+                    'description',
+                ]
+            ],
+            'entity' => 'case',
+            'class' => 'huge',
+            'create' => false,
+            'multiple' => true,
+            'placeholder' => ts('- Select Case -'),
+        ], FALSE);
+        //todo
+        $this->addEntityRef('org_transaction_account_id', E::ts('Account'), [
+            'api' => [
+                'search_fields' => ['code', 'name'],
+                'label_field' => "name",
+                'description_field' => [
+                    'code',
+                    'description',
+                ]
+            ],
+            'entity' => 'fund_account',
+            'class' => 'huge',
+            'create' => false,
+            'multiple' => true,
+            'placeholder' => ts('- Select Account -'),
+        ], FALSE);
+
+        $this->addEntityRef('org_transaction_sub_account_id', E::ts('SubAccount'), [
+            'api' => [
+                'search_field' => ['code', 'name'],
+                'label_field' => "name",
+                'description_field' => [
+                    'code',
+                    'description',
+                ]
+            ],
+            'entity' => 'fund_sub_account',
+            'class' => 'huge',
+            'create' => false,
+            'multiple' => true,
+            'placeholder' => ts('- Select SubAccount -'),
+        ], FALSE);
+
+        $this->addDatePickerRange('org_transaction_dateselect',
+            'Select Date',
+            FALSE,
+            NULL,
+            "From: ",
+            "To: ",
+            [],
+            '_to',
+            '_from'
+        );
+
+        $this->add('select', 'org_transaction_status_id',
+            E::ts('Status'),
+            $this->_trnx_statuses,
+            FALSE,
+            ['class' => 'huge crm-select2',
+                'data-option-edit-path' => 'civicrm/admin/options/o8_fund_trxn_status',
+                'multiple' => TRUE,
+                'placeholder' => ts('- Select Status -'),
+                'select' => ['minimumInputLength' => 0]
+            ]);
+
+        $this->addEntityRef('org_transaction_fund_id', E::ts('My Fund'), [
+            'api' => [
+                'search_fields' => ['code', 'name'],
+//                'extra' => ['contact_id.organisation_name'],
+//                'search_field' => 'code',
+                'description_field' => [
+                    'code',
+                    'description'
+                ],
+                'label_field' => "name",
+                'params' => ['contact_id' => $this->_cid]
+            ],
+            'select' => ['minimumInputLength' => 0],
+            'entity' => 'fund',
+            'class' => 'huge',
+            'create' => false,
+            'multiple' => true,
+            'add_wildcard' => false,
+            'placeholder' => ts('- Select Fund -'),
+        ], FALSE);
+
 
     }
 

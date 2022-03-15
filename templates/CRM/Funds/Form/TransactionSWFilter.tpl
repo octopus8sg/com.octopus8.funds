@@ -5,7 +5,7 @@
             <div class="crm-accordion-header crm-master-accordion-header">{ts}Filter Transaction Data{/ts}</div>
             <!-- /.crm-accordion-header -->
             <div class="crm-accordion-body">
-                <table class="form-layout transaction-sw-filter">
+                <table class="form-layout transaction-filter">
                     <tbody>
                     <tr>
                         <td class="label">{$form.contact_id_sub.label}</td>
@@ -16,8 +16,6 @@
                     <tr>
                         <td class="label">{$form.transaction_status_id.label}</td>
                         <td>{$form.transaction_status_id.html}</td>
-                        <td class="label">{$form.created_by.label}</td>
-                        <td>{$form.created_by.html}</td>
                     </tr>
                     <tr>
                         <td class="label">{$form.transaction_fund_id.label}</td>

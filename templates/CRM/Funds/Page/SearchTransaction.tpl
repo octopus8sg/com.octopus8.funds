@@ -54,7 +54,10 @@
                             {ts}Contact (Social Worker){/ts}
                         </th>
                         <th scope="col">
-                            {ts}Contact (Approver){/ts}
+                            {ts}Contact (Financial Manager){/ts}
+                        </th>
+                        <th scope="col">
+                            {ts}Contact (Created By){/ts}
                         </th>
                         <th scope="col">
                             {ts}Case{/ts}

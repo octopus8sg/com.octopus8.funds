@@ -1,36 +1,41 @@
 <?php
+
 use CRM_Funds_ExtensionUtil as E;
 
-class CRM_Funds_Page_ApproverTab extends CRM_Core_Page {
-
-  public function run()
+class CRM_Funds_Page_ApproverTab extends CRM_Core_Page
 {
-    CRM_Utils_System::setTitle(E::ts('Search Transactions'));
 
-    // link for datatables
-    $urlQry['snippet'] = 4;
-    $pagename = 'ApproverTab';
-    $urlQry['pagename'] = $pagename;
-    $contactId = CRM_Utils_Request::retrieve('cid', 'Positive');
-    $urlQry['cid'] = $contactId;
-    $transactions_source_url = CRM_Utils_System::url('civicrm/fund/transaction_ajax', $urlQry, FALSE, NULL, FALSE);
-//        $transactions_source_url = "";
-    $sourceUrl['transactions_source_url'] = $transactions_source_url;
-    $this->assign('useAjax', true);
-    CRM_Core_Resources::singleton()->addVars('source_url', $sourceUrl);
+    public function run()
+    {
 
-    // controller form for ajax search
-    $controller_data = new CRM_Core_Controller_Simple(
-        'CRM_Funds_Form_CommonSearch',
-        ts('Funds Filter'),
-        NULL,
-        FALSE, FALSE, TRUE
-    );
-    $controller_data->setEmbedded(TRUE);
-    $controller_data->assign('pagename', $pagename);
-    $controller_data->run();
-    parent::run();
-}
+// This part differs for different search pages
+        CRM_Utils_System::setTitle(E::ts('Financial Managers Transactions '));
+        $urlQry['snippet'] = 4;
+        $pageName = 'ApproverTab';
+        $ajaxSourceName = 'transactions_source_url';
+        $urlQry['snippet'] = 4;
+        $contactId = CRM_Utils_Request::retrieve('cid', 'Positive');
+        $urlQry['cid'] = $contactId;
+        $urlQry['pagename'] = $pageName;
+        $ajaxSourceUrl = CRM_Utils_System::url('civicrm/fund/transaction_ajax', $urlQry, FALSE, NULL, FALSE);
+// End this part differs for different search pages
+
+        $sourceUrl[$ajaxSourceName] = $ajaxSourceUrl;
+        $this->assign('useAjax', true);
+        CRM_Core_Resources::singleton()->addVars('source_url', $sourceUrl);
+
+        // controller form for ajax search
+        $controller_data = new CRM_Core_Controller_Simple(
+            'CRM_Funds_Form_CommonSearch',
+            ts('Funds Filter'),
+            NULL,
+            FALSE, FALSE, TRUE
+        );
+        $controller_data->setEmbedded(TRUE);
+        $controller_data->assign('pagename', $pageName);
+        $controller_data->run();
+        parent::run();
+    }
 
 
 }

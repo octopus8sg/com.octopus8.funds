@@ -7,9 +7,9 @@ class CRM_Funds_Page_SocialTab extends CRM_Core_Page
 
     public function run()
     {
-        CRM_Utils_System::setTitle(E::ts('Search Transactions'));
 
 // This part differs for different search pages
+        CRM_Utils_System::setTitle(E::ts('Social Workers Transactions'));
         $urlQry['snippet'] = 4;
         $pageName = 'SocialTab';
         $ajaxSourceName = 'transactions_source_url';

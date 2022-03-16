@@ -632,7 +632,7 @@ function funds_civicrm_tabset($path, &$tabs, $context)
             ]);
 
             $url = CRM_Utils_System::url('civicrm/fund/approvertab', ['cid' => $contactId]);
-            $title = "Fund Transactions (FM)";
+            $title = "Transactions";
             $tabs[] = array(
                 'id' => 'approvertab',
                 'url' => $url,
@@ -654,7 +654,7 @@ function funds_civicrm_tabset($path, &$tabs, $context)
                 'url' => $url,
                 'count' => $myEntities,
                 'title' => $title,
-                'weight' => 1000,
+                'weight' => 1010,
                 'icon' => 'crm-i fa-dropbox',
             );
 
@@ -665,14 +665,14 @@ function funds_civicrm_tabset($path, &$tabs, $context)
             ]);
 
             $url = CRM_Utils_System::url('civicrm/fund/orgtab', ['cid' => $contactId]);
-            $title = "Fund Transactions (ORG)";
+            $title = "Transactions";
 //            CRM_Core_Error::debug_var('myEntities', $myEntities);
             $tabs[] = array(
                 'id' => 'orgtab',
                 'url' => $url,
                 'count' => $myEntities,
                 'title' => $title,
-                'weight' => 1000,
+                'weight' => 1020,
                 'icon' => 'crm-i fa-dropbox',
             );
 
@@ -682,13 +682,13 @@ function funds_civicrm_tabset($path, &$tabs, $context)
         ]);
     CRM_Core_Error::debug_var('myEntities', $myEntities);
         $url = CRM_Utils_System::url('civicrm/fund/contacttab', ['cid' => $contactId]);
-        $title = "My Expences";
+        $title = "Expences";
         $tabs[] = array(
             'id' => 'contacttab',
             'url' => $url,
             'count' => $myEntities,
             'title' => $title,
-            'weight' => 1000,
+            'weight' => 1030,
             'icon' => 'crm-i fa-dropbox',
         );
 

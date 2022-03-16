@@ -5,35 +5,37 @@
             <div class="crm-accordion-header crm-master-accordion-header">{ts}Filter Transaction Data{/ts}</div>
             <!-- /.crm-accordion-header -->
             <div class="crm-accordion-body">
-                <table class="form-layout transaction-filter">
+                <table class="form-layout sw-transaction-filter">
                     <tbody>
                     <tr>
-                        <td class="label">{$form.contact_id_sub.label}</td>
-                        <td>{$form.contact_id_sub.html}</td>
-                        <td class="label">{$form.contact_id_app.label}</td>
-                        <td>{$form.contact_id_app.html}</td>
+                        <td class="label">{$form.sw_contact_id_sub.label}</td>
+                        <td>{$form.sw_contact_id_sub.html}</td>
+                        <td class="label">{$form.sw_contact_id_app.label}</td>
+                        <td>{$form.sw_contact_id_app.html}</td>
                     </tr>
                     <tr>
-                        <td class="label">{$form.transaction_status_id.label}</td>
-                        <td>{$form.transaction_status_id.html}</td>
+                        <td class="label">{$form.sw_transaction_status_id.label}</td>
+                        <td>{$form.sw_transaction_status_id.html}</td>
+                        <td class="label">{$form.sw_created_by.label}</td>
+                        <td>{$form.sw_created_by.html}</td>
                     </tr>
                     <tr>
-                        <td class="label">{$form.transaction_fund_id.label}</td>
-                        <td>{$form.transaction_fund_id.html}</td>
-                        <td class="label">{$form.transaction_case_id.label}</td>
-                        <td>{$form.transaction_case_id.html}</td>
+                        <td class="label">{$form.sw_transaction_fund_id.label}</td>
+                        <td>{$form.sw_transaction_fund_id.html}</td>
+                        <td class="label">{$form.sw_transaction_case_id.label}</td>
+                        <td>{$form.sw_transaction_case_id.html}</td>
                     </tr>
                     <tr>
-                        <td class="label">{$form.transaction_account_id.label}</td>
-                        <td>{$form.transaction_account_id.html}</td>
-                        <td class="label">{$form.transaction_sub_account_id.label}</td>
-                        <td>{$form.transaction_sub_account_id.html}</td>
+                        <td class="label">{$form.sw_transaction_account_id.label}</td>
+                        <td>{$form.sw_transaction_account_id.html}</td>
+                        <td class="label">{$form.sw_transaction_sub_account_id.label}</td>
+                        <td>{$form.sw_transaction_sub_account_id.html}</td>
                     </tr>
                     <tr>
-                        <td class="label">{$form.transaction_dateselect_from.label}</td>
-                        <td>{$form.transaction_dateselect_from.html}</td>
-                        <td class="label">{$form.transaction_dateselect_to.label}</td>
-                        <td>{$form.transaction_dateselect_to.html}</td>
+                        <td class="label">{$form.sw_transaction_dateselect_from.label}</td>
+                        <td>{$form.sw_transaction_dateselect_from.html}</td>
+                        <td class="label">{$form.sw_transaction_dateselect_to.label}</td>
+                        <td>{$form.sw_transaction_dateselect_to.html}</td>
                     </tr>
                     </tbody>
                 </table>

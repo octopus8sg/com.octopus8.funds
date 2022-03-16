@@ -15,7 +15,8 @@
             <div class="crm-search-results">
                 {include file="CRM/common/enableDisableApi.tpl"}
                 {include file="CRM/common/jsortable.tpl"}
-                <table class="selector-sw-transactions row-highlight pagerDisplay" id="Transactions" name="Transactions">
+                <table class="sw-selector-transactions row-highlight pagerDisplay" id="Transactions"
+                       name="Transactions">
                     <thead class="sticky">
                     <tr>
                         <th id="sortable" scope="col">
@@ -43,6 +44,9 @@
                             {ts}Contact (Approver){/ts}
                         </th>
                         <th scope="col">
+                            {ts}Contact (Created By){/ts}
+                        </th>
+                        <th scope="col">
                             {ts}Case{/ts}
                         </th>
                         <th scope="col">
@@ -58,5 +62,5 @@
             </div>
         </div>
     </div>
-{crmScript ext=com.octopus8.funds file=js/transaction.js}
+{crmScript ext=com.octopus8.funds file=js/swtransaction.js}
 {/crmScope}

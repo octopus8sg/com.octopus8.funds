@@ -333,8 +333,8 @@ function funds_civicrm_themes(&$themes)
  */
 function funds_civicrm_permission(&$permissions)
 {
-    $permissions['*manage o8connect Funds'] = E::ts('Manage o8connect Funds');
-    $permissions['*manage o8connect Transactions'] = E::ts('Manage o8connect Transactions');
+    $permissions['administer CiviCRM,*manage o8connect Funds'] = E::ts('Manage o8connect Funds');
+    $permissions['administer CiviCRM,*manage o8connect Transactions'] = E::ts('Manage o8connect Transactions');
 }
 
 /**
@@ -352,7 +352,7 @@ function funds_civicrm_permission_check($permission, &$granted, $contact_id = NU
     } else {
         $currentUserId = $contact_id;
     }
-    if ($permission === '*manage o8connect Funds') {
+    if ($permission === 'administer CiviCRM,*manage o8connect Funds') {
 //        CRM_Core_Error::debug_var('currentUserId', $currentUserId);
 //        CRM_Core_Error::debug_var('contact_id', $contact_id);
         if ($financial_manager_group_id < 0) {
@@ -365,7 +365,7 @@ function funds_civicrm_permission_check($permission, &$granted, $contact_id = NU
 
         $granted = $isEnabled;
     }
-    if ($permission === '*manage o8connect Transactions') {
+    if ($permission === 'administer CiviCRM,*manage o8connect Transactions') {
         CRM_Core_Error::debug_var('contact_id', $contact_id);
         CRM_Core_Error::debug_var('currentUserId', $currentUserId);
 //        CRM_Core_Error::debug_var('social_worker_group_id', $social_worker_group_id);
@@ -469,7 +469,7 @@ function funds_civicrm_navigationMenu(&$menu)
         'name' => 'o8_funds',
         'icon' => 'crm-i fa-dropbox',
 //        'url' => 'civicrm/fund/dashboard',
-        'permission' => '*manage o8connect Funds, *manage o8connect Transactions',
+        'permission' => 'administer CiviCRM,*manage o8connect Funds, *manage o8connect Transactions',
         'navID' => 10,
         'operator' => 'OR',
         'separator' => 0,
@@ -478,7 +478,7 @@ function funds_civicrm_navigationMenu(&$menu)
         'label' => E::ts('Dashboard'),
         'name' => 'o8_funds_dashboard',
         'url' => 'civicrm/fund/dashboard',
-        'permission' => '*manage o8connect Funds',
+        'permission' => 'administer CiviCRM,*manage o8connect Funds',
         'operator' => 'OR',
         'separator' => 0,
     ));
@@ -487,7 +487,7 @@ function funds_civicrm_navigationMenu(&$menu)
         'label' => E::ts('Find Funds'),
         'name' => 'o8_funds_search',
         'url' => 'civicrm/fund/search',
-        'permission' => '*manage o8connect Funds',
+        'permission' => 'administer CiviCRM,*manage o8connect Funds',
         'operator' => 'OR',
         'separator' => 0,
     ));
@@ -496,7 +496,7 @@ function funds_civicrm_navigationMenu(&$menu)
         'label' => E::ts('Add Fund'),
         'name' => 'o8_funds_add_fund',
         'url' => 'civicrm/fund/form?reset=1&action=add',
-        'permission' => '*manage o8connect Funds',
+        'permission' => 'administer CiviCRM,*manage o8connect Funds',
         'operator' => 'OR',
         'separator' => 0,
     ));
@@ -505,7 +505,7 @@ function funds_civicrm_navigationMenu(&$menu)
         'label' => E::ts('Find Account'),
         'name' => 'o8_funds_account_search',
         'url' => 'civicrm/fund/accountsearch',
-        'permission' => '*manage o8connect Funds',
+        'permission' => 'administer CiviCRM,*manage o8connect Funds',
         'operator' => 'OR',
         'separator' => 0,
     ));
@@ -514,7 +514,7 @@ function funds_civicrm_navigationMenu(&$menu)
         'label' => E::ts('Add Account'),
         'name' => 'o8_funds_account_add',
         'url' => 'civicrm/fund/account?reset=1&action=add',
-        'permission' => '*manage o8connect Funds',
+        'permission' => 'administer CiviCRM,*manage o8connect Funds',
         'operator' => 'OR',
         'separator' => 0,
     ));
@@ -523,7 +523,7 @@ function funds_civicrm_navigationMenu(&$menu)
         'label' => E::ts('Find Account Type'),
         'name' => 'o8_funds_account_type_search',
         'url' => 'civicrm/fund/accounttypesearch',
-        'permission' => '*manage o8connect Funds',
+        'permission' => 'administer CiviCRM,*manage o8connect Funds',
         'operator' => 'OR',
         'separator' => 0,
     ));
@@ -532,7 +532,7 @@ function funds_civicrm_navigationMenu(&$menu)
         'label' => E::ts('Add Account Type'),
         'name' => 'o8_funds_account_type_add',
         'url' => 'civicrm/fund/accounttype?reset=1&action=add',
-        'permission' => '*manage o8connect Funds',
+        'permission' => 'administer CiviCRM,*manage o8connect Funds',
         'operator' => 'OR',
         'separator' => 0,
     ));
@@ -541,7 +541,7 @@ function funds_civicrm_navigationMenu(&$menu)
         'label' => E::ts('Find Category'),
         'name' => 'o8_funds_category_search',
         'url' => 'civicrm/fund/categorysearch',
-        'permission' => '*manage o8connect Funds',
+        'permission' => 'administer CiviCRM,*manage o8connect Funds',
         'operator' => 'OR',
         'separator' => 0,
     ));
@@ -550,7 +550,7 @@ function funds_civicrm_navigationMenu(&$menu)
         'label' => E::ts('Add Category'),
         'name' => 'o8_funds_category_add',
         'url' => 'civicrm/fund/category?reset=1&action=add',
-        'permission' => '*manage o8connect Funds',
+        'permission' => 'administer CiviCRM,*manage o8connect Funds',
         'operator' => 'OR',
         'separator' => 0,
     ));
@@ -559,7 +559,7 @@ function funds_civicrm_navigationMenu(&$menu)
         'label' => E::ts('Find SubAccount'),
         'name' => 'o8_funds_sub_account_search',
         'url' => 'civicrm/fund/subaccountsearch',
-        'permission' => '*manage o8connect Funds',
+        'permission' => 'administer CiviCRM,*manage o8connect Funds',
         'operator' => 'OR',
         'separator' => 0,
     ));
@@ -568,7 +568,7 @@ function funds_civicrm_navigationMenu(&$menu)
         'label' => E::ts('Add SubAccount'),
         'name' => 'o8_funds_sub_account_add',
         'url' => 'civicrm/fund/subaccount?reset=1&action=add',
-        'permission' => '*manage o8connect Funds',
+        'permission' => 'administer CiviCRM,*manage o8connect Funds',
         'operator' => 'OR',
         'separator' => 0,
     ));
@@ -577,7 +577,7 @@ function funds_civicrm_navigationMenu(&$menu)
         'label' => E::ts('Find Transaction'),
         'name' => 'o8_funds_transaction_search',
         'url' => 'civicrm/fund/transactionsearch',
-        'permission' => '*manage o8connect Funds, *manage o8connect Transactions',
+        'permission' => 'administer CiviCRM,*manage o8connect Funds, *manage o8connect Transactions',
         'operator' => 'OR',
         'separator' => 0,
     ));
@@ -586,7 +586,7 @@ function funds_civicrm_navigationMenu(&$menu)
         'label' => E::ts('Add Transaction'),
         'name' => 'o8_funds_transaction_add',
         'url' => 'civicrm/fund/transaction?reset=1&action=add',
-        'permission' => '*manage o8connect Funds, *manage o8connect Transactions',
+        'permission' => 'administer CiviCRM,*manage o8connect Funds, *manage o8connect Transactions',
         'operator' => 'OR',
         'separator' => 0,
     ));
@@ -595,7 +595,7 @@ function funds_civicrm_navigationMenu(&$menu)
         'label' => E::ts('Fund Reports'),
         'name' => 'o8_funds_report_funds',
         'url' => CRM_Utils_System::url('civicrm/report/list', ['grp' => 'funds', 'reset' => 1]),
-        'permission' => '*manage o8connect Funds',
+        'permission' => 'administer CiviCRM,*manage o8connect Funds',
         'operator' => 'OR',
         'separator' => 2,
     ));

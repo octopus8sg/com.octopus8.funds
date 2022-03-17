@@ -89,11 +89,11 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
 
         $status_id = CRM_Utils_Request::retrieveValue('status_id', 'CommaSeparatedIntegers', null);
 
-        $contact_id_sub = CRM_Utils_Request::retrieveValue('contact_id_app', 'CommaSeparatedIntegers', null);
+        $contact_id_app = CRM_Utils_Request::retrieveValue('contact_id_app', 'CommaSeparatedIntegers', null);
+
+        $contact_id_sub = CRM_Utils_Request::retrieveValue('contact_id_sub', 'CommaSeparatedIntegers', null);
 
         $created_by = CRM_Utils_Request::retrieveValue('created_by', 'CommaSeparatedIntegers', null);
-
-        $contact_id_app = CRM_Utils_Request::retrieveValue('contact_id_sub', 'CommaSeparatedIntegers', null);
 
         $dateselect_to = CRM_Utils_Request::retrieveValue('dateselect_to', 'String', null);
 
@@ -125,14 +125,14 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
             1 => 'date',
             2 => 'description',
             3 => 'amount',
-            5 => 'account_name',
-            6 => 'sub_account_name',
-            7 => 'cs_name',
-            8 => 'ca_name',
-            9 => 'cb_name',
-            10 => 'case_name',
-            11 => 'fund_name',
-            12 => 'status_name'
+            4 => 'account_name',
+            5 => 'sub_account_name',
+            6 => 'cs_name',
+            7 => 'ca_name',
+            8 => 'cb_name',
+            9 => 'case_name',
+            10 => 'fund_name',
+            11 => 'status_name'
         ];
 
         $sort = isset($_REQUEST['iSortCol_0']) ? CRM_Utils_Array::value(CRM_Utils_Type::escape($_REQUEST['iSortCol_0'], 'Integer'), $sortMapper) : NULL;
@@ -370,7 +370,7 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
         }
 
 
-//        CRM_Core_Error::debug_var('transaction_sql', $sql);
+        CRM_Core_Error::debug_var('transaction_sql', $sql);
 
         $dao = CRM_Core_DAO::executeQuery($sql);
         $iFilteredTotal = CRM_Core_DAO::singleValueQuery("SELECT FOUND_ROWS()");
@@ -449,6 +449,7 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
             $view = '<a class="view-transaction action-item crm-hover-button" target="_blank" href="' . $r_view . '"><i class="crm-i fa-eye"></i>&nbsp;View</a>';
             $action = "<span>$update $delete</span>";
             if (isset($contactId)) {
+                $action = "<span>$view</span>";
                 if (isset($pageName)) {
                     if (strval($pageName) == "ContactTab") {
                         if (is_numeric($contactId)) {
@@ -458,6 +459,16 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
                     if (strval($pageName) == "SocialTab") {
                         if (is_numeric($contactId)) {
                             $action = "<span>$view $update</span>";
+                        }
+                    }
+                    if (strval($pageName) == "ApproverTab") {
+                        if (is_numeric($contactId)) {
+                            $action = "<span>$view $update</span>";
+                        }
+                    }
+                    if (strval($pageName) == "OrgTab") {
+                        if (is_numeric($contactId)) {
+                            $action = "<span>$view</span>";
                         }
                     }
                 }

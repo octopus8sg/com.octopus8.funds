@@ -784,24 +784,11 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
 
 
         $props = ['create' => false, 'multiple' => true, 'class' => 'huge'];
-        if ($this->_pagename == 'SocialTab') {
-            $this->addEntityRef('org_contact_id_sub', E::ts('Contact (Social Worker)'),
-                false)->freeze();
-        } else {
-            $this->addEntityRef('org_contact_id_sub', E::ts('Contact (Social Worker)'),
-                false);
-
-        }
-        if ($this->_pagename == 'ApproverTab') {
-            $this->addEntityRef('org_contact_id_app', E::ts('Contact (Approver)'),
-                false)->freeze();
-        } else {
-            $this->addEntityRef('org_contact_id_app', E::ts('Contact (Approver)'),
-                false);
-        }
-        $this->addEntityRef('org_contact_id_app', E::ts('Contact (Approver)'),
+        $this->addEntityRef('org_contact_id_app', E::ts('Contact (Approver)'),$props,
             false);
-        $this->addEntityRef('org_contact_id_sub', E::ts('Contact (Social Worker)'),
+        $this->addEntityRef('org_contact_id_sub', E::ts('Contact (Social Worker)'),$props,
+            false);
+        $this->addEntityRef('org_created_by', E::ts('Contact (Created By)'),$props,
             false);
         $this->addEntityRef('org_transaction_case_id', E::ts('Case'), [
             'api' => [

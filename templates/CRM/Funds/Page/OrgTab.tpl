@@ -8,7 +8,7 @@
             <div class="crm-search-results">
                 {include file="CRM/common/enableDisableApi.tpl"}
                 {include file="CRM/common/jsortable.tpl"}
-                <table class="selector-org-transactions row-highlight pagerDisplay" id="Transactions"
+                <table class="org-selector-transactions row-highlight pagerDisplay" id="Transactions"
                        name="Transactions">
                     <thead class="sticky">
                     <tr>
@@ -35,6 +35,9 @@
                         </th>
                         <th scope="col">
                             {ts}Contact (Approver){/ts}
+                        </th>
+                        <th scope="col">
+                            {ts}Contact (Created By){/ts}
                         </th>
                         <th scope="col">
                             {ts}Case{/ts}

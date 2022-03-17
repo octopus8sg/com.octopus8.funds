@@ -202,7 +202,7 @@ CRM.$(function ($) {
 
         });
         //End Reset Table
-        $('.org-transaction-filter :input').change(function () {
+        $('.transaction-filter :input').change(function () {
             new_transactions_table.draw();
         });
 

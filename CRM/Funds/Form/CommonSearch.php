@@ -617,24 +617,21 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
 
         $this->add(
             'text',
-            'transaction_id',
+            'fm_transaction_id',
             ts('Transaction ID'),
             ['size' => 28, 'maxlength' => 128]);
 
 
         $props = ['create' => false, 'multiple' => true, 'class' => 'huge'];
-        $contact_id_app = $this->addEntityRef('contact_id_app', E::ts('Contact (Approver)'),
+        $contact_id_app = $this->addEntityRef('fm_contact_id_app', E::ts('Contact (Approver)'),
             false);
-        $created_by = $this->addEntityRef('created_by', E::ts('Contact (Created By)'),
+        $created_by = $this->addEntityRef('fm_created_by', E::ts('Contact (Created By)'),
             false);
-        $contact_id_sub = $this->addEntityRef('contact_id_sub', E::ts('Contact (Social Worker)'),
+        $contact_id_sub = $this->addEntityRef('fm_contact_id_sub', E::ts('Contact (Social Worker)'),
             false);
+        $contact_id_app->freeze();
 
-        if ($this->_cid) {
-            $created_by->freeze();
-        }
-
-        $this->addEntityRef('transaction_case_id', E::ts('Case'), [
+        $this->addEntityRef('fm_transaction_case_id', E::ts('Case'), [
             'api' => [
 //                'search_field' => ['id', 'code', 'name', 'description'],
                 'label_field' => "name",
@@ -650,7 +647,7 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
             'placeholder' => ts('- Select Case -'),
         ], FALSE);
         //todo
-        $this->addEntityRef('transaction_account_id', E::ts('Account'), [
+        $this->addEntityRef('fm_transaction_account_id', E::ts('Account'), [
             'api' => [
                 'search_fields' => ['code', 'name'],
                 'label_field' => "name",
@@ -666,7 +663,7 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
             'placeholder' => ts('- Select Account -'),
         ], FALSE);
 
-        $this->addEntityRef('transaction_sub_account_id', E::ts('SubAccount'), [
+        $this->addEntityRef('fm_transaction_sub_account_id', E::ts('SubAccount'), [
             'api' => [
                 'search_field' => ['code', 'name'],
                 'label_field' => "name",
@@ -682,7 +679,7 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
             'placeholder' => ts('- Select SubAccount -'),
         ], FALSE);
 
-        $this->addDatePickerRange('transaction_dateselect',
+        $this->addDatePickerRange('fm_transaction_dateselect',
             'Select Date',
             FALSE,
             NULL,
@@ -693,7 +690,7 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
             '_from'
         );
 
-        $this->add('select', 'transaction_status_id',
+        $this->add('select', 'fm_transaction_status_id',
             E::ts('Status'),
             $this->_trnx_statuses,
             FALSE,
@@ -704,49 +701,27 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
                 'select' => ['minimumInputLength' => 0]
             ]);
 
-        if ($this->_pagename == 'OrgTab') {
-            $this->addEntityRef('transaction_fund_id', E::ts('My Fund'), [
-                'api' => [
-                    'search_fields' => ['code', 'name'],
-//                'extra' => ['contact_id.organisation_name'],
-//                'search_field' => 'code',
-                    'description_field' => [
-                        'code',
-                        'description'
-                    ],
-                    'label_field' => "name",
-                    'params' => ['contact_id' => $this->_cid]
-                ],
-                'select' => ['minimumInputLength' => 0],
-                'entity' => 'fund',
-                'class' => 'huge',
-                'create' => false,
-                'multiple' => true,
-                'add_wildcard' => false,
-                'placeholder' => ts('- Select Fund -'),
-            ], FALSE);
-        } else {
-            $this->addEntityRef('transaction_fund_id', E::ts('Fund'), [
-                'api' => [
-                    'search_fields' => ['code', 'name'],
+
+        $this->addEntityRef('fm_transaction_fund_id', E::ts('Fund'), [
+            'api' => [
+                'search_fields' => ['code', 'name'],
 //                'extra' => ['code', 'name'],
 //                'search_field' => 'code',
-                    'description_field' => [
-                        'code',
-                        'description',
-                    ],
-                    'label_field' => "name",
-                    'params' => []
+                'description_field' => [
+                    'code',
+                    'description',
                 ],
-                'select' => ['minimumInputLength' => 1],
-                'entity' => 'fund',
-                'class' => 'huge',
-                'create' => false,
-                'multiple' => true,
-                'add_wildcard' => false,
-                'placeholder' => ts('- Select Fund -'),
-            ], FALSE);
-        }
+                'label_field' => "name",
+                'params' => []
+            ],
+            'select' => ['minimumInputLength' => 1],
+            'entity' => 'fund',
+            'class' => 'huge',
+            'create' => false,
+            'multiple' => true,
+            'add_wildcard' => false,
+            'placeholder' => ts('- Select Fund -'),
+        ], FALSE);
 
     }
 
@@ -784,11 +759,11 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
 
 
         $props = ['create' => false, 'multiple' => true, 'class' => 'huge'];
-        $this->addEntityRef('org_contact_id_app', E::ts('Contact (Approver)'),$props,
+        $this->addEntityRef('org_contact_id_app', E::ts('Contact (Approver)'), $props,
             false);
-        $this->addEntityRef('org_contact_id_sub', E::ts('Contact (Social Worker)'),$props,
+        $this->addEntityRef('org_contact_id_sub', E::ts('Contact (Social Worker)'), $props,
             false);
-        $this->addEntityRef('org_created_by', E::ts('Contact (Created By)'),$props,
+        $this->addEntityRef('org_created_by', E::ts('Contact (Created By)'), $props,
             false);
         $this->addEntityRef('org_transaction_case_id', E::ts('Case'), [
             'api' => [

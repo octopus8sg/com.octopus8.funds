@@ -93,6 +93,10 @@ CRM.$(function ($) {
                 "value": $('#sw_transaction_id').val()
             });
             aoData.push({
+                "name": "socialtab",
+                "value": 1
+            });
+            aoData.push({
                 "name": "case_id",
                 "value": $('#sw_transaction_case_id').val()
             });

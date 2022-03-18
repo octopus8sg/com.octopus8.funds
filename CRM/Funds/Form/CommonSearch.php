@@ -48,15 +48,19 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
         $transactionPages = [
             'SearchTransaction',
             'ContactTab',
+            'TransactionTab'
         ];
         $transactionOrgPages = [
             'OrgTab',
+            'TransactionTab'
         ];
         $transactionFmPages = [
             'ApproverTab',
+            'TransactionTab'
         ];
         $transactionSwPages = [
             'SocialTab',
+            'TransactionTab'
         ];
         $fundPages = [
             'SearchFund',
@@ -863,16 +867,16 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
     {
         if ($this->_cid) {
             $defaults = [];
-            if ($this->_pagename == 'ApproverTab') {
+            if ($this->_pagename == 'TransactionTab') {
                 $defaults['fm_contact_id_app'] =
                     $this->_cid;
 
             }
-            if ($this->_pagename == 'SocialTab') {
+            if ($this->_pagename == 'TransactionTab') {
                 $defaults['sw_contact_id_sub'] =
                     $this->_cid;
             }
-            if ($this->_pagename == 'ContactTab') {
+            if ($this->_pagename == 'TransactionTab') {
                 $defaults['created_by'] =
                     $this->_cid;
             }

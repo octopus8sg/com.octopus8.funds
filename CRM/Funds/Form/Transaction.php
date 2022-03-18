@@ -93,7 +93,7 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
             $entities = civicrm_api3('FundTransaction', 'get', [
                 'id' => $this->_id,
             ]);
-            CRM_Core_Error::debug_var('social', $this->_isSocial);
+//            CRM_Core_Error::debug_var('social', $this->_isSocial);
 
             if (!empty($entities)) {
                 $this->_isNew = FALSE;

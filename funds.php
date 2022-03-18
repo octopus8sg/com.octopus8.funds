@@ -366,8 +366,8 @@ function funds_civicrm_permission_check($permission, &$granted, $contact_id = NU
         $granted = $isEnabled;
     }
     if ($permission === 'administer CiviCRM,*manage o8connect Transactions') {
-        CRM_Core_Error::debug_var('contact_id', $contact_id);
-        CRM_Core_Error::debug_var('currentUserId', $currentUserId);
+//        CRM_Core_Error::debug_var('contact_id', $contact_id);
+//        CRM_Core_Error::debug_var('currentUserId', $currentUserId);
 //        CRM_Core_Error::debug_var('social_worker_group_id', $social_worker_group_id);
         if ($social_worker_group_id < 0) {
             $granted = FALSE;
@@ -616,10 +616,7 @@ function funds_civicrm_tabset($path, &$tabs, $context)
     $isApprover = $isSocial = $isOrganization = FALSE;
     $isApprover = boolval(CRM_Contact_BAO_GroupContact::isContactInGroup($contactId, $financial_manager_group_id));
     $isSocial = boolval(CRM_Contact_BAO_GroupContact::isContactInGroup($contactId, $social_worker_group_id));
-    $contact = \Civi\Api4\Contact::get(0)
-        ->addWhere('id', '=', $contactId)
-        ->execute()->single();
-    $contactType = $contact['contact_type'];
+    $contactType = CRM_Contact_BAO_Contact::getContactType($contactId);
     if ($contactType == 'Organization') {
         $isOrganization = TRUE;
     }

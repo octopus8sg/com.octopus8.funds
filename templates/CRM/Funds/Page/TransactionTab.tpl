@@ -16,42 +16,54 @@
             <ul class="ui-tabs-nav ui-corner-all ui-helper-reset ui-helper-clearfix ui-widget-header">
                 <li id="tab_data"
                     class="crm-tab-button ui-corner-all ui-tabs-tab ui-corner-top ui-state-default ui-tab ui-tabs-active ui-state-active">
-                    <a href="#data-subtab" title="{ts}Data{/ts}">
+                    <a href="#own-subtab" title="{ts}Own Transactions{/ts}">
                         {ts}Own Transactions{/ts} <em>{$dataCount}</em>
                     </a>
                 </li>
+                {if $financial_manager}
                 <li id="tab_devices"
                     class="crm-tab-button ui-corner-all ui-tabs-tab ui-corner-top ui-state-default ui-tab">
-                    <a href="#devices-subtab" title="{ts}Devices{/ts}">
-                        {ts}Financial Manager{/ts} <em>{$deviceCount}</em>
+                    <a href="#fm-subtab" title="{ts}Financial Manager{/ts}">
+                        {ts}Financial Manager{/ts} <em>{$financial_manager}</em>
                     </a>
                 </li>
+                {/if}
+                {if $social_worker}
                 <li id="tab_analytics"
                     class="crm-tab-button ui-corner-all ui-tabs-tab ui-corner-top ui-state-default ui-tab">
-                    <a href="#analytics-subtab" title="{ts}Analytics{/ts}">
-                        {ts}Social Worker{/ts} <em>{$analyticsCount}</em>
+                    <a href="#sw-subtab" title="{ts}Social Worker{/ts}">
+                        {ts}Social Worker{/ts} <em>{$social_worker}</em>
                     </a>
                 </li>
+                {/if}
+                {if $organisation}
                 <li id="tab_alarm_rules"
                     class="crm-tab-button ui-corner-all ui-tabs-tab ui-corner-top ui-state-default ui-tab">
-                    <a href="#alarm-rules-subtab" title="{ts}Alarm Rules{/ts}">
-                        {ts}Organisation{/ts} <em>{$alarmRuleCount}</em>
+                    <a href="#org-subtab" title="{ts}Organisation{/ts}">
+                        {ts}Organisation{/ts} <em>{$organisation}</em>
                     </a>
                 </li>
+                {/if}
             </ul>
 
-            <div id="data-subtab" class="ui-tabs-panel ui-widget-content ui-corner-bottom">
-                {include file="CRM/Devices/Page/ContactTab.tpl"}
+            <div id="own-subtab" class="ui-tabs-panel ui-widget-content ui-corner-bottom">
+                {include file="CRM/Funds/Page/ContactTab.tpl"}
             </div>
-            <div id="devices-subtab" class="devices-subtab ui-tabs-panel ui-widget-content ui-corner-bottom">
-                {include file="CRM/Devices/Page/ApproverTab.tpl"}
+            {if $financial_manager}
+            <div id="fm-subtab" class="devices-subtab ui-tabs-panel ui-widget-content ui-corner-bottom">
+                {include file="CRM/Funds/Page/ApproverTab.tpl"}
             </div>
-            <div id="analytics-subtab" class="analytics-subtab ui-tabs-panel ui-widget-content ui-corner-bottom">
-                {include file="CRM/Devices/Page/SocialTab.tpl"}
+            {/if}
+            {if $social_worker}
+            <div id="sw-subtab" class="analytics-subtab ui-tabs-panel ui-widget-content ui-corner-bottom">
+                {include file="CRM/Funds/Page/SocialTab.tpl"}
             </div>
-            <div id="alarm-rules-subtab" class="alarm-rules-subtab ui-tabs-panel ui-widget-content ui-corner-bottom">
-                {include file="CRM/Devices/Page/OrgTab.tpl"}
+            {/if}
+            {if $organisation}
+            <div id="org-subtab" class="alarm-rules-subtab ui-tabs-panel ui-widget-content ui-corner-bottom">
+                {include file="CRM/Funds/Page/OrgTab.tpl"}
             </div>
+            {/if}
             <div class="clear"></div>
         </div>
     </div>

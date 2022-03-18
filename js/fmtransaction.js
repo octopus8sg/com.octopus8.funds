@@ -93,6 +93,10 @@ CRM.$(function ($) {
                 "value": $('#fm_transaction_id').val()
             });
             aoData.push({
+                "name": "approvertab",
+                "value": 1
+            });
+            aoData.push({
                 "name": "case_id",
                 "value": $('#fm_transaction_case_id').val()
             });

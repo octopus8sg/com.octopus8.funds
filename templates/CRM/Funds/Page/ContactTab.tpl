@@ -61,5 +61,5 @@
             </div>
         </div>
     </div>
-{crmScript ext=com.octopus8.funds file=js/transaction.js}
+{crmScript ext=com.octopus8.funds file=js/owntransaction.js}
 {/crmScope}

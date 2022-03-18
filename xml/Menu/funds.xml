@@ -150,4 +150,10 @@
     <title>OrgTab</title>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
+  <item>
+    <path>civicrm/fund/transactiontab</path>
+    <page_callback>CRM_Funds_Page_TransactionTab</page_callback>
+    <title>TransactionTab</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
 </menu>

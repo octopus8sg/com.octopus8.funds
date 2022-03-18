@@ -626,65 +626,65 @@ function funds_civicrm_tabset($path, &$tabs, $context)
     $tab_added = FALSE;
     if ($path === 'civicrm/contact/view') {
         // add a tab to the contact summary screen
-        if ($isApprover) {
-            $myEntities = civicrm_api3('FundTransaction', 'getcount', [
-                'contact_id_app' => $contactId,
-            ]);
-
-            $url = CRM_Utils_System::url('civicrm/fund/approvertab', ['cid' => $contactId]);
-            $title = "Transactions";
-            $tabs[] = array(
-                'id' => 'approvertab',
-                'url' => $url,
-                'count' => $myEntities,
-                'title' => $title,
-                'weight' => 1000,
-                'icon' => 'crm-i fa-dropbox',
-            );
-            $tab_added = TRUE;
-        }
-        if ($isSocial) {
-            $myEntities = civicrm_api3('FundTransaction', 'getcount', [
-                'contact_id_sub' => $contactId,
-            ]);
-            $url = CRM_Utils_System::url('civicrm/fund/socialtab', ['cid' => $contactId]);
-            $title = "Transactions";
-            $tabs[] = array(
-                'id' => 'socialtab',
-                'url' => $url,
-                'count' => $myEntities,
-                'title' => $title,
-                'weight' => 1010,
-                'icon' => 'crm-i fa-dropbox',
-            );
-
-        }
-        if ($isOrganization) {
-            $myEntities = civicrm_api3('FundTransaction', 'getcount', [
-                'fund.contact_id' => $contactId,
-            ]);
-
-            $url = CRM_Utils_System::url('civicrm/fund/orgtab', ['cid' => $contactId]);
-            $title = "Transactions";
-//            CRM_Core_Error::debug_var('myEntities', $myEntities);
-            $tabs[] = array(
-                'id' => 'orgtab',
-                'url' => $url,
-                'count' => $myEntities,
-                'title' => $title,
-                'weight' => 1020,
-                'icon' => 'crm-i fa-dropbox',
-            );
-
-        }
+//        if ($isApprover) {
+//            $myEntities = civicrm_api3('FundTransaction', 'getcount', [
+//                'contact_id_app' => $contactId,
+//            ]);
+//
+//            $url = CRM_Utils_System::url('civicrm/fund/approvertab', ['cid' => $contactId]);
+//            $title = "Transactions";
+//            $tabs[] = array(
+//                'id' => 'approvertab',
+//                'url' => $url,
+//                'count' => $myEntities,
+//                'title' => $title,
+//                'weight' => 1000,
+//                'icon' => 'crm-i fa-dropbox',
+//            );
+//            $tab_added = TRUE;
+//        }
+//        if ($isSocial) {
+//            $myEntities = civicrm_api3('FundTransaction', 'getcount', [
+//                'contact_id_sub' => $contactId,
+//            ]);
+//            $url = CRM_Utils_System::url('civicrm/fund/socialtab', ['cid' => $contactId]);
+//            $title = "Transactions";
+//            $tabs[] = array(
+//                'id' => 'socialtab',
+//                'url' => $url,
+//                'count' => $myEntities,
+//                'title' => $title,
+//                'weight' => 1010,
+//                'icon' => 'crm-i fa-dropbox',
+//            );
+//
+//        }
+//        if ($isOrganization) {
+//            $myEntities = civicrm_api3('FundTransaction', 'getcount', [
+//                'fund.contact_id' => $contactId,
+//            ]);
+//
+//            $url = CRM_Utils_System::url('civicrm/fund/orgtab', ['cid' => $contactId]);
+//            $title = "Transactions";
+////            CRM_Core_Error::debug_var('myEntities', $myEntities);
+//            $tabs[] = array(
+//                'id' => 'orgtab',
+//                'url' => $url,
+//                'count' => $myEntities,
+//                'title' => $title,
+//                'weight' => 1020,
+//                'icon' => 'crm-i fa-dropbox',
+//            );
+//
+//        }
         $myEntities = civicrm_api3('FundTransaction', 'getcount', [
             'created_by' => $contactId,
         ]);
-    CRM_Core_Error::debug_var('myEntities', $myEntities);
-        $url = CRM_Utils_System::url('civicrm/fund/contacttab', ['cid' => $contactId]);
-        $title = "Expences";
+//    CRM_Core_Error::debug_var('myEntities', $myEntities);
+        $url = CRM_Utils_System::url('civicrm/fund/transactiontab', ['cid' => $contactId]);
+        $title = "Transactions";
         $tabs[] = array(
-            'id' => 'contacttab',
+            'id' => 'transactiontab',
             'url' => $url,
             'count' => $myEntities,
             'title' => $title,

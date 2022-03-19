@@ -225,7 +225,8 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
             }
 
             //9
-            $appprops = ['api' => ['params' => ['group' => 'financial_managers']]];
+//            $appprops = ['api' => ['params' => ['group' => 'financial_managers']]];
+            $appprops = [];
             $contact_id_app = $this->addEntityRef('contact_id_app',
                 E::ts('Contact (Approver)'), $appprops, FALSE);
             if ($this->_isApproved) {

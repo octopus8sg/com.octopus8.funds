@@ -17,17 +17,15 @@
                 <li id="tab_data"
                     class="crm-tab-button ui-corner-all ui-tabs-tab ui-corner-top ui-state-default ui-tab ui-tabs-active ui-state-active">
                     <a href="#own-subtab" title="{ts}Own Transactions{/ts}">
-                        {ts}Own Transactions{/ts} <em>{$dataCount}</em>
+                        {ts}Submissions{/ts} <em>{$submissions}</em>
                     </a>
                 </li>
-                {if $financial_manager}
                 <li id="tab_devices"
                     class="crm-tab-button ui-corner-all ui-tabs-tab ui-corner-top ui-state-default ui-tab">
                     <a href="#fm-subtab" title="{ts}Financial Manager{/ts}">
-                        {ts}Financial Manager{/ts} <em>{$financial_manager}</em>
+                        {ts}Approvals{/ts} <em>{$approvals}</em>
                     </a>
                 </li>
-                {/if}
                 {if $social_worker}
                 <li id="tab_analytics"
                     class="crm-tab-button ui-corner-all ui-tabs-tab ui-corner-top ui-state-default ui-tab">

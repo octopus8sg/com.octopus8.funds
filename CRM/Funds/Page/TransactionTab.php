@@ -41,27 +41,25 @@ class CRM_Funds_Page_TransactionTab extends CRM_Core_Page
         $controller_data->assign('pagename', $pageName);
         $controller_data->run();
 
-        $financial_manager_group_id = _find_financial_manager_group_id();
+//        $financial_manager_group_id = _find_financial_manager_group_id();
         $social_worker_group_id = _find_social_worker_group_id();
 //    CRM_Core_Error::debug_var('contactId', $contactId);
 
         $myEntities = civicrm_api3('FundTransaction', 'getcount', [
             'created_by' => $contactId,
         ]);
-        $this->assign('dataCount', $myEntities);
+        $this->assign('submissions', $myEntities);
 
-        $isApprover = boolval(CRM_Contact_BAO_GroupContact::isContactInGroup($contactId, $financial_manager_group_id));
+//        $isApprover = boolval(CRM_Contact_BAO_GroupContact::isContactInGroup($contactId, $financial_manager_group_id));
         $isSocial = boolval(CRM_Contact_BAO_GroupContact::isContactInGroup($contactId, $social_worker_group_id));
         $contact = \Civi\Api4\Contact::get(0)
             ->addWhere('id', '=', $contactId)
             ->execute()->single();
         $contactType = $contact['contact_type'];
-        if ($isApprover) {
             $myEntities = civicrm_api3('FundTransaction', 'getcount', [
                 'contact_id_app' => $contactId,
             ]);
-            $this->assign('financial_manager', $myEntities);
-        }
+            $this->assign('approvals', $myEntities);
         if ($isSocial) {
             $myEntities = civicrm_api3('FundTransaction', 'getcount', [
                 'contact_id_sub' => $contactId,

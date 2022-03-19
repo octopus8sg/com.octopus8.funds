@@ -47,11 +47,9 @@
             <div id="own-subtab" class="ui-tabs-panel ui-widget-content ui-corner-bottom">
                 {include file="CRM/Funds/Page/ContactTab.tpl"}
             </div>
-            {if $financial_manager}
             <div id="fm-subtab" class="devices-subtab ui-tabs-panel ui-widget-content ui-corner-bottom">
                 {include file="CRM/Funds/Page/ApproverTab.tpl"}
             </div>
-            {/if}
             {if $social_worker}
             <div id="sw-subtab" class="analytics-subtab ui-tabs-panel ui-widget-content ui-corner-bottom">
                 {include file="CRM/Funds/Page/SocialTab.tpl"}

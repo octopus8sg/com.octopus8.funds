@@ -148,7 +148,7 @@ class CRM_Funds_Page_SearchAccount extends CRM_Core_Page
         while ($dao->fetch()) {
             if (!empty($dao->type_id)) {
                 $fund = '<a href="' . CRM_Utils_System::url('civicrm/fund/accounttype',
-                        ['reset' => 1, 'id' => $dao->type_id]) . '">' .
+                        ['reset' => 1, 'id' => $dao->type_id, 'action' => 'view']) . '">' .
                     $dao->type_name . '</a>';
             }
 

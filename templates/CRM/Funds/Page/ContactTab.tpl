@@ -46,9 +46,9 @@
                         <th scope="col">
                             {ts}Contact (Approver){/ts}
                         </th>
-{*                        <th scope="col">*}
+                        <th scope="col">
                             {ts}Contact (Created By){/ts}
-{*                        </th>*}
+                        </th>
                         <th scope="col">
                             {ts}Case{/ts}
                         </th>

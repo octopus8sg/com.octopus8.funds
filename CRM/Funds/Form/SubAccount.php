@@ -106,13 +106,23 @@ class CRM_Funds_Form_SubAccount extends CRM_Core_Form
             $noteAttrib = CRM_Core_DAO::getAttribute('CRM_Core_DAO_Note');
             $this->add('textarea', 'description', ts('Description'), $noteAttrib['note']);
 
-            $this->addButtons([
-                [
-                    'type' => 'upload',
-                    'name' => E::ts('Submit'),
-                    'isDefault' => TRUE,
-                ],
-            ]);
+            if ($this->_action == CRM_Core_Action::VIEW || $this->_action == CRM_Core_Action::PREVIEW || (!$this->_isAdmin && !$this->_isApprover && !$this->_isSocial)) {
+                CRM_Utils_System::setTitle('View SubAccount');
+                $this->freeze();
+                $cancel = [
+                    'type' => 'cancel',
+                    'name' => E::ts('Close')];
+                $buttons[] = $cancel;
+                $this->addButtons($buttons);
+            } else {
+                $this->addButtons([
+                    [
+                        'type' => 'upload',
+                        'name' => E::ts('Submit'),
+                        'isDefault' => TRUE,
+                    ],
+                ]);
+            }
         } else {
             CRM_Utils_System::setTitle('Delete SubAccount');
             $this->addButtons([

@@ -161,7 +161,7 @@ class CRM_Funds_Page_SearchFund extends CRM_Core_Page
         while ($dao->fetch()) {
             if (!empty($dao->contact_id)) {
                 $contact = '<a target="_blank" href="' . CRM_Utils_System::url('civicrm/contact/view',
-                        ['reset' => 1, 'cid' => $dao->contact_id]) . '">' .
+                        ['reset' => 1, 'cid' => $dao->contact_id, 'action' => 'view']) . '">' .
                     $dao->organization_name . '</a>';
             }
 

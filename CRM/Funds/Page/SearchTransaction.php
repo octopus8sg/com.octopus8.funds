@@ -425,37 +425,37 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
             $contact_crb = "";
             if (!empty($dao->account_id)) {
                 $account = '<a target="_blank" href="' . CRM_Utils_System::url('civicrm/fund/account',
-                        ['reset' => 1, 'id' => $dao->account_id]) . '">' .
+                        ['reset' => 1, 'id' => $dao->account_id, 'action' => 'view']) . '">' .
                     $dao->account_name . '</a>';
             }
 
             if (!empty($dao->fund_id)) {
                 $fund = '<a target="_blank" href="' . CRM_Utils_System::url('civicrm/fund/form',
-                        ['reset' => 1, 'id' => $dao->fund_id]) . '">' .
+                        ['reset' => 1, 'id' => $dao->fund_id, 'action' => 'view']) . '">' .
                     $dao->fund_name . '</a>';
             }
 
             if (!empty($dao->sub_account_id)) {
                 $subaccount = '<a target="_blank" href="' . CRM_Utils_System::url('civicrm/fund/subaccount',
-                        ['reset' => 1, 'id' => $dao->sub_account_id]) . '">' .
+                        ['reset' => 1, 'id' => $dao->sub_account_id, 'action' => 'view']) . '">' .
                     $dao->sub_account_name . '</a>';
             }
 
             if (!empty($dao->contact_id_app)) {
                 $contact_app = '<a href="' . CRM_Utils_System::url('civicrm/contact/view',
-                        ['reset' => 1, 'cid' => $dao->contact_id_app]) . '">' .
+                        ['reset' => 1, 'cid' => $dao->contact_id_app, 'action' => 'view']) . '">' .
                     $dao->ca_name . '</a>';
             }
 
             if (!empty($dao->created_by)) {
                 $contact_crb = '<a href="' . CRM_Utils_System::url('civicrm/contact/view',
-                        ['reset' => 1, 'cid' => $dao->created_by]) . '">' .
+                        ['reset' => 1, 'cid' => $dao->created_by, 'action' => 'view']) . '">' .
                     $dao->cb_name . '</a>';
             }
 
             if (!empty($dao->contact_id_sub)) {
                 $contact_sub = '<a href="' . CRM_Utils_System::url('civicrm/contact/view',
-                        ['reset' => 1, 'cid' => $dao->contact_id_sub]) . '">' .
+                        ['reset' => 1, 'cid' => $dao->contact_id_sub, 'action' => 'view']) . '">' .
                     $dao->cs_name . '</a>';
             }
 
@@ -508,11 +508,7 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
             $rows[$count][] = $contact_app;
             $rows[$count][] = $contact_crb;
             $rows[$count][] = $dao->case_name;
-            if ($ContactTab) {
-                $dao->fund_name;
-            } else {
-                $rows[$count][] = $fund;
-            }
+            $rows[$count][] = $fund;
             $rows[$count][] = $dao->status_name;
             $rows[$count][] = $action;
             $count++;

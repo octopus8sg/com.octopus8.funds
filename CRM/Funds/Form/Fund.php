@@ -68,6 +68,7 @@ class CRM_Funds_Form_Fund extends CRM_Core_Form
             $session->replaceUserContext(CRM_Utils_System::url('civicrm/fund/search'));
         }
     }
+
     /**
      * Global validation rules for the form.
      *
@@ -76,7 +77,8 @@ class CRM_Funds_Form_Fund extends CRM_Core_Form
      * @return array
      *   list of errors to be posted back to the form
      */
-    public static function formRule($values) {
+    public static function formRule($values)
+    {
         $errors = [];
 
         if (!empty($values['end_date']) && ($values['end_date'] < $values['start_date'])) {
@@ -94,6 +96,7 @@ class CRM_Funds_Form_Fund extends CRM_Core_Form
 
         return $errors;
     }
+
     public function buildQuickForm()
     {
         $this->assign('id', $this->getEntityId());
@@ -143,13 +146,23 @@ class CRM_Funds_Form_Fund extends CRM_Core_Form
                 'civicrm_o8_fund',
                 $this->_id
             );
-            $this->addButtons([
-                [
-                    'type' => 'upload',
-                    'name' => E::ts('Submit'),
-                    'isDefault' => TRUE,
-                ],
-            ]);
+            if ($this->_action == CRM_Core_Action::VIEW || $this->_action == CRM_Core_Action::PREVIEW || (!$this->_isAdmin && !$this->_isApprover && !$this->_isSocial)) {
+                CRM_Utils_System::setTitle('View Fund');
+                $this->freeze();
+                $cancel = [
+                    'type' => 'cancel',
+                    'name' => E::ts('Close')];
+                $buttons[] = $cancel;
+                $this->addButtons($buttons);
+            } else {
+                $this->addButtons([
+                    [
+                        'type' => 'upload',
+                        'name' => E::ts('Submit'),
+                        'isDefault' => TRUE,
+                    ],
+                ]);
+            }
         } else {
             CRM_Utils_System::setTitle('Delete Fund');
             $this->addButtons([

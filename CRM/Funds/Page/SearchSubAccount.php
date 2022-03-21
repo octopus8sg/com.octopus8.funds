@@ -146,7 +146,7 @@ class CRM_Funds_Page_SearchSubAccount extends CRM_Core_Page
         while ($dao->fetch()) {
             if (!empty($dao->fund_category_id)) {
                 $category = '<a href="' . CRM_Utils_System::url('civicrm/fund/category',
-                        ['reset' => 1, 'id' => $dao->fund_category_id]) . '">' .
+                        ['reset' => 1, 'id' => $dao->fund_category_id, 'action' => 'view']) . '">' .
                     $dao->category_name . '</a>';
             }
 

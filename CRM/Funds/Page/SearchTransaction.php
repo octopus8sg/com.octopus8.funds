@@ -126,22 +126,36 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
 
         $limit = CRM_Utils_Request::retrieveValue('iDisplayLength', 'Positive', 10);
 //        CRM_Core_Error::debug_var('limit', $limit);
-
-        $sortMapper = [
-            0 => 'id',
-            1 => 'date',
-            2 => 'description',
-            3 => 'amount',
-            4 => 'account_name',
-            5 => 'sub_account_name',
-            6 => 'cs_name',
-            7 => 'ca_name',
-            8 => 'cb_name',
-            9 => 'case_name',
-            10 => 'fund_name',
-            11 => 'status_name'
-        ];
-
+        if ($ContactTab) {
+            $sortMapper = [
+                0 => 'id',
+                1 => 'date',
+                2 => 'description',
+                3 => 'amount',
+                4 => 'account_name',
+                5 => 'sub_account_name',
+                7 => 'ca_name',
+                8 => 'cb_name',
+                9 => 'case_name',
+                10 => 'fund_name',
+                11 => 'status_name'
+            ];
+        } else {
+            $sortMapper = [
+                0 => 'id',
+                1 => 'date',
+                2 => 'description',
+                3 => 'amount',
+                4 => 'account_name',
+                5 => 'sub_account_name',
+                6 => 'cs_name',
+                7 => 'ca_name',
+                8 => 'cb_name',
+                9 => 'case_name',
+                10 => 'fund_name',
+                11 => 'status_name'
+            ];
+        }
         $sort = isset($_REQUEST['iSortCol_0']) ? CRM_Utils_Array::value(CRM_Utils_Type::escape($_REQUEST['iSortCol_0'], 'Integer'), $sortMapper) : NULL;
         $sortOrder = isset($_REQUEST['sSortDir_0']) ? CRM_Utils_Type::escape($_REQUEST['sSortDir_0'], 'String') : 'asc';
 
@@ -486,11 +500,19 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
             $rows[$count][] = $amount;
             $rows[$count][] = $account;
             $rows[$count][] = $subaccount;
-            $rows[$count][] = $contact_sub;
+            if ($ContactTab) {
+
+            } else {
+                $rows[$count][] = $contact_sub;
+            }
             $rows[$count][] = $contact_app;
             $rows[$count][] = $contact_crb;
             $rows[$count][] = $dao->case_name;
-            $rows[$count][] = $fund;
+            if ($ContactTab) {
+                $dao->fund_name;
+            } else {
+                $rows[$count][] = $fund;
+            }
             $rows[$count][] = $dao->status_name;
             $rows[$count][] = $action;
             $count++;

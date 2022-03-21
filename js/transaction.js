@@ -150,7 +150,8 @@ CRM.$(function ($) {
                 roo.each(function () {
                     CRM.api4('FundTransaction', 'update', {
                         values: {"status_id": 2},
-                        where: [["id", "=", $(this).find("td:eq(0)").text()]]
+                        where: [["id", "=", $(this).find("td:eq(0)").text()],
+                            ["status_id", "NOT IN", [2,3]]]
                     }).then(function (results) {
                         i++;
                         new_transactions_table.draw();
@@ -177,7 +178,8 @@ CRM.$(function ($) {
                 roo.each(function () {
                     CRM.api4('FundTransaction', 'update', {
                         values: {"status_id": 3},
-                        where: [["id", "=", $(this).find("td:eq(0)").text()]]
+                        where: [["id", "=", $(this).find("td:eq(0)").text()],
+                            ["status_id", "NOT IN", [2,3]]]
                     }).then(function (results) {
                         i++;
                         new_transactions_table.draw();

@@ -5,14 +5,6 @@
         <div class="clear"></div>
         <div class="action-link">
             {*                    {debug}*}
-            <a class="button add-transaction" href="{crmURL p="civicrm/fund/transaction" q="reset=1&action=add" }">
-                <i class="crm-i fa-plus">&nbsp;</i>
-                {ts}Add Transaction{/ts}
-            </a>
-            <a class="button add-transaction" href="{crmURL p="civicrm/fund/transaction" q="reset=1&action=add" }">
-                <i class="crm-i fa-plus-circle">&nbsp;</i>
-                {ts}Import Transaction{/ts}
-            </a>
             <a class="button select-all-transactions" href="#" }">
             <i class="crm-i fa-check">&nbsp;</i>{ts}Select All{/ts}
             </a>
@@ -52,9 +44,6 @@
                         </th>
                         <th scope="col">
                             {ts}Contact (Social Worker){/ts}
-                        </th>
-                        <th scope="col">
-                            {ts}Contact (Approver){/ts}
                         </th>
                         <th scope="col">
                             {ts}Contact (Created By){/ts}

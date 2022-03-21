@@ -134,11 +134,25 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
                 3 => 'amount',
                 4 => 'account_name',
                 5 => 'sub_account_name',
-                7 => 'ca_name',
-                8 => 'cb_name',
-                9 => 'case_name',
-                10 => 'fund_name',
-                11 => 'status_name'
+                6 => 'ca_name',
+                7 => 'cb_name',
+                8 => 'case_name',
+                9 => 'fund_name',
+                10 => 'status_name'
+            ];
+        }elseif ($ApproverTab){
+            $sortMapper = [
+                0 => 'id',
+                1 => 'date',
+                2 => 'description',
+                3 => 'amount',
+                4 => 'account_name',
+                5 => 'sub_account_name',
+                6 => 'cs_name',
+                7 => 'cb_name',
+                8 => 'case_name',
+                9 => 'fund_name',
+                10 => 'status_name'
             ];
         } else {
             $sortMapper = [
@@ -466,9 +480,15 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
             $r_view = CRM_Utils_System::url('civicrm/fund/transaction',
                 ['action' => 'view', 'id' => $dao->id]);
             $update = '<a class="update-transaction action-item crm-hover-button" target="_blank" href="' . $r_update . '"><i class="crm-i fa-pencil"></i>&nbsp;Edit</a>';
+            if($dao->status_id == CRM_Funds_BAO_FundTransaction::REJECTED || $dao->status_id == CRM_Funds_BAO_FundTransaction::APPROVED){
+                $update = "";
+            }
             $delete = '<a class="delete-transaction action-item crm-hover-button" target="_blank" href="' . $r_delete . '"><i class="crm-i fa-trash"></i>&nbsp;Delete</a>';
+            if($dao->status_id == CRM_Funds_BAO_FundTransaction::REJECTED || $dao->status_id == CRM_Funds_BAO_FundTransaction::APPROVED){
+                $delete = "";
+            }
             $view = '<a class="view-transaction action-item crm-hover-button" target="_blank" href="' . $r_view . '"><i class="crm-i fa-eye"></i>&nbsp;View</a>';
-            $action = "<span>$update $delete</span>";
+            $action = "<span>$view $update $delete</span>";
             if (isset($contactId)) {
                 $action = "<span>$view</span>";
                 if (isset($pageName)) {
@@ -505,7 +525,11 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
             } else {
                 $rows[$count][] = $contact_sub;
             }
-            $rows[$count][] = $contact_app;
+            if ($ApproverTab) {
+
+            } else {
+                $rows[$count][] = $contact_app;
+            }
             $rows[$count][] = $contact_crb;
             $rows[$count][] = $dao->case_name;
             $rows[$count][] = $fund;

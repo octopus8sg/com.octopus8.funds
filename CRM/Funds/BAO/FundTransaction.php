@@ -31,7 +31,6 @@ class CRM_Funds_BAO_FundTransaction extends CRM_Funds_DAO_FundTransaction {
         $entityName = 'FundTransaction';
         $hook = empty($params['id']) ? 'create' : 'edit';
 
-
         CRM_Utils_Hook::pre($hook, $entityName, CRM_Utils_Array::value('id', $params), $params);
 
         $instance = new $className();

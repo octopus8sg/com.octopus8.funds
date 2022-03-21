@@ -102,15 +102,15 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
 //                CRM_Core_Error::debug_var('entity', $entity);
 
 
-                if ($entity['status_id'] == 1) {
+                if ($entity['status_id'] == CRM_Funds_BAO_FundTransaction::PENDING_APPROVAL) {
                     $this->_isPendingApproval = TRUE;
                 }
 
-                if ($entity['status_id'] == 2) {
+                if ($entity['status_id'] == CRM_Funds_BAO_FundTransaction::APPROVED) {
                     $this->_isApproved = TRUE;
                 }
 
-                if ($entity['status_id'] == 3) {
+                if ($entity['status_id'] == CRM_Funds_BAO_FundTransaction::REJECTED) {
                     $this->_isRejected = TRUE;
                 }
 
@@ -291,13 +291,13 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
 //                'multiple' => TRUE,
             ], TRUE);
             if ($this->_isApproved) {
-                $account_id->freeze();
+                $this->freeze();
             }
             if ($this->_isRejected) {
                 $this->freeze();
-                if ($this->_isAdmin) {
-                    $status->unfreeze();
-                }
+//                if ($this->_isAdmin) {
+//                    $status->unfreeze();
+//                }
             }
 //            $this->add('text', 'amount', ts('Amount'));
 //            $this->addRule('amount', ts('Please enter a valid amount.'), 'money');
@@ -360,38 +360,13 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
                         'name' => E::ts('Cancel')];
                     $buttons[] = $cancel;
                     if ($this->_isPendingApproval) {
-                        if ($this->_isSocial) {
+                        if ($this->_isSocial || $this->_isAdmin || $this->_isApprover) {
                             $buttons[] = $accept;
                             $buttons[] = $changeit;
                             $buttons[] = $reject;
-                        }
-                        if ($this->_isAdmin) {
-                            $buttons[] = $accept;
-                            $buttons[] = $reject;
-                            $buttons[] = $changeit;
                         } else {
                             $status->freeze();
                         }
-
-                    } elseif ($this->_isRejected) {
-                        if ($this->_isAdmin) {
-                            $buttons[] = $changeit;
-                        }
-                    } else { //is accepted
-                        if ($this->_isAdmin) {
-//                        $buttons[] = $accept;
-                            $buttons[] = $reject;
-                            $buttons[] = $changeit;
-                        } else {
-                            $status->freeze();
-                        }
-                        if ($this->_isApprover) {
-                            $buttons[] = $reject;
-                            $buttons[] = $accept;
-                            $amount->freeze();
-                            $status->unfreeze();
-                        }
-
                     }
                     $this->addButtons($buttons);
                 }
@@ -451,7 +426,7 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
                     'id' => $this->_id,
                 ]);
                 CRM_Core_Session::setStatus(E::ts('Removed The Transaction'), E::ts('Fund'), 'success');
-            }else{
+            } else {
                 CRM_Core_Session::setStatus(E::ts("You don't have rights"), E::ts('Fund'), 'success');
             }
         } else {

@@ -36,7 +36,7 @@
                             {ts}ID{/ts}
                         </th>
                         <th scope="col">
-                            {ts}Date{/ts}
+                            Date
                         </th>
                         <th scope="col">
                             {ts}Description{/ts}
@@ -54,7 +54,7 @@
                             {ts}Contact (Social Worker){/ts}
                         </th>
                         <th scope="col">
-                            {ts}Contact (Financial Manager){/ts}
+                            {ts}Contact (Approver){/ts}
                         </th>
                         <th scope="col">
                             {ts}Contact (Created By){/ts}

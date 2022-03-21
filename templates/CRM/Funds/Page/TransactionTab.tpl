@@ -26,14 +26,14 @@
                         {ts}Approvals{/ts} <em>{$approvals}</em>
                     </a>
                 </li>
-{*                {if $social_worker}*}
-{*                <li id="tab_analytics"*}
-{*                    class="crm-tab-button ui-corner-all ui-tabs-tab ui-corner-top ui-state-default ui-tab">*}
-{*                    <a href="#sw-subtab" title="{ts}Social Worker{/ts}">*}
-{*                        {ts}Social Worker{/ts} <em>{$social_worker}</em>*}
-{*                    </a>*}
-{*                </li>*}
-{*                {/if}*}
+                {if $social_worker}
+                <li id="tab_analytics"
+                    class="crm-tab-button ui-corner-all ui-tabs-tab ui-corner-top ui-state-default ui-tab">
+                    <a href="#sw-subtab" title="{ts}Social Worker{/ts}">
+                        {ts}Social Worker{/ts} <em>{$social_worker}</em>
+                    </a>
+                </li>
+                {/if}
                 {if $organisation}
                 <li id="tab_alarm_rules"
                     class="crm-tab-button ui-corner-all ui-tabs-tab ui-corner-top ui-state-default ui-tab">
@@ -50,11 +50,11 @@
             <div id="fm-subtab" class="devices-subtab ui-tabs-panel ui-widget-content ui-corner-bottom">
                 {include file="CRM/Funds/Page/ApproverTab.tpl"}
             </div>
-{*            {if $social_worker}*}
-{*            <div id="sw-subtab" class="analytics-subtab ui-tabs-panel ui-widget-content ui-corner-bottom">*}
-{*                {include file="CRM/Funds/Page/SocialTab.tpl"}*}
-{*            </div>*}
-{*            {/if}*}
+            {if $social_worker}
+            <div id="sw-subtab" class="analytics-subtab ui-tabs-panel ui-widget-content ui-corner-bottom">
+                {include file="CRM/Funds/Page/SocialTab.tpl"}
+            </div>
+            {/if}
             {if $organisation}
             <div id="org-subtab" class="alarm-rules-subtab ui-tabs-panel ui-widget-content ui-corner-bottom">
                 {include file="CRM/Funds/Page/OrgTab.tpl"}

@@ -23,7 +23,7 @@
                             {ts}ID{/ts}
                         </th>
                         <th scope="col">
-                            {ts}Date{/ts}
+                            Date
                         </th>
                         <th scope="col">
                             {ts}Description{/ts}

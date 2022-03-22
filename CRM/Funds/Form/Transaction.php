@@ -193,14 +193,15 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
             }
             //6 todo add options in Updater and in postProcess
             $statuses = CRM_Core_OptionGroup::values('o8_fund_trxn_status');
-            $status = $this->add('select', 'status_id',
-                E::ts('Status'),
-                $statuses,
-                TRUE, ['class' => 'huge crm-select2',
+            if ($this->_isAdmin) {
+                $status = $this->add('select', 'status_id',
+                    E::ts('Status'),
+                    $statuses,
+                    TRUE, ['class' => 'huge crm-select2',
 //                    'data-option-edit-path' => 'civicrm/admin/options/o8_fund_trxn_status'
-                ]);
-            if (!($this->_isAdmin OR $this->_isApprover)) {
-                $status->freeze();
+                    ]);
+            } else {
+                $status = $this->add('hidden', 'status_id'); // 1
             }
             //7 case
             $case = $this->addEntityRef('case_id', E::ts('Case'), [
@@ -214,14 +215,16 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
             }
 
             //8
-            $subprops = ['api' => ['params' => ['group' => 'social_workers']]];
-            $contact_id_sub = $this->addEntityRef('contact_id_sub',
-                E::ts('Contact (Social Worker)'), $subprops, FALSE);
-            if ($this->_isApproved) {
-                $contact_id_sub->freeze();
-            }
-            if (!($this->_isAdmin || $this->_isApprover)) {
-                $contact_id_sub->freeze();
+            if ($this->_isAdmin) {
+                $subprops = ['api' => ['params' => ['group' => 'social_workers']]];
+                $contact_id_sub = $this->addEntityRef('contact_id_sub',
+                    E::ts('Contact (Social Worker)'), $subprops, FALSE);
+                if ($this->_isApproved) {
+                    $contact_id_sub->freeze();
+                }
+
+            } else {
+                $contact_id_sub = $this->add('hidden', 'contact_id_sub'); // 1
             }
 
             //9
@@ -409,9 +412,7 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
             if ($this->_isApprover) {
                 $defaults['contact_id_app'] = $this->_contact_id;
             }
-            if ($this->_isSocial) {
-                $defaults['contact_id_sub'] = $this->_contact_id;
-            }
+            $defaults['contact_id_sub'] = $this->_contact_id;
             $defaults['status_id'] = 1;
             $defaults['date'] = date("Y-m-d H:i:s");
         }

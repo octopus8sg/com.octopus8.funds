@@ -27,6 +27,10 @@ function civicrm_api3_fund_transaction_create($params) {
   return _civicrm_api3_basic_create(_civicrm_api3_get_BAO(__FUNCTION__), $params, 'FundTransaction');
 }
 
+function civicrm_api3_fund_transaction_update($params) {
+  return _civicrm_api3_basic_update(_civicrm_api3_get_BAO(__FUNCTION__), $params, 'FundTransaction');
+}
+
 /**
  * FundTransaction.delete API.
  *

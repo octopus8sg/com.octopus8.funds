@@ -243,7 +243,8 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
                     if (is_numeric($contactId)) {
                         if ($ContactTab) {
                             //contact tab for creator
-                            $sql .= " and t.`created_by` = " . intval($contactId) . " ";
+                            $sql .= " and (t.`contact_id_sub` = " . intval($contactId) . " ";
+                            $sql .= " or t.`created_by` = " . intval($contactId) . ") ";
                         }
                         if ($OrgTab) {
                             //contact tab for organization, fund contact =
@@ -251,7 +252,8 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
                         }
                         if ($SocialTab) {
                             //contact tab for social worker, contact_id_sub =
-                            $sql .= " and t.`contact_id_sub` = " . intval($contactId) . " ";
+                            $sql .= " and (t.`contact_id_sub` = " . intval($contactId) . " ";
+                            $sql .= " or t.`created_by` = " . intval($contactId) . ") ";
                         }
                         if ($ApproverTab) {
                             //contact tab for financial manager, contact_id_app =

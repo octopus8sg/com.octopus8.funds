@@ -216,7 +216,8 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
 
             //8
             if ($this->_isAdmin) {
-                $subprops = ['api' => ['params' => ['group' => 'social_workers']]];
+//                $subprops = ['api' => ['params' => ['group' => 'social_workers']]];
+                $subprops = [];
                 $contact_id_sub = $this->addEntityRef('contact_id_sub',
                     E::ts('Contact (Social Worker)'), $subprops, FALSE);
                 if ($this->_isApproved) {

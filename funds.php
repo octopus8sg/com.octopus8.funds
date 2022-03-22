@@ -676,6 +676,9 @@ function funds_civicrm_tabset($path, &$tabs, $context)
 //        }
         $myEntities = civicrm_api3('FundTransaction', 'getcount', [
             'created_by' => $contactId,
+            'contact_id_sub' => $contactId,
+            'contact_id_app' => $contactId,
+            'options' => ['or' => [["created_by", "contact_id_sub", "contact_id_app"]]],
         ]);
 //    CRM_Core_Error::debug_var('myEntities', $myEntities);
         $url = CRM_Utils_System::url('civicrm/fund/transactiontab', ['cid' => $contactId]);

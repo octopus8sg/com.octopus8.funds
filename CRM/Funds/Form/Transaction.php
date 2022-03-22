@@ -101,6 +101,9 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
                 $this->_myentity = $entity;
 //                CRM_Core_Error::debug_var('entity', $entity);
 
+                if ($entity['contact_id_app'] == $currentUserId) {
+                    $this->_isApprover = TRUE;
+                }
 
                 if ($entity['status_id'] == CRM_Funds_BAO_FundTransaction::PENDING_APPROVAL) {
                     $this->_isPendingApproval = TRUE;

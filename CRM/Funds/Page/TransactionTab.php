@@ -47,6 +47,8 @@ class CRM_Funds_Page_TransactionTab extends CRM_Core_Page
 
         $myEntities = civicrm_api3('FundTransaction', 'getcount', [
             'created_by' => $contactId,
+            'contact_id_sub' => $contactId,
+            'options' => ['or' => [["created_by", "contact_id_sub"]]],
         ]);
         $this->assign('submissions', $myEntities);
 
@@ -57,12 +59,14 @@ class CRM_Funds_Page_TransactionTab extends CRM_Core_Page
             ->execute()->single();
         $contactType = $contact['contact_type'];
             $myEntities = civicrm_api3('FundTransaction', 'getcount', [
-                'contact_id_app' => $contactId,
+                'contact_id_app' => $contactId
             ]);
             $this->assign('approvals', $myEntities);
         if ($isSocial) {
             $myEntities = civicrm_api3('FundTransaction', 'getcount', [
+                'created_by' => $contactId,
                 'contact_id_sub' => $contactId,
+                'options' => ['or' => [["created_by", "contact_id_sub"]]],
             ]);
             $this->assign('social_worker', $myEntities);
         }

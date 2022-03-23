@@ -333,8 +333,8 @@ function funds_civicrm_themes(&$themes)
  */
 function funds_civicrm_permission(&$permissions)
 {
-    $permissions['administer CiviCRM,*manage o8connect Funds'] = E::ts('Manage o8connect Funds');
-    $permissions['administer CiviCRM,*manage o8connect Transactions'] = E::ts('Manage o8connect Transactions');
+    $permissions['*manage o8connect Funds'] = E::ts('Manage o8connect Funds');
+    $permissions['*manage o8connect Transactions'] = E::ts('Manage o8connect Transactions');
 }
 
 /**
@@ -352,7 +352,7 @@ function funds_civicrm_permission_check($permission, &$granted, $contact_id = NU
     } else {
         $currentUserId = $contact_id;
     }
-    if ($permission === 'administer CiviCRM,*manage o8connect Funds') {
+    if ($permission === '*manage o8connect Funds') {
 //        CRM_Core_Error::debug_var('currentUserId', $currentUserId);
 //        CRM_Core_Error::debug_var('contact_id', $contact_id);
         if ($financial_manager_group_id < 0) {
@@ -365,7 +365,7 @@ function funds_civicrm_permission_check($permission, &$granted, $contact_id = NU
 
         $granted = $isEnabled;
     }
-    if ($permission === 'administer CiviCRM,*manage o8connect Transactions') {
+    if ($permission === '*manage o8connect Transactions') {
 //        CRM_Core_Error::debug_var('contact_id', $contact_id);
 //        CRM_Core_Error::debug_var('currentUserId', $currentUserId);
 //        CRM_Core_Error::debug_var('social_worker_group_id', $social_worker_group_id);
@@ -384,7 +384,60 @@ function funds_civicrm_permission_check($permission, &$granted, $contact_id = NU
     }
 
 }
+function funds_civicrm_alterAPIPermissions($entity, $action, &$params, &$permissions)
+{
 
+    // allow everyone to get info for a given event; also – another way to skip permissions
+    if ($entity == 'fund' and ($action == 'getlist' or $action == 'get')) {
+        $params['check_permissions'] = FALSE;
+//        CRM_Core_Error::debug_var('entity', $entity);
+//        CRM_Core_Error::debug_var('action', $action);
+//        CRM_Core_Error::debug_var('params', $params);
+//        CRM_Core_Error::debug_var('permissions', $permissions);
+    }
+    if ($entity == 'fund_account' and ($action == 'getlist' or $action == 'get')) {
+        $params['check_permissions'] = FALSE;
+//        CRM_Core_Error::debug_var('entity', $entity);
+//        CRM_Core_Error::debug_var('action', $action);
+//        CRM_Core_Error::debug_var('params', $params);
+//        CRM_Core_Error::debug_var('permissions', $permissions);
+    }
+    if ($entity == 'fund_account_type' and ($action == 'getlist' or $action == 'get')) {
+        $params['check_permissions'] = FALSE;
+//        CRM_Core_Error::debug_var('entity', $entity);
+//        CRM_Core_Error::debug_var('action', $action);
+//        CRM_Core_Error::debug_var('params', $params);
+//        CRM_Core_Error::debug_var('permissions', $permissions);
+    }
+    if ($entity == 'fund_sub_account' and ($action == 'getlist' or $action == 'get')) {
+        $params['check_permissions'] = FALSE;
+//        CRM_Core_Error::debug_var('entity', $entity);
+//        CRM_Core_Error::debug_var('action', $action);
+//        CRM_Core_Error::debug_var('params', $params);
+//        CRM_Core_Error::debug_var('permissions', $permissions);
+    }
+    if ($entity == 'fund_sub_account' and ($action == 'getlist' or $action == 'get')) {
+        $params['check_permissions'] = FALSE;
+//        CRM_Core_Error::debug_var('entity', $entity);
+//        CRM_Core_Error::debug_var('action', $action);
+//        CRM_Core_Error::debug_var('params', $params);
+//        CRM_Core_Error::debug_var('permissions', $permissions);
+    }
+    if ($entity == 'fund_category' and ($action == 'getlist' or $action == 'get')) {
+        $params['check_permissions'] = FALSE;
+//        CRM_Core_Error::debug_var('entity', $entity);
+//        CRM_Core_Error::debug_var('action', $action);
+//        CRM_Core_Error::debug_var('params', $params);
+//        CRM_Core_Error::debug_var('permissions', $permissions);
+    }
+    if ($entity == 'fund_sub_category' and ($action == 'getlist' or $action == 'get')) {
+        $params['check_permissions'] = FALSE;
+//        CRM_Core_Error::debug_var('entity', $entity);
+//        CRM_Core_Error::debug_var('action', $action);
+//        CRM_Core_Error::debug_var('params', $params);
+//        CRM_Core_Error::debug_var('permissions', $permissions);
+    }
+}
 /**
  * @return integer
  * @throws CiviCRM_API3_Exception

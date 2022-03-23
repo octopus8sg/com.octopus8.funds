@@ -193,7 +193,8 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
                     'description',
                 ],
                 'label_field' => "name",
-                'params' => []
+                'params' => [],
+                'check_permissions' => FALSE
             ],
             'select' => ['minimumInputLength' => 1],
             'entity' => 'fund_account_type',
@@ -344,7 +345,10 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
                 'description_field' => [
                     'code',
                     'description',
-                ]
+                ],
+                'check_permissions' => FALSE
+
+
             ],
             'entity' => 'case',
             'class' => 'huge',
@@ -360,7 +364,9 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
                 'description_field' => [
                     'code',
                     'description',
-                ]
+                ],
+                'check_permissions' => FALSE
+
             ],
             'entity' => 'fund_account',
             'class' => 'huge',
@@ -376,7 +382,9 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
                 'description_field' => [
                     'code',
                     'description',
-                ]
+                ],
+                'check_permissions' => FALSE
+
             ],
             'entity' => 'fund_sub_account',
             'class' => 'huge',
@@ -417,6 +425,8 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
                         'code',
                         'description'
                     ],
+                    'check_permissions' => FALSE
+                    ,
                     'label_field' => "name",
                     'params' => ['contact_id' => $this->_cid]
                 ],
@@ -438,6 +448,8 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
                         'code',
                         'description',
                     ],
+                    'check_permissions' => FALSE
+                    ,
                     'label_field' => "name",
                     'params' => []
                 ],
@@ -504,8 +516,11 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
                 'description_field' => [
                     'code',
                     'description',
-                ]
+                ],
+                'check_permissions' => FALSE
+
             ],
+            'select' => ['minimumInputLength' => 0],
             'entity' => 'case',
             'class' => 'huge',
             'create' => false,
@@ -520,9 +535,12 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
                 'description_field' => [
                     'code',
                     'description',
-                ]
+                ],
+                'check_permissions' => FALSE
+
             ],
             'entity' => 'fund_account',
+            'select' => ['minimumInputLength' => 0],
             'class' => 'huge',
             'create' => false,
             'multiple' => true,
@@ -536,9 +554,12 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
                 'description_field' => [
                     'code',
                     'description',
-                ]
+                ],
+                'check_permissions' => FALSE
+
             ],
             'entity' => 'fund_sub_account',
+            'select' => ['minimumInputLength' => 0],
             'class' => 'huge',
             'create' => false,
             'multiple' => true,
@@ -577,10 +598,12 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
                     'code',
                     'description',
                 ],
+                'check_permissions' => FALSE
+                ,
                 'label_field' => "name",
                 'params' => []
             ],
-            'select' => ['minimumInputLength' => 1],
+            'select' => ['minimumInputLength' => 0],
             'entity' => 'fund',
             'class' => 'huge',
             'create' => false,
@@ -642,7 +665,9 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
                 'description_field' => [
                     'code',
                     'description',
-                ]
+                ],
+                'check_permissions' => FALSE
+
             ],
             'entity' => 'case',
             'class' => 'huge',
@@ -658,7 +683,9 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
                 'description_field' => [
                     'code',
                     'description',
-                ]
+                ],
+                'check_permissions' => FALSE
+
             ],
             'entity' => 'fund_account',
             'class' => 'huge',
@@ -674,7 +701,9 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
                 'description_field' => [
                     'code',
                     'description',
-                ]
+                ],
+                'check_permissions' => FALSE
+
             ],
             'entity' => 'fund_sub_account',
             'class' => 'huge',
@@ -715,6 +744,8 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
                     'code',
                     'description',
                 ],
+                'check_permissions' => FALSE
+                ,
                 'label_field' => "name",
                 'params' => []
             ],

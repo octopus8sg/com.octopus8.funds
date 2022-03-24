@@ -47,7 +47,6 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
         //
         $transactionPages = [
             'SearchTransaction',
-            'ContactTab',
             'TransactionTab'
         ];
         $transactionOrgPages = [
@@ -56,6 +55,10 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
         ];
         $transactionFmPages = [
             'ApproverTab',
+            'TransactionTab'
+        ];
+        $transactionOwnPages = [
+            'ContactTab',
             'TransactionTab'
         ];
         $transactionSwPages = [
@@ -94,6 +97,9 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
         }
         if (in_array($pagename, $transactionPages)) {
             $this->transaction_filter();
+        }
+        if (in_array($pagename, $transactionOwnPages)) {
+            $this->transaction_own_filter();
         }
         if (in_array($pagename, $transactionOrgPages)) {
             $this->transaction_org_filter();
@@ -142,7 +148,8 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
             'api' =>
                 ['params' =>
                     ['contact_type' => 'Organization']
-                ]
+                ],
+            'select' => ['minimumInputLength' => 0],
         ];
 
         if ($this->_cid) {
@@ -196,7 +203,7 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
                 'params' => [],
                 'check_permissions' => FALSE
             ],
-            'select' => ['minimumInputLength' => 1],
+            'select' => ['minimumInputLength' => 0],
             'entity' => 'fund_account_type',
             'class' => 'huge',
             'create' => false,
@@ -326,7 +333,10 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
             ['size' => 28, 'maxlength' => 128]);
 
 
-        $props = ['create' => false, 'multiple' => true, 'class' => 'huge'];
+        $props = ['create' => false,
+            'select' => ['minimumInputLength' => 0],
+            'multiple' => true,
+            'class' => 'huge'];
         $contact_id_app = $this->addEntityRef('contact_id_app', E::ts('Contact (Approver)'),
             false);
         $created_by = $this->addEntityRef('created_by', E::ts('Contact (Created By)'),
@@ -350,6 +360,7 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
 
 
             ],
+            'select' => ['minimumInputLength' => 0],
             'entity' => 'case',
             'class' => 'huge',
             'create' => false,
@@ -368,6 +379,7 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
                 'check_permissions' => FALSE
 
             ],
+            'select' => ['minimumInputLength' => 0],
             'entity' => 'fund_account',
             'class' => 'huge',
             'create' => false,
@@ -386,6 +398,7 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
                 'check_permissions' => FALSE
 
             ],
+            'select' => ['minimumInputLength' => 0],
             'entity' => 'fund_sub_account',
             'class' => 'huge',
             'create' => false,
@@ -453,7 +466,7 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
                     'label_field' => "name",
                     'params' => []
                 ],
-                'select' => ['minimumInputLength' => 1],
+                'select' => ['minimumInputLength' => 0],
                 'entity' => 'fund',
                 'class' => 'huge',
                 'create' => false,
@@ -500,14 +513,17 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
             ['size' => 28, 'maxlength' => 128]);
 
 
-        $props = ['create' => false, 'multiple' => true, 'class' => 'huge'];
-        $contact_id_app = $this->addEntityRef('sw_contact_id_app', E::ts('Contact (Approver)'),
+        $props = ['create' => false,
+            'select' => ['minimumInputLength' => 0],
+            'multiple' => true,
+            'class' => 'huge'];
+        $contact_id_app = $this->addEntityRef('sw_contact_id_app', E::ts('Contact (Approver)'), $props,
             false);
-        $created_by = $this->addEntityRef('sw_created_by', E::ts('Contact (Created By)'),
-            false);
-        $contact_id_sub = $this->addEntityRef('sw_contact_id_sub', E::ts('Contact (Social Worker)'),
-            false);
-        $contact_id_sub->freeze();
+//        $created_by = $this->addEntityRef('sw_created_by', E::ts('Contact (Created By)'), $props,
+//            false);
+//        $contact_id_sub = $this->addEntityRef('sw_contact_id_sub', E::ts('Contact (Social Worker)'), $props,
+//            false);
+//        $contact_id_sub->freeze();
 
         $this->addEntityRef('sw_transaction_case_id', E::ts('Case'), [
             'api' => [
@@ -649,14 +665,17 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
             ['size' => 28, 'maxlength' => 128]);
 
 
-        $props = ['create' => false, 'multiple' => true, 'class' => 'huge'];
-        $contact_id_app = $this->addEntityRef('fm_contact_id_app', E::ts('Contact (Approver)'),
+        $props = ['create' => false,
+            'select' => ['minimumInputLength' => 0],
+            'multiple' => true,
+            'class' => 'huge'];
+//        $contact_id_app = $this->addEntityRef('fm_contact_id_app', E::ts('Contact (Approver)'), $props,
+//            false);
+        $created_by = $this->addEntityRef('fm_created_by', E::ts('Contact (Created By)'), $props,
             false);
-        $created_by = $this->addEntityRef('fm_created_by', E::ts('Contact (Created By)'),
+        $contact_id_sub = $this->addEntityRef('fm_contact_id_sub', E::ts('Contact (Social Worker)'), $props,
             false);
-        $contact_id_sub = $this->addEntityRef('fm_contact_id_sub', E::ts('Contact (Social Worker)'),
-            false);
-        $contact_id_app->freeze();
+//        $contact_id_app->freeze();
 
         $this->addEntityRef('fm_transaction_case_id', E::ts('Case'), [
             'api' => [
@@ -669,6 +688,7 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
                 'check_permissions' => FALSE
 
             ],
+            'select' => ['minimumInputLength' => 0],
             'entity' => 'case',
             'class' => 'huge',
             'create' => false,
@@ -687,6 +707,7 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
                 'check_permissions' => FALSE
 
             ],
+            'select' => ['minimumInputLength' => 0],
             'entity' => 'fund_account',
             'class' => 'huge',
             'create' => false,
@@ -705,6 +726,7 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
                 'check_permissions' => FALSE
 
             ],
+            'select' => ['minimumInputLength' => 0],
             'entity' => 'fund_sub_account',
             'class' => 'huge',
             'create' => false,
@@ -749,7 +771,7 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
                 'label_field' => "name",
                 'params' => []
             ],
-            'select' => ['minimumInputLength' => 1],
+            'select' => ['minimumInputLength' => 0],
             'entity' => 'fund',
             'class' => 'huge',
             'create' => false,
@@ -793,7 +815,7 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
             ['size' => 28, 'maxlength' => 128]);
 
 
-        $props = ['create' => false, 'multiple' => true, 'class' => 'huge'];
+        $props = ['create' => false, 'select' => ['minimumInputLength' => 0], 'multiple' => true, 'class' => 'huge'];
         $this->addEntityRef('org_contact_id_app', E::ts('Contact (Approver)'), $props,
             false);
         $this->addEntityRef('org_contact_id_sub', E::ts('Contact (Social Worker)'), $props,
@@ -809,6 +831,7 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
                     'description',
                 ]
             ],
+            'select' => ['minimumInputLength' => 0],
             'entity' => 'case',
             'class' => 'huge',
             'create' => false,
@@ -825,6 +848,7 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
                     'description',
                 ]
             ],
+            'select' => ['minimumInputLength' => 0],
             'entity' => 'fund_account',
             'class' => 'huge',
             'create' => false,
@@ -841,6 +865,7 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
                     'description',
                 ]
             ],
+            'select' => ['minimumInputLength' => 0],
             'entity' => 'fund_sub_account',
             'class' => 'huge',
             'create' => false,
@@ -894,23 +919,157 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
 
     }
 
+    function transaction_own_filter()
+    {
+        /*
+         *
+            aoData.push({ "name": "transaction_id",
+                "value": $('#transaction_id').val() });
+            aoData.push({ "name": "case_id",
+                "value": $('#transaction_case_id').val() });
+            aoData.push({ "name": "contact_id_app",
+                "value": $('#contact_id_app').val() });
+            aoData.push({ "name": "contact_id_sub",
+                "value": $('#contact_id_sub').val() });
+            aoData.push({ "name": "account_id",
+                "value": $('#transaction_account_id').val() });
+            aoData.push({ "name": "sub_account_id",
+                "value": $('#transaction_sub_account_id').val() });
+            aoData.push({ "name": "dateselect_from",
+                "value": $('#transaction_dateselect_from').val() });
+            aoData.push({ "name": "dateselect_to",
+                "value": $('#transaction_dateselect_to').val() });
+            aoData.push({ "name": "status_id",
+                "value": $('#transaction_status_id').val() });
+         */
+        // ID or Code
+        // Contact (Owner)
+
+        $this->add(
+            'text',
+            'own_transaction_id',
+            ts('Transaction ID'),
+            ['size' => 28, 'maxlength' => 128]);
+
+
+        $props = ['create' => false, 'select' => ['minimumInputLength' => 0], 'multiple' => true, 'class' => 'huge'];
+        $this->addEntityRef('own_contact_id_app', E::ts('Contact (Approver)'), $props,
+            false);
+//        $this->addEntityRef('own_contact_id_sub', E::ts('Contact (Social Worker)'), $props,
+//            false);
+//        $this->addEntityRef('own_created_by', E::ts('Contact (Created By)'), $props,
+//            false);
+        $this->addEntityRef('own_transaction_case_id', E::ts('Case'), [
+            'api' => [
+//                'search_field' => ['id', 'code', 'name', 'description'],
+                'label_field' => "name",
+                'description_field' => [
+                    'code',
+                    'description',
+                ]
+            ],
+            'select' => ['minimumInputLength' => 0],
+            'entity' => 'case',
+            'class' => 'huge',
+            'create' => false,
+            'multiple' => true,
+            'placeholder' => ts('- Select Case -'),
+        ], FALSE);
+        //todo
+        $this->addEntityRef('own_transaction_account_id', E::ts('Account'), [
+            'api' => [
+                'search_fields' => ['code', 'name'],
+                'label_field' => "name",
+                'description_field' => [
+                    'code',
+                    'description',
+                ]
+            ],
+            'select' => ['minimumInputLength' => 0],
+            'entity' => 'fund_account',
+            'class' => 'huge',
+            'create' => false,
+            'multiple' => true,
+            'placeholder' => ts('- Select Account -'),
+        ], FALSE);
+
+        $this->addEntityRef('own_transaction_sub_account_id', E::ts('SubAccount'), [
+            'api' => [
+                'search_field' => ['code', 'name'],
+                'label_field' => "name",
+                'description_field' => [
+                    'code',
+                    'description',
+                ]
+            ],
+            'select' => ['minimumInputLength' => 0],
+            'entity' => 'fund_sub_account',
+            'class' => 'huge',
+            'create' => false,
+            'multiple' => true,
+            'placeholder' => ts('- Select SubAccount -'),
+        ], FALSE);
+
+        $this->addDatePickerRange('own_transaction_dateselect',
+            'Select Date',
+            FALSE,
+            NULL,
+            "From: ",
+            "To: ",
+            [],
+            '_to',
+            '_from'
+        );
+
+        $this->add('select', 'own_transaction_status_id',
+            E::ts('Status'),
+            $this->_trnx_statuses,
+            FALSE,
+            ['class' => 'huge crm-select2',
+                'data-option-edit-path' => 'civicrm/admin/options/o8_fund_trxn_status',
+                'multiple' => TRUE,
+                'placeholder' => ts('- Select Status -'),
+                'select' => ['minimumInputLength' => 0]
+            ]);
+
+        $this->addEntityRef('own_transaction_fund_id', E::ts('My Fund'), [
+            'api' => [
+                'search_fields' => ['code', 'name'],
+//                'extra' => ['contact_id.organisation_name'],
+//                'search_field' => 'code',
+                'description_field' => [
+                    'code',
+                    'description'
+                ],
+                'label_field' => "name",
+//                'params' => ['contact_id' => $this->_cid]
+            ],
+            'select' => ['minimumInputLength' => 0],
+            'entity' => 'fund',
+            'class' => 'huge',
+            'create' => false,
+            'multiple' => true,
+            'add_wildcard' => false,
+            'placeholder' => ts('- Select Fund -'),
+        ], FALSE);
+
+
+    }
+
     public function setDefaultValues()
     {
         if ($this->_cid) {
             $defaults = [];
-            if ($this->_pagename == 'TransactionTab') {
-                $defaults['fm_contact_id_app'] =
-                    $this->_cid;
-
-            }
-            if ($this->_pagename == 'TransactionTab') {
-                $defaults['sw_contact_id_sub'] =
-                    $this->_cid;
-            }
-            if ($this->_pagename == 'TransactionTab') {
-                $defaults['created_by'] =
-                    $this->_cid;
-            }
+            $defaults['fm_contact_id_app'] =
+                $this->_cid;
+            $defaults['sw_contact_id_sub'] =
+                $this->_cid;
+            $defaults['sw_created_by'] =
+                $this->_cid;
+            $defaults['own_created_by'] =
+                $this->_cid;
+            $defaults['own_contact_id_sub'] =
+                $this->_cid;
         }
         return $defaults;
     }

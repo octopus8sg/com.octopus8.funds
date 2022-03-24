@@ -5,14 +5,14 @@
         <div class="clear"></div>
         <div class="action-link">
             {*                    {debug}*}
-            <a class="button select-all-transactions" href="#" }">
+            <a class="button fm-select-all-transactions" href="#" }">
             <i class="crm-i fa-check">&nbsp;</i>{ts}Select All{/ts}
             </a>
-            <a class="button approve-transactions" href="#" }">
+            <a class="button fm-approve-transactions" href="#" }">
             <i class="crm-i fa-circle">&nbsp;</i>{ts}Approve Selected{/ts}
             </a>
             </a>
-            <a class="button reject-transactions" href="#" }">
+            <a class="button fm-reject-transactions" href="#" }">
             <i class="crm-i fa-times">&nbsp;</i>{ts}Reject Selected{/ts}
             </a>
         </div>

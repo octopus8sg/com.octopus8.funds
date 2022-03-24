@@ -60,15 +60,16 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
                 "value": $('#transaction_status_id').val() });
          */
         $currentUserId = CRM_Core_Session::getLoggedInContactID();
-        if (CRM_Core_Permission::check('administer CiviCRM')) {
-            $isAdmin = TRUE;
-        }
-        if (CRM_Core_Permission::check('*manage o8connect Funds')) {
-            $isApprover = TRUE;
-        }
-        if (CRM_Core_Permission::check('*manage o8connect Transactions')) {
-            $isSocial = TRUE;
-        }
+
+//        if (CRM_Core_Permission::check('administer CiviCRM')) {
+//            $isAdmin = TRUE;
+//        }
+//        if (CRM_Core_Permission::check('*manage o8connect Funds')) {
+//            $isApprover = TRUE;
+//        }
+//        if (CRM_Core_Permission::check('*manage o8connect Transactions')) {
+//            $isSocial = TRUE;
+//        }
 
         $contactId = CRM_Utils_Request::retrieve('cid', 'Positive');
 
@@ -118,15 +119,12 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
             $dateselect_from = null;
         }
 
-//        $transaction_category_id = CRM_Utils_Request::retrieveValue('transaction_category_id', 'CommaSeparatedIntegers', null);
-//        CRM_Core_Error::debug_var('transaction_category_id', $transaction_category_id);
-
         $offset = CRM_Utils_Request::retrieveValue('iDisplayStart', 'Positive', 0);
 //        CRM_Core_Error::debug_var('offset', $offset);
 
         $limit = CRM_Utils_Request::retrieveValue('iDisplayLength', 'Positive', 10);
 //        CRM_Core_Error::debug_var('limit', $limit);
-        if ($ContactTab) {
+        if ($ContactTab || $SocialTab) {
             $sortMapper = [
                 0 => 'id',
                 1 => 'date',
@@ -140,7 +138,7 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
                 9 => 'fund_name',
                 10 => 'status_name'
             ];
-        }elseif ($ApproverTab){
+        } elseif ($ApproverTab) {
             $sortMapper = [
                 0 => 'id',
                 1 => 'date',
@@ -238,28 +236,19 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
 //        CRM_Core_Error::debug_var('pagename', $pageName);
 //        CRM_Core_Error::debug_var('contactId', $contactId);
         if (isset($contactId)) {
-            if (isset($pageName)) {
-                if (strval($pageName) != "") {
-                    if (is_numeric($contactId)) {
-                        if ($ContactTab) {
-                            //contact tab for creator
-                            $sql .= " and (t.`contact_id_sub` = " . intval($contactId) . " ";
-                            $sql .= " or t.`created_by` = " . intval($contactId) . ") ";
-                        }
-                        if ($OrgTab) {
-                            //contact tab for organization, fund contact =
-                            $sql .= " and f.`contact_id` = " . intval($contactId) . " ";
-                        }
-                        if ($SocialTab) {
-                            //contact tab for social worker, contact_id_sub =
-                            $sql .= " and (t.`contact_id_sub` = " . intval($contactId) . " ";
-                            $sql .= " or t.`created_by` = " . intval($contactId) . ") ";
-                        }
-                        if ($ApproverTab) {
-                            //contact tab for financial manager, contact_id_app =
-                            $sql .= " and t.`contact_id_app` = " . intval($contactId) . " ";
-                        }
-                    }
+            if (is_numeric($contactId)) {
+                if ($ContactTab || $SocialTab) {
+                    //contact tab for creator
+                    $sql .= " and (t.`contact_id_sub` = " . intval($contactId) . " ";
+                    $sql .= " or t.`created_by` = " . intval($contactId) . ") ";
+                }
+                if ($OrgTab) {
+                    //contact tab for organization, fund contact =
+                    $sql .= " and f.`contact_id` = " . intval($contactId) . " ";
+                }
+                if ($ApproverTab) {
+                    //contact tab for financial manager, contact_id_app =
+                    $sql .= " and t.`contact_id_app` = " . intval($contactId) . " ";
                 }
             }
         }
@@ -276,11 +265,11 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
 //        $contact_id_app = CRM_Utils_Request::retrieveValue('contact_id_app', 'CommaSeparatedIntegers', null);
 //
 //        $contact_id_app = CRM_Utils_Request::retrieveValue('contact_id_sub', 'CommaSeparatedIntegers', null);
-        if (!($isAdmin OR $isApprover)) {
-            if ($isSocial) {
-                $sql .= " AND t.`contact_id_sub` = " . strval($currentUserId) . " ";
-            }
-        }
+//        if (!($isAdmin OR $isApprover)) {
+//            if ($isSocial) {
+//                $sql .= " AND t.`contact_id_sub` = " . strval($currentUserId) . " ";
+//            }
+//        }
 
         if (isset($case_id)) {
             if (strval($case_id) != "") {
@@ -481,40 +470,52 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
                 ['action' => 'delete', 'id' => $dao->id]);
             $r_view = CRM_Utils_System::url('civicrm/fund/transaction',
                 ['action' => 'view', 'id' => $dao->id]);
-            $update = '<a class="update-transaction action-item crm-hover-button" target="_blank" href="' . $r_update . '"><i class="crm-i fa-pencil"></i>&nbsp;Edit</a>';
-            if($dao->status_id == CRM_Funds_BAO_FundTransaction::REJECTED || $dao->status_id == CRM_Funds_BAO_FundTransaction::APPROVED){
+            $pref = "";
+            if ($ContactTab) {
+                $pref = "own-";
+            }
+            if ($SocialTab) {
+                $pref = "sw-";
+            }
+            if ($ApproverTab) {
+                $pref = "fm-";
+            }
+            if ($OrgTab) {
+                $pref = "org-";
+            }
+
+            $update = '<a class="' . $pref . 'update-transaction action-item crm-hover-button" target="_blank" href="' . $r_update . '"><i class="crm-i fa-pencil"></i>&nbsp;Edit</a>';
+            if ($dao->status_id == CRM_Funds_BAO_FundTransaction::REJECTED || $dao->status_id == CRM_Funds_BAO_FundTransaction::APPROVED) {
                 $update = "";
             }
-            $delete = '<a class="delete-transaction action-item crm-hover-button" target="_blank" href="' . $r_delete . '"><i class="crm-i fa-trash"></i>&nbsp;Delete</a>';
-            if($dao->status_id == CRM_Funds_BAO_FundTransaction::REJECTED || $dao->status_id == CRM_Funds_BAO_FundTransaction::APPROVED){
+            $delete = '<a class="' . $pref . 'delete-transaction action-item crm-hover-button" target="_blank" href="' . $r_delete . '"><i class="crm-i fa-trash"></i>&nbsp;Delete</a>';
+            if ($dao->status_id == CRM_Funds_BAO_FundTransaction::REJECTED || $dao->status_id == CRM_Funds_BAO_FundTransaction::APPROVED) {
                 $delete = "";
             }
-            $view = '<a class="view-transaction action-item crm-hover-button" target="_blank" href="' . $r_view . '"><i class="crm-i fa-eye"></i>&nbsp;View</a>';
+            $view = '<a class="' . $pref . 'view-transaction action-item crm-hover-button" target="_blank" href="' . $r_view . '"><i class="crm-i fa-eye"></i>&nbsp;View</a>';
             $action = "<span>$view $update $delete</span>";
             if (isset($contactId)) {
                 $action = "<span>$view</span>";
-                if (isset($pageName)) {
-                    if ($ContactTab) {
-                        if (is_numeric($contactId)) {
-                            $action = "<span>$view</span>";
-                        }
-                    }
-                    if ($SocialTab) {
-                        if (is_numeric($contactId)) {
-                            $action = "<span>$view $update</span>";
-                        }
-                    }
-                    if ($ApproverTab) {
-                        if (is_numeric($contactId)) {
-                            $action = "<span>$view $update</span>";
-                        }
-                    }
-                    if ($OrgTab) {
-                        if (is_numeric($contactId)) {
-                            $action = "<span>$view</span>";
-                        }
+//                if ($ContactTab) {
+//                    if (is_numeric($contactId)) {
+//                        $action = "<span>$view</span>";
+//                    }
+//                }
+//                if ($SocialTab) {
+//                    if (is_numeric($contactId)) {
+//                        $action = "<span>$view $update</span>";
+//                    }
+//                }
+                if ($ApproverTab) {
+                    if (is_numeric($contactId)) {
+                        $action = "<span>$view $update</span>";
                     }
                 }
+//                if ($OrgTab) {
+//                    if (is_numeric($contactId)) {
+//                        $action = "<span>$view</span>";
+//                    }
+//                }
             }
             $rows[$count][] = $dao->id;
             $rows[$count][] = $date;
@@ -522,7 +523,7 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
             $rows[$count][] = $amount;
             $rows[$count][] = $account;
             $rows[$count][] = $subaccount;
-            if ($ContactTab) {
+            if ($ContactTab || $SocialTab) {
 
             } else {
                 $rows[$count][] = $contact_sub;

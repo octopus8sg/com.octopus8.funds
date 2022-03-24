@@ -1,26 +1,30 @@
 CRM.$(function ($) {
 
-    $("a.add-transaction").click(function (event) {
-        event.preventDefault();
+    $("a.own-add-transaction")
+        .off("click") //remove other events
+        .click(function (event) {
+        event.preventDefault(); //remove default action
         var href = $(this).attr('href');
         // alert(href);
         var $el = CRM.loadForm(href, {
             dialog: {width: '50%', height: '50%'}
         }).on('crmFormSuccess', function () {
-            var hm_tab = $('.selector-transactions');
+            var hm_tab = $('.own-selector-transactions');
             var hm_table = hm_tab.DataTable();
             hm_table.draw();
         });
     });
 
-    $("a.view-transaction").click(function (event) {
+    $("a.own-view-transaction")
+        .off("click")
+        .click(function (event) {
         event.preventDefault();
         var href = $(this).attr('href');
         // alert(href);
         var $el = CRM.loadForm(href, {
             dialog: {width: '50%', height: '50%'}
         }).on('crmFormSuccess', function () {
-            var hm_tab = $('.selector-transactions');
+            var hm_tab = $('.own-selector-transactions');
             var hm_table = hm_tab.DataTable();
             hm_table.draw();
         });
@@ -32,12 +36,12 @@ CRM.$(function ($) {
     $(document).ready(function () {
         //Reset Table, add Filter and Search Possibility
         //transactions datatable
+        var transactions_tab = $('.own-selector-transactions');
 
-        $('.selector-transactions').on('click', 'tr', function () {
+        transactions_tab.on('click', 'tr', function () {
             $(this).toggleClass('row_selected columnheader');
         });
 
-        var transactions_tab = $('.selector-transactions');
         var transactions_table = transactions_tab.DataTable();
         var transactions_dtsettings = transactions_table.settings().init();
         transactions_dtsettings.bFilter = true;
@@ -50,38 +54,44 @@ CRM.$(function ($) {
         };
         transactions_dtsettings.fnDrawCallback = function (oSettings) {
             // $("a.view-transaction").css('background','red');
-            $("a.update-transaction").click(function (event) {
+            $("a.own-update-transaction")
+                .off("click")
+                .click(function (event) {
                 event.preventDefault();
                 var href = $(this).attr('href');
                 // alert(href);
                 var $el = CRM.loadForm(href, {
                     dialog: {width: '50%', height: '50%'}
                 }).on('crmFormSuccess', function () {
-                    var hm_tab = $('.selector-transactions');
+                    var hm_tab = $('.own-selector-transactions');
                     var hm_table = hm_tab.DataTable();
                     hm_table.draw();
                 });
             });
-            $("a.delete-transaction").click(function (event) {
+            $("a.own-delete-transaction")
+                .off("click")
+                .click(function (event) {
                 event.preventDefault();
                 var href = $(this).attr('href');
                 // alert(href);
                 var $el = CRM.loadForm(href, {
                     dialog: {width: '50%', height: '50%'}
                 }).on('crmFormSuccess', function () {
-                    var hm_tab = $('.selector-transactions');
+                    var hm_tab = $('.own-selector-transactions');
                     var hm_table = hm_tab.DataTable();
                     hm_table.draw();
                 });
             });
-            $("a.view-transaction").click(function (event) {
+            $("a.own-view-transaction")
+                .off("click")
+                .click(function (event) {
                 event.preventDefault();
                 var href = $(this).attr('href');
                 // alert(href);
                 var $el = CRM.loadForm(href, {
                     dialog: {width: '50%', height: '50%'}
                 }).on('crmFormSuccess', function () {
-                    var hm_tab = $('.selector-transactions');
+                    var hm_tab = $('.own-selector-transactions');
                     var hm_table = hm_tab.DataTable();
                     hm_table.draw();
                 });
@@ -90,7 +100,7 @@ CRM.$(function ($) {
         transactions_dtsettings.fnServerData = function (sSource, aoData, fnCallback) {
             aoData.push({
                 "name": "transaction_id",
-                "value": $('#transaction_id').val()
+                "value": $('#own_transaction_id').val()
             });
             aoData.push({
                 "name": "contacttab",
@@ -98,43 +108,43 @@ CRM.$(function ($) {
             });
             aoData.push({
                 "name": "case_id",
-                "value": $('#transaction_case_id').val()
+                "value": $('#own_transaction_case_id').val()
             });
             aoData.push({
                 "name": "contact_id_app",
-                "value": $('#contact_id_app').val()
+                "value": $('#own_contact_id_app').val()
             });
             aoData.push({
                 "name": "contact_id_sub",
-                "value": $('#contact_id_sub').val()
+                "value": $('#own_contact_id_sub').val()
             });
             aoData.push({
                 "name": "created_by",
-                "value": $('#created_by').val()
+                "value": $('#own_created_by').val()
             });
             aoData.push({
                 "name": "account_id",
-                "value": $('#transaction_account_id').val()
+                "value": $('#own_transaction_account_id').val()
             });
             aoData.push({
                 "name": "fund_id",
-                "value": $('#transaction_fund_id').val()
+                "value": $('#own_transaction_fund_id').val()
             });
             aoData.push({
                 "name": "sub_account_id",
-                "value": $('#transaction_sub_account_id').val()
+                "value": $('#own_transaction_sub_account_id').val()
             });
             aoData.push({
                 "name": "dateselect_from",
-                "value": $('#transaction_dateselect_from').val()
+                "value": $('#own_transaction_dateselect_from').val()
             });
             aoData.push({
                 "name": "dateselect_to",
-                "value": $('#transaction_dateselect_to').val()
+                "value": $('#own_transaction_dateselect_to').val()
             });
             aoData.push({
                 "name": "status_id",
-                "value": $('#transaction_status_id').val()
+                "value": $('#own_transaction_status_id').val()
             });
             $.ajax({
                 "dataType": 'json',
@@ -146,7 +156,9 @@ CRM.$(function ($) {
         };
         transactions_table.destroy();
         var new_transactions_table = transactions_tab.DataTable(transactions_dtsettings);
-        $('a.approve-transactions').click(function (event) {
+        $('a.own-approve-transactions')
+            .off("click")
+            .click(function (event) {
             event.preventDefault();
             var roo = new_transactions_table.$('.row_selected');
             var i = 0;
@@ -173,7 +185,9 @@ CRM.$(function ($) {
             }
 
         });
-        $('a.reject-transactions').click(function (event) {
+        $('a.own-reject-transactions')
+            .off("click")
+            .click(function (event) {
             event.preventDefault();
             var roo = new_transactions_table.$('.row_selected');
             var i = 0;
@@ -200,13 +214,15 @@ CRM.$(function ($) {
             }
 
         });
-        $('a.select-all-transactions').click(function (event) {
+        $('a.own-select-all-transactions')
+            .off("click")
+            .click(function (event) {
             event.preventDefault();
-            $('.selector-transactions tr').toggleClass('row_selected columnheader');
+            $('.own-selector-transactions tr').toggleClass('row_selected columnheader');
 
         });
         //End Reset Table
-        $('.transaction-filter :input').change(function () {
+        $('.own-transaction-filter :input').change(function () {
             new_transactions_table.draw();
         });
 

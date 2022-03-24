@@ -1,6 +1,6 @@
 CRM.$(function ($) {
 
-    $("a.add-transaction").click(function (event) {
+    $("a.org-add-transaction").off("click").click(function (event) {
         event.preventDefault();
         var href = $(this).attr('href');
         // alert(href);
@@ -13,7 +13,7 @@ CRM.$(function ($) {
         });
     });
 
-    $("a.view-transaction").click(function (event) {
+    $("a.org-view-transaction").off("click").click(function (event) {
         event.preventDefault();
         var href = $(this).attr('href');
         // alert(href);
@@ -45,8 +45,8 @@ CRM.$(function ($) {
         transactions_dtsettings.fnInitComplete = function (oSettings, json) {
         };
         transactions_dtsettings.fnDrawCallback = function (oSettings) {
-            // $("a.view-transaction").css('background','red');
-            $("a.update-transaction").click(function (event) {
+            // $("a.org-view-transaction").css('background','red');
+            $("a.org-update-transaction").off("click").click(function (event) {
                 event.preventDefault();
                 var href = $(this).attr('href');
                 // alert(href);
@@ -58,7 +58,7 @@ CRM.$(function ($) {
                     hm_table.draw();
                 });
             });
-            $("a.delete-transaction").click(function (event) {
+            $("a.org-delete-transaction").off("click").click(function (event) {
                 event.preventDefault();
                 var href = $(this).attr('href');
                 // alert(href);
@@ -70,7 +70,7 @@ CRM.$(function ($) {
                     hm_table.draw();
                 });
             });
-            $("a.view-transaction").click(function (event) {
+            $("a.org-view-transaction").off("click").click(function (event) {
                 event.preventDefault();
                 var href = $(this).attr('href');
                 // alert(href);

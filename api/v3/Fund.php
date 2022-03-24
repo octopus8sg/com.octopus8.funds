@@ -16,7 +16,7 @@ use CRM_Funds_ExtensionUtil as E;
  */
 function _civicrm_api3_fund_getlist_params(&$request)
 {
-    CRM_Core_Error::debug_var('request3', $request);
+//    CRM_Core_Error::debug_var('request3', $request);
     $params = [];
     if ($request['input']) {
         if ($request['search_fields']) {

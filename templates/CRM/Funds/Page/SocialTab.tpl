@@ -5,7 +5,7 @@
         <div class="clear"></div>
         <div class="action-link">
             {*                    {debug}*}
-            <a class="button add-transaction" href="{crmURL p="civicrm/fund/transaction" q="reset=1&action=add" }">
+            <a class="button sw-add-transaction" href="{crmURL p="civicrm/fund/transaction" q="reset=1&action=add" }">
                 <i class="crm-i fa-plus">&nbsp;</i>
                 {ts}Add Transaction{/ts}
             </a>
@@ -37,9 +37,9 @@
                         <th scope="col">
                             {ts}SubAccount{/ts}
                         </th>
-                        <th scope="col">
-                            {ts}Contact (Social Worker){/ts}
-                        </th>
+{*                        <th scope="col">*}
+{*                            {ts}Contact (Social Worker){/ts}*}
+{*                        </th>*}
                         <th scope="col">
                             {ts}Contact (Approver){/ts}
                         </th>

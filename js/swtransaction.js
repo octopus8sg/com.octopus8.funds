@@ -1,6 +1,6 @@
 CRM.$(function ($) {
 
-    $("a.add-transaction").click(function (event) {
+    $("a.sw-add-transaction").click(function (event) {
         event.preventDefault();
         var href = $(this).attr('href');
         // alert(href);
@@ -13,7 +13,7 @@ CRM.$(function ($) {
         });
     });
 
-    $("a.view-transaction").click(function (event) {
+    $("a.sw-view-transaction").click(function (event) {
         event.preventDefault();
         var href = $(this).attr('href');
         // alert(href);
@@ -49,8 +49,8 @@ CRM.$(function ($) {
         transactions_dtsettings.fnInitComplete = function (oSettings, json) {
         };
         transactions_dtsettings.fnDrawCallback = function (oSettings) {
-            // $("a.view-transaction").css('background','red');
-            $("a.update-transaction").click(function (event) {
+            // $("a.sw-view-transaction").css('background','red');
+            $("a.sw-update-transaction").click(function (event) {
                 event.preventDefault();
                 var href = $(this).attr('href');
                 // alert(href);
@@ -62,7 +62,7 @@ CRM.$(function ($) {
                     hm_table.draw();
                 });
             });
-            $("a.delete-transaction").click(function (event) {
+            $("a.sw-delete-transaction").click(function (event) {
                 event.preventDefault();
                 var href = $(this).attr('href');
                 // alert(href);
@@ -74,7 +74,7 @@ CRM.$(function ($) {
                     hm_table.draw();
                 });
             });
-            $("a.view-transaction").click(function (event) {
+            $("a.sw-view-transaction").click(function (event) {
                 event.preventDefault();
                 var href = $(this).attr('href');
                 // alert(href);
@@ -146,7 +146,7 @@ CRM.$(function ($) {
         };
         transactions_table.destroy();
         var new_transactions_table = transactions_tab.DataTable(transactions_dtsettings);
-        $('a.approve-transactions').click(function (event) {
+        $("a.sw-approve-transactions").off("click").click(function (event) {
             event.preventDefault();
             var roo = new_transactions_table.$('.row_selected');
             var i = 0;
@@ -173,7 +173,7 @@ CRM.$(function ($) {
             }
 
         });
-        $('a.reject-transactions').click(function (event) {
+        $("a.sw-reject-transactions").off("click").click(function (event) {
             event.preventDefault();
             var roo = new_transactions_table.$('.row_selected');
             var i = 0;
@@ -200,7 +200,7 @@ CRM.$(function ($) {
             }
 
         });
-        $('a.select-all-transactions').click(function (event) {
+        $("a.sw-select-all-transactions").off("click").click(function (event) {
             event.preventDefault();
             $('.sw-selector-transactions tr').toggleClass('row_selected columnheader');
 

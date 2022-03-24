@@ -26,6 +26,18 @@
     </div>
 
     <div class="crm-section">
+      <div class="label">{$form.account_id.label}</div>
+      <div class="content">{$form.account_id.html}</div>
+      <div class="clear"></div>
+    </div>
+
+    <div class="crm-section">
+      <div class="label">{$form.sub_account_id.label}</div>
+      <div class="content">{$form.sub_account_id.html}</div>
+      <div class="clear"></div>
+    </div>
+
+    <div class="crm-section">
       <div class="label">{$form.description.label}</div>
       <div class="content">{$form.description.html}</div>
       <div class="clear"></div>
@@ -58,18 +70,6 @@
     <div class="crm-section">
       <div class="label">{$form.contact_id_app.label}</div>
       <div class="content">{$form.contact_id_app.html}</div>
-      <div class="clear"></div>
-    </div>
-
-    <div class="crm-section">
-      <div class="label">{$form.sub_account_id.label}</div>
-      <div class="content">{$form.sub_account_id.html}</div>
-      <div class="clear"></div>
-    </div>
-
-    <div class="crm-section">
-      <div class="label">{$form.account_id.label}</div>
-      <div class="content">{$form.account_id.html}</div>
       <div class="clear"></div>
     </div>
 

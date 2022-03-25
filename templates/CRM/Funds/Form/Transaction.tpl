@@ -50,20 +50,8 @@
     </div>
 
     <div class="crm-section">
-      <div class="label">{$form.status_id.label}</div>
-      <div class="content">{$form.status_id.html}</div>
-      <div class="clear"></div>
-    </div>
-
-    <div class="crm-section">
       <div class="label">{$form.case_id.label}</div>
       <div class="content">{$form.case_id.html}</div>
-      <div class="clear"></div>
-    </div>
-
-    <div class="crm-section">
-      <div class="label">{$form.contact_id_sub.label}</div>
-      <div class="content">{$form.contact_id_sub.html}</div>
       <div class="clear"></div>
     </div>
 
@@ -74,11 +62,22 @@
     </div>
 
     <div class="crm-section">
+      <div class="label">{$form.status_id.label}</div>
+      <div class="content">{$form.status_id.html}</div>
+      <div class="clear"></div>
+    </div>
+
+    <div class="crm-section">
+      <div class="label">{$form.contact_id_sub.label}</div>
+      <div class="content">{$form.contact_id_sub.html}</div>
+      <div class="clear"></div>
+    </div>
+
+    <div class="crm-section">
       <h1>Attachment</h1>
       {include file="CRM/Form/attachment.tpl"}
       <div class="clear"></div>
     </div>
-
 
     <div class="crm-submit-buttons">
       {include file="CRM/common/formButtons.tpl" location="bottom"}

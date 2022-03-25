@@ -13,6 +13,8 @@ class CRM_Funds_Form_Fund extends CRM_Core_Form
 
     protected $_id;
 
+    protected $_cid;
+
     protected $_myentity;
 
     public function getDefaultEntity()
@@ -46,7 +48,11 @@ class CRM_Funds_Form_Fund extends CRM_Core_Form
         $this->assign('action', $this->_action);
 
         $this->_id = CRM_Utils_Request::retrieve('id', 'Positive', $this, FALSE);
+
+        $this->_cid = CRM_Utils_Request::retrieve('cid', 'Positive', $this, FALSE);
+
         CRM_Utils_System::setTitle('Add Fund');
+
         if ($this->_id) {
             CRM_Utils_System::setTitle('Edit Fund');
             $entities = civicrm_api4('Fund', 'get',
@@ -57,6 +63,9 @@ class CRM_Funds_Form_Fund extends CRM_Core_Form
             );
             if (!empty($entities)) {
                 $this->_myentity = $entities[0];
+                if($this->_myentity['status_id'] != CRM_Funds_BAO_FundTransaction::PENDING_APPROVAL){
+                    $this->_action = CRM_Core_Action::VIEW;
+                }
             }
             $this->assign('myentity', $this->_myentity);
 
@@ -85,15 +94,6 @@ class CRM_Funds_Form_Fund extends CRM_Core_Form
             $errors['end_date'] = ts('End date should be after Start date.');
         }
 
-        //CRM-4286
-//        if (strstr($values['code'], '/')) {
-//            $errors['code'] = ts("Please do not use '/' in Fund Code.");
-//        }
-//
-//        if (strstr($values['name'], '/')) {
-//            $errors['name'] = ts("Please do not use '/' in Fund Name.");
-//        }
-
         return $errors;
     }
 
@@ -101,6 +101,8 @@ class CRM_Funds_Form_Fund extends CRM_Core_Form
     {
         $this->assign('id', $this->getEntityId());
         $this->add('hidden', 'id');
+        $this->assign('cid', $this->_cid);
+        $this->add('hidden', 'cid');
         if ($this->_action != CRM_Core_Action::DELETE) {
             $props = ['api' => ['params' => ['contact_type' => 'Organization']]];
             $this->addEntityRef('contact_id',
@@ -120,7 +122,8 @@ class CRM_Funds_Form_Fund extends CRM_Core_Form
 
             $this->add('datepicker', 'start_date',
                 E::ts('Start Date: '), CRM_Core_SelectValues::date(NULL, 'Y-m-d H:i:s'), TRUE, ['time' => FALSE]);
-
+            $rules = HTML_QuickForm::getRegisteredRules();
+//            CRM_Core_Error::debug_var('rules', $rules);
             $this->add('datepicker', 'end_date',
                 E::ts('End Date: '), CRM_Core_SelectValues::date(NULL, 'Y-m-d H:i:s'), TRUE, ['time' => FALSE]);
 
@@ -131,8 +134,6 @@ class CRM_Funds_Form_Fund extends CRM_Core_Form
 //            $this->registerRule('positiveDecimal', 'callback', 'positiveDecimal', 'CRM_Funds_Form_Fund');
             $this->addRule('amount', ts('Amount should be a positive decimal number, like "100.25"'), 'regex', '/^[+]?((\d+(\.\d{0,2})?)|(\.\d{0,2}))$/');
 //            $this->addRule('amount', ts('Please enter a valid amount.'), 'money', null, 'client');
-            $rules = HTML_QuickForm::getRegisteredRules();
-//            CRM_Core_Error::debug_var('rules', $rules);
             // todo will be changed by transaction api or by hook?
             $this->add('text', 'residue', ts('Residue'))->freeze();
             $this->add('text', 'expenditure', ts('Expenditure'))->freeze();
@@ -146,7 +147,7 @@ class CRM_Funds_Form_Fund extends CRM_Core_Form
                 'civicrm_o8_fund',
                 $this->_id
             );
-            if ($this->_action == CRM_Core_Action::VIEW || $this->_action == CRM_Core_Action::PREVIEW || (!$this->_isAdmin && !$this->_isApprover && !$this->_isSocial)) {
+            if ($this->_action == CRM_Core_Action::VIEW || $this->_action == CRM_Core_Action::PREVIEW) {
                 CRM_Utils_System::setTitle('View Fund');
                 $this->freeze();
                 $cancel = [

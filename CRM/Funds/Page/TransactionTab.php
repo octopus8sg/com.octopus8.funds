@@ -15,6 +15,7 @@ class CRM_Funds_Page_TransactionTab extends CRM_Core_Page
         $ajaxSourceName = 'transactions_source_url';
         $urlQry['snippet'] = 4;
         $contactId = CRM_Utils_Request::retrieve('cid', 'Positive');
+        $this->assign('contactId', $contactId);
         $contactType = CRM_Contact_BAO_Contact::getContactType($contactId);
         $isApprover = $isSocial = $isOrganization = FALSE;
         if ($contactType == 'Organization') {

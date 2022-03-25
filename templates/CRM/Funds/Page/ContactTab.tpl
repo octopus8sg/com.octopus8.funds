@@ -4,12 +4,12 @@
         {include file="CRM/Funds/Form/TransactionOWNFilter.tpl"}
         <div class="clear"></div>
         <div class="action-link">
-            {*                    {debug}*}
-            <a class="button own-add-transaction" href="{crmURL p="civicrm/fund/transaction" q="reset=1&action=add" }">
+{*                                {debug}*}
+            <a class="button own-add-transaction" href="{crmURL p="civicrm/fund/transaction" q="reset=1&action=add&cid=`$contactId`" }">
                 <i class="crm-i fa-plus">&nbsp;</i>
                 {ts}Add Transaction{/ts}
             </a>
-            <a class="button own-import-transaction" href="{crmURL p="civicrm/fund/transaction" q="reset=1&action=add" }">
+            <a class="button own-import-transaction" href="{crmURL p="civicrm/fund/transaction" q="reset=1&action=add&cid=`$contactId`" }">
                 <i class="crm-i fa-plus-circle">&nbsp;</i>
                 {ts}Import Transaction{/ts}
             </a>

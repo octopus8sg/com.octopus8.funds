@@ -5,7 +5,7 @@
         <div class="clear"></div>
         <div class="action-link">
             {*                    {debug}*}
-            <a class="button sw-add-transaction" href="{crmURL p="civicrm/fund/transaction" q="reset=1&action=add" }">
+            <a class="button sw-add-transaction" href="{crmURL p="civicrm/fund/transaction" q="reset=1&action=add&cid=`$contactId`" }">
                 <i class="crm-i fa-plus">&nbsp;</i>
                 {ts}Add Transaction{/ts}
             </a>

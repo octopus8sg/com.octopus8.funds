@@ -22,6 +22,7 @@ class CRM_Funds_Page_SocialTab extends CRM_Core_Page
 
         $sourceUrl[$ajaxSourceName] = $ajaxSourceUrl;
         $this->assign('useAjax', true);
+        $this->assign('contactId', $contactId);
         CRM_Core_Resources::singleton()->addVars('source_url', $sourceUrl);
 
         // controller form for ajax search

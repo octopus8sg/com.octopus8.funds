@@ -105,6 +105,14 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
                     $this->_isApprover = TRUE;
                 }
 
+                if ($entity['contact_id_sub'] == $currentUserId) {
+                    $this->_isSocial = TRUE;
+                }
+
+                if ($entity['created_by'] == $currentUserId) {
+                    $this->_isSocial = TRUE;
+                }
+
                 if ($entity['status_id'] == CRM_Funds_BAO_FundTransaction::PENDING_APPROVAL) {
                     $this->_isPendingApproval = TRUE;
                 }
@@ -143,7 +151,11 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
 
         $editfields = TRUE;
         if ($this->_action != CRM_Core_Action::DELETE) {
-//            $props = ['api' => ['params' => ['contact_type' => 'Organization']]];
+            if ($this->_isApproved || $this->_isRejected ) {
+                $this->_action = CRM_Core_Action::VIEW;
+            }
+
+            //            $props = ['api' => ['params' => ['contact_type' => 'Organization']]];
 //            1 - id
 //            2 - date
 //            3 - description
@@ -160,29 +172,14 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
 //            14 - updated_by
 //            15 - updated _on
             //2
-
             $date = $this->add('datepicker', 'date',
                 E::ts('Date: '), CRM_Core_SelectValues::date(NULL, 'Y-m-d H:i:s'), TRUE, ['time' => FALSE]);
-            if ($this->_isApproved) {
-                $date->freeze();
-            }
             //3
-
             $noteAttrib = CRM_Core_DAO::getAttribute('CRM_Core_DAO_Note');
             $description = $this->add('textarea', 'description', ts('Description'), $noteAttrib['note'], TRUE);
-            if ($this->_isApproved) {
-                $description->freeze();
-            }
-
             //4
             $amount = $this->add('text', 'amount', ts('Amount'), ['size' => 8, 'maxlength' => 8], TRUE);
-
             $this->addRule('amount', ts('Amount should be a positive decimal number, like "100.25"'), 'regex', '/^[+]?((\d+(\.\d{0,2})?)|(\.\d{0,2}))$/');
-
-            if ($this->_isApproved) {
-                $description->freeze();
-            }
-
             //5
             // add attachments part - can be added only if editfields is true
             if (!$this->_isApproved) {
@@ -194,18 +191,8 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
                 $currentAttachmentInfo = CRM_Core_BAO_File::getEntityFile('civicrm_o8_fund_transaction', $this->_id);
                 $this->assign('currentAttachmentInfo', $currentAttachmentInfo);
             }
-            //6 todo add options in Updater and in postProcess
-            $statuses = CRM_Core_OptionGroup::values('o8_fund_trxn_status');
-            if ($this->_isAdmin) {
-                $status = $this->add('select', 'status_id',
-                    E::ts('Status'),
-                    $statuses,
-                    TRUE, ['class' => 'huge crm-select2',
-//                    'data-option-edit-path' => 'civicrm/admin/options/o8_fund_trxn_status'
-                    ]);
-            } else {
+            //6 set only by buttons
                 $status = $this->add('hidden', 'status_id'); // 1
-            }
             //7 case
             $case = $this->addEntityRef('case_id', E::ts('Case'), [
                 'entity' => 'case',
@@ -213,20 +200,16 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
                 'placeholder' => ts('- Select Case -'),
 //                'multiple' => TRUE,
             ], FALSE);
-            if ($this->_isApproved) {
-                $case->freeze();
-            }
-
             //8
             if ($this->_isAdmin) {
+
 //                $subprops = ['api' => ['params' => ['group' => 'social_workers']]];
                 $subprops = [];
                 $contact_id_sub = $this->addEntityRef('contact_id_sub',
                     E::ts('Contact (Social Worker)'), $subprops, FALSE);
-                if ($this->_isApproved) {
+                if($this->_cid){ //if this form is run for another contact
                     $contact_id_sub->freeze();
                 }
-
             } else {
                 $contact_id_sub = $this->add('hidden', 'contact_id_sub'); // 1
             }
@@ -236,9 +219,6 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
             $appprops = [];
             $contact_id_app = $this->addEntityRef('contact_id_app',
                 E::ts('Contact (Approver)'), $appprops, FALSE);
-            if ($this->_isApproved) {
-                $contact_id_app->freeze();
-            }
 
 
             //10
@@ -273,12 +253,6 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
                 'select' => ['minimumInputLength' => 0],
             ], TRUE);
 
-            if ($this->_isApproved) {
-                $sub_account_id->freeze();
-            }
-            if ($this->_isApproved) {
-                $fund_id->freeze();
-            }
             //11
             $account_id = $this->addEntityRef('account_id', E::ts('Account'), [
                 'entity' => 'fund_account',
@@ -297,15 +271,15 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
                 'select' => ['minimumInputLength' => 0],
 //                'multiple' => TRUE,
             ], TRUE);
-            if ($this->_isApproved) {
-                $this->freeze();
+
+            if ($this->_isApproved || $this->_isRejected) {
+                $this->_action = CRM_Core_Action::VIEW;
             }
-            if ($this->_isRejected) {
+            if($this->_isPendingApproval && $this->_isSocial){
                 $this->freeze();
-//                if ($this->_isAdmin) {
-//                    $status->unfreeze();
-//                }
+                $contact_id_app->unfreeze();
             }
+
 //            $this->add('text', 'amount', ts('Amount'));
 //            $this->addRule('amount', ts('Please enter a valid amount.'), 'money');
             // todo will be changed by transaction api or by hook?
@@ -323,7 +297,7 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
                     ],
                 ]);
             } else {
-                if ($this->_action == CRM_Core_Action::VIEW || $this->_action == CRM_Core_Action::PREVIEW || (!$this->_isAdmin && !$this->_isApprover && !$this->_isSocial)) {
+                if ($this->_action == CRM_Core_Action::VIEW || $this->_action == CRM_Core_Action::PREVIEW) {
                     CRM_Utils_System::setTitle('View Fund Transaction');
                     $this->freeze();
                     $cancel = [
@@ -367,8 +341,11 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
                         'name' => E::ts('Cancel')];
                     $buttons[] = $cancel;
                     if ($this->_isPendingApproval) {
-                        if ($this->_isSocial || $this->_isAdmin || $this->_isApprover) {
+                        if ($this->_isAdmin || $this->_isApprover) {
                             $buttons[] = $accept;
+                            $buttons[] = $changeit;
+                            $buttons[] = $reject;
+                        } elseif($this->_isSocial){
                             $buttons[] = $changeit;
                             $buttons[] = $reject;
                         } else {
@@ -416,7 +393,12 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
             if ($this->_isApprover) {
                 $defaults['contact_id_app'] = $this->_contact_id;
             }
-            $defaults['contact_id_sub'] = $this->_contact_id;
+            if ($this->_cid) {
+                $defaults['contact_id_sub'] = $this->_cid;
+            }else{
+                $defaults['contact_id_sub'] = $this->_contact_id;
+            }
+            CRM_Core_Error::debug_var('cid', $this->_cid);
             $defaults['status_id'] = 1;
             $defaults['date'] = date("Y-m-d H:i:s");
         }
@@ -468,13 +450,13 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
                 $values['modified_by'] = CRM_Core_Session::getLoggedInContactID();
                 $values['modified_at'] = date('YmdHis');
                 if ($reject) {
-                    $values['status_id'] = 3; //status values to constants?
+                    $values['status_id'] = CRM_Funds_BAO_FundTransaction::REJECTED; //status values to constants?
                 }
                 if ($withdraw) {
-                    $values['status_id'] = 3; //status values to constants?
+                    $values['status_id'] = CRM_Funds_BAO_FundTransaction::REJECTED; //status values to constants?
                 }
                 if ($accept) {
-                    $values['status_id'] = 2; //status values to constants?
+                    $values['status_id'] = CRM_Funds_BAO_FundTransaction::APPROVED; //status values to constants?
                 }
 //                CRM_Core_Error::debug_var('attach', $attach);
             } else {

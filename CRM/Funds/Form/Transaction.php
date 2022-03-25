@@ -240,12 +240,13 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
             $fund_id = $this->addEntityRef('fund_id', E::ts('Fund'), [
                 'entity' => 'fund',
                 'api' => [
-                    'search_fields' => ['code', 'name'],
-                    'label_field' => "name",
-                    'description_field' => [
-                        'code',
-                        'description',
-                    ]
+//                    'sequental' => TRUE,
+//                    'search_fields' => ['code', 'name'],
+//                    'label_field' => "name",
+//                    'description_field' => [
+//                        'code',
+//                        'description',
+//                    ]
                 ],
                 'class' => 'huge',
                 'placeholder' => ts('- Select Fund -'),

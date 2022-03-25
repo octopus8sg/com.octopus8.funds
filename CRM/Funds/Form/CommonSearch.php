@@ -1032,7 +1032,7 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
                 'select' => ['minimumInputLength' => 0]
             ]);
 
-        $this->addEntityRef('own_transaction_fund_id', E::ts('My Fund'), [
+        $this->addEntityRef('own_transaction_fund_id', E::ts('Fund'), [
             'api' => [
                 'search_fields' => ['code', 'name'],
 //                'extra' => ['contact_id.organisation_name'],

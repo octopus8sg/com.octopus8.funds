@@ -388,54 +388,65 @@ function funds_civicrm_alterAPIPermissions($entity, $action, &$params, &$permiss
 {
 
     // allow everyone to get info for a given event; also – another way to skip permissions
-    if ($entity == 'fund' and ($action == 'getlist' or $action == 'get')) {
+    if ($entity == 'fund' and ($action == 'getlist' || $action == 'get')) {
+        $params['check_permissions'] = FALSE;
+//        CRM_Core_Error::debug_var('fentity', $entity);
+//        CRM_Core_Error::debug_var('faction', $action);
+//        CRM_Core_Error::debug_var('fparams', $params);
+//        CRM_Core_Error::debug_var('fpermissions', $permissions);
+    }
+    elseif ($entity == 'fund_account' and ($action == 'getlist' or $action == 'get')) {
         $params['check_permissions'] = FALSE;
 //        CRM_Core_Error::debug_var('entity', $entity);
 //        CRM_Core_Error::debug_var('action', $action);
 //        CRM_Core_Error::debug_var('params', $params);
 //        CRM_Core_Error::debug_var('permissions', $permissions);
     }
-    if ($entity == 'fund_account' and ($action == 'getlist' or $action == 'get')) {
+    elseif  ($entity == 'fund_account_type' and ($action == 'getlist' or $action == 'get')) {
         $params['check_permissions'] = FALSE;
 //        CRM_Core_Error::debug_var('entity', $entity);
 //        CRM_Core_Error::debug_var('action', $action);
 //        CRM_Core_Error::debug_var('params', $params);
 //        CRM_Core_Error::debug_var('permissions', $permissions);
     }
-    if ($entity == 'fund_account_type' and ($action == 'getlist' or $action == 'get')) {
+    elseif ($entity == 'fund_sub_account' and ($action == 'getlist' or $action == 'get')) {
         $params['check_permissions'] = FALSE;
 //        CRM_Core_Error::debug_var('entity', $entity);
 //        CRM_Core_Error::debug_var('action', $action);
 //        CRM_Core_Error::debug_var('params', $params);
 //        CRM_Core_Error::debug_var('permissions', $permissions);
+    }elseif ($entity == 'fund_sub_account' and ($action == 'getlist' or $action == 'get')) {
+        $params['check_permissions'] = FALSE;
+//        CRM_Core_Error::debug_var('entity', $entity);
+//        CRM_Core_Error::debug_var('action', $action);
+//        CRM_Core_Error::debug_var('params', $params);
+//        CRM_Core_Error::debug_var('permissions', $permissions);
+    }elseif ($entity == 'fund_category' and ($action == 'getlist' or $action == 'get')) {
+        $params['check_permissions'] = FALSE;
+//        CRM_Core_Error::debug_var('entity', $entity);
+//        CRM_Core_Error::debug_var('action', $action);
+//        CRM_Core_Error::debug_var('params', $params);
+//        CRM_Core_Error::debug_var('permissions', $permissions);
+    }elseif ($entity == 'fund_sub_category' and ($action == 'getlist' or $action == 'get')) {
+        $params['check_permissions'] = FALSE;
+//        CRM_Core_Error::debug_var('entity', $entity);
+//        CRM_Core_Error::debug_var('action', $action);
+//        CRM_Core_Error::debug_var('params', $params);
+//        CRM_Core_Error::debug_var('permissions', $permissions);
+    }else{
+//        CRM_Core_Error::debug_var('entity', $entity);
+//        CRM_Core_Error::debug_var('action', $action);
+//        CRM_Core_Error::debug_var('params', $params);
     }
-    if ($entity == 'fund_sub_account' and ($action == 'getlist' or $action == 'get')) {
-        $params['check_permissions'] = FALSE;
-//        CRM_Core_Error::debug_var('entity', $entity);
-//        CRM_Core_Error::debug_var('action', $action);
-//        CRM_Core_Error::debug_var('params', $params);
-//        CRM_Core_Error::debug_var('permissions', $permissions);
-    }
-    if ($entity == 'fund_sub_account' and ($action == 'getlist' or $action == 'get')) {
-        $params['check_permissions'] = FALSE;
-//        CRM_Core_Error::debug_var('entity', $entity);
-//        CRM_Core_Error::debug_var('action', $action);
-//        CRM_Core_Error::debug_var('params', $params);
-//        CRM_Core_Error::debug_var('permissions', $permissions);
-    }
-    if ($entity == 'fund_category' and ($action == 'getlist' or $action == 'get')) {
-        $params['check_permissions'] = FALSE;
-//        CRM_Core_Error::debug_var('entity', $entity);
-//        CRM_Core_Error::debug_var('action', $action);
-//        CRM_Core_Error::debug_var('params', $params);
-//        CRM_Core_Error::debug_var('permissions', $permissions);
-    }
-    if ($entity == 'fund_sub_category' and ($action == 'getlist' or $action == 'get')) {
-        $params['check_permissions'] = FALSE;
-//        CRM_Core_Error::debug_var('entity', $entity);
-//        CRM_Core_Error::debug_var('action', $action);
-//        CRM_Core_Error::debug_var('params', $params);
-//        CRM_Core_Error::debug_var('permissions', $permissions);
+}
+
+function funds_civicrm_selectWhereClause($entity, &$clauses) {
+//    CRM_Core_Error::debug_var('centity', $entity);
+
+    // Restrict access to emails by contact type
+    if ($entity == 'Fund') {
+        $clauses['contact_id'] = [];
+//        CRM_Core_Error::debug_var('clauses', $clauses);
     }
 }
 /**

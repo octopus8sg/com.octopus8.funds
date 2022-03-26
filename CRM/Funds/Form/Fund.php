@@ -127,12 +127,13 @@ class CRM_Funds_Form_Fund extends CRM_Core_Form
             $this->add('datepicker', 'end_date',
                 E::ts('End Date: '), CRM_Core_SelectValues::date(NULL, 'Y-m-d H:i:s'), TRUE, ['time' => FALSE]);
 
-            $this->add('text', 'target_cases', ts('Target Cases'), ['size' => 8, 'maxlength' => 8], TRUE);
+            $this->add('text', 'target_cases', ts('Target Cases'), ['size' => 8, 'maxlength' => 8], FALSE);
             $this->addRule('target_cases', ts('Value should be a positive number'), 'positiveInteger');
 
-            $this->add('text', 'amount', ts('Amount'));
+            $this->add('text', 'amount', ts('Amount'), ['size' => 12, 'maxlength' => 12], true);
 //            $this->registerRule('positiveDecimal', 'callback', 'positiveDecimal', 'CRM_Funds_Form_Fund');
-            $this->addRule('amount', ts('Amount should be a positive decimal number, like "100.25"'), 'regex', '/^[+]?((\d+(\.\d{0,2})?)|(\.\d{0,2}))$/');
+            $this->addRule('amount', ts('Amount should be a positive decimal number, like "100.25"'),
+                'regex', '/^[+]?((\d+(\.\d{0,2})?)|(\.\d{0,2}))$/');
 //            $this->addRule('amount', ts('Please enter a valid amount.'), 'money', null, 'client');
             // todo will be changed by transaction api or by hook?
             $this->add('text', 'residue', ts('Residue'))->freeze();
@@ -187,6 +188,7 @@ class CRM_Funds_Form_Fund extends CRM_Core_Form
         if ($this->_myentity) {
             $defaults = $this->_myentity;
         }
+        $defaults['target_cases'] = 0;
         return $defaults;
     }
 

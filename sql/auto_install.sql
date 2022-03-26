@@ -43,7 +43,7 @@ CREATE TABLE `civicrm_o8_fund` (
   `code` varchar(255) NOT NULL COMMENT 'Fund Code',
   `contact_id` int unsigned COMMENT 'FK to Contact',
   `name` varchar(255) NOT NULL COMMENT 'Fund Name',
-  `target_cases` int unsigned NOT NULL DEFAULT 0 COMMENT 'Target Cases',
+  `target_cases` int unsigned DEFAULT 0 COMMENT 'Target Cases',
   `start_date` datetime NOT NULL COMMENT 'Fund Start Date',
   `end_date` datetime NOT NULL COMMENT 'Fund End Date',
   `amount` decimal(20,2) NOT NULL COMMENT 'Starting Amount of the fund.',

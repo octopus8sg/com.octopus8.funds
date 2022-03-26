@@ -75,7 +75,7 @@
         <type>int unsigned</type>
         <export>true</export>
         <default>0</default>
-        <required>TRUE</required>
+<!--        <required>TRUE</required>-->
         <import>true</import>
         <comment>Target Cases</comment>
     </field>

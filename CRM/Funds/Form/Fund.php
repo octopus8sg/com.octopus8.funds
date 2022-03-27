@@ -127,7 +127,7 @@ class CRM_Funds_Form_Fund extends CRM_Core_Form
             $this->add('datepicker', 'end_date',
                 E::ts('End Date: '), CRM_Core_SelectValues::date(NULL, 'Y-m-d H:i:s'), TRUE, ['time' => FALSE]);
 
-            $this->add('text', 'target_cases', ts('Target Cases'), ['size' => 8, 'maxlength' => 8], FALSE);
+            $this->add('text', 'target_cases', ts('Target Cases'), ['size' => 8, 'maxlength' => 8], TRUE);
             $this->addRule('target_cases', ts('Value should be a positive number'), 'positiveInteger');
 
             $this->add('text', 'amount', ts('Amount'), ['size' => 12, 'maxlength' => 12], true);

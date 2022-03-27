@@ -63,7 +63,7 @@ class CRM_Funds_Form_Fund extends CRM_Core_Form
             );
             if (!empty($entities)) {
                 $this->_myentity = $entities[0];
-                if($this->_myentity['status_id'] != CRM_Funds_BAO_FundTransaction::PENDING_APPROVAL){
+                if ($this->_myentity['status_id'] != CRM_Funds_BAO_FundTransaction::PENDING_APPROVAL) {
                     $this->_action = CRM_Core_Action::VIEW;
                 }
             }
@@ -188,7 +188,7 @@ class CRM_Funds_Form_Fund extends CRM_Core_Form
         if ($this->_myentity) {
             $defaults = $this->_myentity;
         }
-        $defaults['target_cases'] = 0;
+        $defaults['target_cases'] = 1;
         return $defaults;
     }
 
@@ -214,6 +214,9 @@ class CRM_Funds_Form_Fund extends CRM_Core_Form
 //            $params['entity_id'] = $this->getEntityId();
             $values['entity_table'] = 'civicrm_o8_fund';
             $values['entity_id'] = $this->getEntityId();
+            if ($values['target_cases'] == 0) {
+                $values['target_cases'] = 1;
+            }
 //            $params['name'] = $values['name'];
 //            $params['code'] = $values['code'];
 //            $params['target_cases'] = $values['target_cases'];

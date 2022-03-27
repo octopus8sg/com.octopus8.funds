@@ -1,3 +1,4 @@
+// alert("aaa");
 CRM.$(function ($) {
 
     $("a.fm-add-transaction").off("click").click(function (event) {
@@ -34,7 +35,11 @@ CRM.$(function ($) {
         //transactions datatable
 
         $('.fm-selector-transactions').on('click', 'tr', function () {
-            $(this).toggleClass('row_selected columnheader');
+            let aaa = $(this).find('td:eq(10)').text();
+            // alert(aaa);
+            if (aaa === "Pending Approval") {
+                $(this).toggleClass('row_selected columnheader');
+            }
         });
 
         var transactions_tab = $('.fm-selector-transactions');
@@ -156,6 +161,7 @@ CRM.$(function ($) {
                         "id": $(this).find("td:eq(0)").text(),
                         "status_id": 2
                     }).then(function (results) {
+                        // alert(results.toString());
                         i++;
                         new_transactions_table.draw();
                     }, function (failure) {
@@ -183,6 +189,7 @@ CRM.$(function ($) {
                         "id": $(this).find("td:eq(0)").text(),
                         "status_id": 3
                     }).then(function (results) {
+                        // alert(results.toString());
                         i++;
                         new_transactions_table.draw();
                     }, function (failure) {
@@ -202,7 +209,13 @@ CRM.$(function ($) {
         });
         $("a.fm-select-all-transactions").off("click").click(function (event) {
             event.preventDefault();
-            $('.fm-selector-transactions tr').toggleClass('row_selected columnheader');
+            $('.fm-selector-transactions tr').each(function () {
+                let aaa = $(this).find('td:eq(10)').text();
+                // alert(aaa);
+                if (aaa === "Pending Approval") {
+                    $(this).toggleClass('row_selected columnheader');
+                }
+            });
 
         });
         //End Reset Table

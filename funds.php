@@ -130,19 +130,23 @@ function funds_civicrm_post($op, $objectName, $objectId, &$objectRef)
     $case_id = $objectRef->case_id;
     $caseDetails = "";
     if (intval($case_id) > 0) {
-        $case = civicrm_api3('Case', 'getsingle', [
-            'id' => $case_id,
-            'check_permissions' => TRUE,
-            'return' => ['subject', 'case_type_id', 'status_id', 'start_date', 'end_date'],
-        ]);
+        try {
+            $case = civicrm_api3('Case', 'getsingle', [
+                'id' => $case_id,
+                'check_permissions' => TRUE,
+                'return' => ['subject', 'case_type_id', 'status_id', 'start_date', 'end_date'],
+            ]);
 
-        $caseStatuses = CRM_Case_PseudoConstant::caseStatus();
-        $caseTypes = CRM_Case_PseudoConstant::caseType('title', FALSE);
-        $caseDetails = "<table><tr><td>" . ts('Case Subject') . "</td><td>{$case['subject']}</td></tr>
+            $caseStatuses = CRM_Case_PseudoConstant::caseStatus();
+            $caseTypes = CRM_Case_PseudoConstant::caseType('title', FALSE);
+            $caseDetails = "<table><tr><td>" . ts('Case Subject') . "</td><td>{$case['subject']}</td></tr>
                                   <tr><td>" . ts('Case Type') . "</td><td>{$caseTypes[$case['case_type_id']]}</td></tr>
                                   <tr><td>" . ts('Case Status') . "</td><td>{$caseStatuses[$case['status_id']]}</td></tr>
                                   <tr><td>" . ts('Case Start Date') . "</td><td>" . CRM_Utils_Date::customFormat($case['start_date']) . "</td></tr>
                                   <tr><td>" . ts('Case End Date') . "</td><td></td></tr>" . CRM_Utils_Date::customFormat($case['end_date']) . "</table>";
+        } catch (Exception $e) {
+            $caseDetails = $e->getMessage();
+        }
     }
     $contact_sub = "";
     $contact_id_sub = $objectRef->contact_id_sub;
@@ -240,12 +244,13 @@ function funds_civicrm_post($op, $objectName, $objectId, &$objectRef)
         'attachments' => null,
     ];
 //    CRM_Core_Error::debug_var('mailparams', $mailParams);
-    if (!CRM_Utils_Mail::send($mailParams)) {
-        return FALSE;
-    } else {
-        return true;
+    try {
+        $mailed = CRM_Utils_Mail::send($mailParams);
+    } catch (Exception $e) {
+        CRM_Core_Error::debug_var('Error', $e->getMessage());
+        CRM_Core_Error::debug_var('Error', $e->getMessage());
     }
-
+    return TRUE;
 //    }
 }
 
@@ -384,8 +389,29 @@ function funds_civicrm_permission_check($permission, &$granted, $contact_id = NU
     }
 
 }
+
 function funds_civicrm_alterAPIPermissions($entity, $action, &$params, &$permissions)
 {
+//    CRM_Core_Error::debug_var('fentity', $entity);
+//    CRM_Core_Error::debug_var('faction', $action);
+//    CRM_Core_Error::debug_var('fparams', $params);
+//    CRM_Core_Error::debug_var('fpermissions', $permissions);
+
+    if ($entity == 'fund_transaction' and ($action == 'update' || $action = 'delete')) {
+        $params['check_permissions'] = FALSE;
+//        CRM_Core_Error::debug_var('fentity', $entity);
+//        CRM_Core_Error::debug_var('faction', $action);
+//        CRM_Core_Error::debug_var('fparams', $params);
+//        CRM_Core_Error::debug_var('fpermissions', $permissions);
+    }
+
+    if ($entity == 'case' and ($action == 'getsingle' || $action == 'get')) {
+        $params['check_permissions'] = FALSE;
+//        CRM_Core_Error::debug_var('fentity', $entity);
+//        CRM_Core_Error::debug_var('faction', $action);
+//        CRM_Core_Error::debug_var('fparams', $params);
+//        CRM_Core_Error::debug_var('fpermissions', $permissions);
+    }
 
     // allow everyone to get info for a given event; also – another way to skip permissions
     if ($entity == 'fund' and ($action == 'getlist' || $action == 'get')) {
@@ -394,53 +420,51 @@ function funds_civicrm_alterAPIPermissions($entity, $action, &$params, &$permiss
 //        CRM_Core_Error::debug_var('faction', $action);
 //        CRM_Core_Error::debug_var('fparams', $params);
 //        CRM_Core_Error::debug_var('fpermissions', $permissions);
-    }
-    elseif ($entity == 'fund_account' and ($action == 'getlist' or $action == 'get')) {
+    } elseif ($entity == 'fund_account' and ($action == 'getlist' or $action == 'get')) {
         $params['check_permissions'] = FALSE;
 //        CRM_Core_Error::debug_var('entity', $entity);
 //        CRM_Core_Error::debug_var('action', $action);
 //        CRM_Core_Error::debug_var('params', $params);
 //        CRM_Core_Error::debug_var('permissions', $permissions);
-    }
-    elseif  ($entity == 'fund_account_type' and ($action == 'getlist' or $action == 'get')) {
+    } elseif ($entity == 'fund_account_type' and ($action == 'getlist' or $action == 'get')) {
         $params['check_permissions'] = FALSE;
 //        CRM_Core_Error::debug_var('entity', $entity);
 //        CRM_Core_Error::debug_var('action', $action);
 //        CRM_Core_Error::debug_var('params', $params);
 //        CRM_Core_Error::debug_var('permissions', $permissions);
-    }
-    elseif ($entity == 'fund_sub_account' and ($action == 'getlist' or $action == 'get')) {
+    } elseif ($entity == 'fund_sub_account' and ($action == 'getlist' or $action == 'get')) {
         $params['check_permissions'] = FALSE;
 //        CRM_Core_Error::debug_var('entity', $entity);
 //        CRM_Core_Error::debug_var('action', $action);
 //        CRM_Core_Error::debug_var('params', $params);
 //        CRM_Core_Error::debug_var('permissions', $permissions);
-    }elseif ($entity == 'fund_sub_account' and ($action == 'getlist' or $action == 'get')) {
+    } elseif ($entity == 'fund_sub_account' and ($action == 'getlist' or $action == 'get')) {
         $params['check_permissions'] = FALSE;
 //        CRM_Core_Error::debug_var('entity', $entity);
 //        CRM_Core_Error::debug_var('action', $action);
 //        CRM_Core_Error::debug_var('params', $params);
 //        CRM_Core_Error::debug_var('permissions', $permissions);
-    }elseif ($entity == 'fund_category' and ($action == 'getlist' or $action == 'get')) {
+    } elseif ($entity == 'fund_category' and ($action == 'getlist' or $action == 'get')) {
         $params['check_permissions'] = FALSE;
 //        CRM_Core_Error::debug_var('entity', $entity);
 //        CRM_Core_Error::debug_var('action', $action);
 //        CRM_Core_Error::debug_var('params', $params);
 //        CRM_Core_Error::debug_var('permissions', $permissions);
-    }elseif ($entity == 'fund_sub_category' and ($action == 'getlist' or $action == 'get')) {
+    } elseif ($entity == 'fund_sub_category' and ($action == 'getlist' or $action == 'get')) {
         $params['check_permissions'] = FALSE;
 //        CRM_Core_Error::debug_var('entity', $entity);
 //        CRM_Core_Error::debug_var('action', $action);
 //        CRM_Core_Error::debug_var('params', $params);
 //        CRM_Core_Error::debug_var('permissions', $permissions);
-    }else{
+    } else {
 //        CRM_Core_Error::debug_var('entity', $entity);
 //        CRM_Core_Error::debug_var('action', $action);
 //        CRM_Core_Error::debug_var('params', $params);
     }
 }
 
-function funds_civicrm_selectWhereClause($entity, &$clauses) {
+function funds_civicrm_selectWhereClause($entity, &$clauses)
+{
 //    CRM_Core_Error::debug_var('centity', $entity);
 
     // Restrict access to emails by contact type
@@ -449,6 +473,7 @@ function funds_civicrm_selectWhereClause($entity, &$clauses) {
 //        CRM_Core_Error::debug_var('clauses', $clauses);
     }
 }
+
 /**
  * @return integer
  * @throws CiviCRM_API3_Exception

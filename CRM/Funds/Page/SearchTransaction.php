@@ -496,11 +496,11 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
             $action = "<span>$view $update $delete</span>";
             if (isset($contactId)) {
                 $action = "<span>$view</span>";
-//                if ($ContactTab) {
-//                    if (is_numeric($contactId)) {
-//                        $action = "<span>$view</span>";
-//                    }
-//                }
+                if ($ContactTab) {
+                    if (is_numeric($contactId)) {
+                        $action = "<span>$view $update</span>";
+                    }
+                }
 //                if ($SocialTab) {
 //                    if (is_numeric($contactId)) {
 //                        $action = "<span>$view $update</span>";

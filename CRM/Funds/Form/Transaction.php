@@ -307,18 +307,18 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
                     $buttons[] = $cancel;
                     $this->addButtons($buttons);
                 } else {
-                    $review = [
-                        'type' => 'submit',
-                        'subName' => 'review',
-                        'name' => E::ts('Review Later'),
-                        'icon' => 'fa-clock-o',
-                    ];
-                    $changeit = [
-                        'type' => 'submit',
-                        'subName' => 'changeit',
-                        'name' => E::ts('Update'),
-                        'isDefault' => TRUE,
-                    ];
+//                    $review = [
+//                        'type' => 'submit',
+//                        'subName' => 'review',
+//                        'name' => E::ts('Review Later'),
+//                        'icon' => 'fa-clock-o',
+//                    ];
+//                    $changeit = [
+//                        'type' => 'submit',
+//                        'subName' => 'changeit',
+//                        'name' => E::ts('Update'),
+//                        'isDefault' => TRUE,
+//                    ];
                     $accept = [
                         'type' => 'submit',
                         'subName' => 'accept',
@@ -342,13 +342,14 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
                         'name' => E::ts('Cancel')];
                     $buttons[] = $cancel;
                     if ($this->_isPendingApproval) {
+                        $this->freeze();
                         if ($this->_isAdmin || $this->_isApprover) {
                             $buttons[] = $accept;
-                            $buttons[] = $changeit;
+//                            $buttons[] = $changeit;
                             $buttons[] = $reject;
                         } elseif($this->_isSocial){
-                            $buttons[] = $changeit;
-                            $buttons[] = $reject;
+//                            $buttons[] = $changeit;
+                            $buttons[] = $withdraw;
                         } else {
                             $status->freeze();
                         }
@@ -412,10 +413,11 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
             if ($this->_isAdmin || $this->_isApprover || $this->_isSocial) {
                 civicrm_api3('FundTransaction', 'delete', [
                     'id' => $this->_id,
+                    'debug' => 1
                 ]);
-                CRM_Core_Session::setStatus(E::ts('Removed The Transaction'), E::ts('Fund'), 'success');
+                CRM_Core_Session::setStatus(E::ts('Removed The Transaction'), E::ts('Transaction'), 'success');
             } else {
-                CRM_Core_Session::setStatus(E::ts("You don't have rights"), E::ts('Fund'), 'success');
+                CRM_Core_Session::setStatus(E::ts("You don't have rights"), E::ts('Transaction'), 'success');
             }
         } else {
             $post = $_POST;

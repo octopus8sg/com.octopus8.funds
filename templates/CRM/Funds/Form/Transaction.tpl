@@ -3,7 +3,8 @@
   {* Are you sure to delete form *}
   <h3>{ts}Delete Fund{/ts}</h3>
   <div class="crm-block crm-form-block">
-    <div class="crm-section">{ts 1=$myentity.code}Are you sure you wish to delete the Fund with Code: %1?{/ts}</div>
+{*    {debug}*}
+    <div class="crm-section">{ts 1=$myentity.id}Are you sure you wish to delete the Transaction with ID: %1?{/ts}</div>
   </div>
 
   <div class="crm-submit-buttons">

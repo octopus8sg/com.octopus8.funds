@@ -1,3 +1,4 @@
+// alert("ccc!");
 CRM.$(function ($) {
 
     $("a.add-transaction").click(function (event) {
@@ -34,7 +35,11 @@ CRM.$(function ($) {
         //transactions datatable
 
         $('.selector-transactions').on('click', 'tr', function () {
-            $(this).toggleClass('row_selected columnheader');
+            let aaa = $(this).find('td:eq(11)').text();
+            // alert(aaa);
+            if (aaa === "Pending Approval") {
+                $(this).toggleClass('row_selected columnheader');
+            }
         });
 
         var transactions_tab = $('.selector-transactions');
@@ -198,7 +203,14 @@ CRM.$(function ($) {
         });
         $('a.select-all-transactions').click(function (event) {
             event.preventDefault();
-            $('.selector-transactions tr').toggleClass('row_selected columnheader');
+            $('.selector-transactions tr').each(function() {
+                let aaa = $(this).find('td:eq(11)').text();
+                // alert(aaa);
+                if (aaa === "Pending Approval") {
+                    $(this).toggleClass('row_selected columnheader');
+                }
+            });
+
 
         });
         //End Reset Table

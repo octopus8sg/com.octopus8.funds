@@ -169,8 +169,16 @@ class CRM_Funds_Page_SearchFund extends CRM_Core_Page
                 ['action' => 'update', 'id' => $dao->id]);
             $r_delete = CRM_Utils_System::url('civicrm/fund/form',
                 ['action' => 'delete', 'id' => $dao->id]);
+            $r_preview = CRM_Utils_System::url('civicrm/fund/form',
+                ['action' => 'preview', 'id' => $dao->id]);
             $update = '<a class="update-fund action-item crm-hover-button" target="_blank" href="' . $r_update . '"><i class="crm-i fa-pencil"></i>&nbsp;Edit</a>';
             $delete = '<a class="delete-fund action-item crm-hover-button" target="_blank" href="' . $r_delete . '"><i class="crm-i fa-trash"></i>&nbsp;Delete</a>';
+            $transactionsCount = CRM_Funds_BAO_Fund::getTransactionsCount($dao->id);
+            if ($transactionsCount > 0) {
+                $delete = '<a class="delete-fund action-item crm-hover-button" 
+                target="_blank" href="' . $r_preview . '"><i class="crm-i fa-eye"></i>&nbsp;Preview</a>';
+            }
+
             $action = "<span>$update $delete</span>";
             $rows[$count][] = $dao->id;
             $rows[$count][] = $dao->code;

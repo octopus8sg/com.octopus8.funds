@@ -62,10 +62,13 @@ class CRM_Funds_Form_Fund extends CRM_Core_Form
                 ]
             );
             if (!empty($entities)) {
-                $this->_myentity = $entities[0];
-                if ($this->_myentity['status_id'] != CRM_Funds_BAO_FundTransaction::PENDING_APPROVAL) {
-                    $this->_action = CRM_Core_Action::VIEW;
+                $thisfund = $entities[0];
+                $transactionsCount = CRM_Funds_BAO_Fund::getTransactionsCount($thisfund['id']);
+                $thisfund['transactions_count'] = $transactionsCount;
+                if ($transactionsCount > 0) {
+                    $this->_action = CRM_Core_Action::PREVIEW;
                 }
+                $this->_myentity = $thisfund;
             }
             $this->assign('myentity', $this->_myentity);
 
@@ -86,7 +89,8 @@ class CRM_Funds_Form_Fund extends CRM_Core_Form
      * @return array
      *   list of errors to be posted back to the form
      */
-    public static function formRule($values)
+    public
+    static function formRule($values)
     {
         $errors = [];
 
@@ -97,7 +101,8 @@ class CRM_Funds_Form_Fund extends CRM_Core_Form
         return $errors;
     }
 
-    public function buildQuickForm()
+    public
+    function buildQuickForm()
     {
         $this->assign('id', $this->getEntityId());
         $this->add('hidden', 'id');
@@ -149,7 +154,11 @@ class CRM_Funds_Form_Fund extends CRM_Core_Form
                 $this->_id
             );
             if ($this->_action == CRM_Core_Action::VIEW || $this->_action == CRM_Core_Action::PREVIEW) {
+
                 CRM_Utils_System::setTitle('View Fund');
+                if ($this->_action == CRM_Core_Action::PREVIEW) {
+                    CRM_Utils_System::setTitle('Preview Fund with ' . $this->_myentity['transactions_count'] . ' child transaction');
+                }
                 $this->freeze();
                 $cancel = [
                     'type' => 'cancel',
@@ -183,7 +192,8 @@ class CRM_Funds_Form_Fund extends CRM_Core_Form
      * @return array|NULL
      *   reference to the array of default values
      */
-    public function setDefaultValues()
+    public
+    function setDefaultValues()
     {
         if ($this->_myentity) {
             $defaults = $this->_myentity;
@@ -192,7 +202,8 @@ class CRM_Funds_Form_Fund extends CRM_Core_Form
         return $defaults;
     }
 
-    public function postProcess()
+    public
+    function postProcess()
     {
         if ($this->_action == CRM_Core_Action::DELETE) {
             civicrm_api4('Fund', 'delete', ['where' => [['id', '=', $this->_id]]]);

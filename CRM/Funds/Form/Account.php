@@ -102,7 +102,8 @@ class CRM_Funds_Form_Account extends CRM_Core_Form
             $noteAttrib = CRM_Core_DAO::getAttribute('CRM_Core_DAO_Note');
             $this->add('textarea', 'description', ts('Description'), $noteAttrib['note']);
 
-            if ($this->_action == CRM_Core_Action::VIEW || $this->_action == CRM_Core_Action::PREVIEW || (!$this->_isAdmin && !$this->_isApprover && !$this->_isSocial)) {
+            if ($this->_action == CRM_Core_Action::VIEW || $this->_action == CRM_Core_Action::PREVIEW
+                ) {
                 CRM_Utils_System::setTitle('View Account');
                 $this->freeze();
                 $cancel = [

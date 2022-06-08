@@ -173,8 +173,8 @@ FROM civicrm_o8_fund f
                             $sum = $dao->amount;
                             $spentmoney = $dao->expenditure;
                             $spenttime = $dao->spenttime;
-                            $monthlyspentmoney = $spentmoney / $spenttime;
-                            $projection = round($sum / $monthlyspentmoney) . " MONTH";
+                            $averagemonthlyspent = $spentmoney / $spenttime;
+                            $projection = round(($sum - $spentmoney) / $averagemonthlyspent) . " MONTH";
                         }
                     }
                 }

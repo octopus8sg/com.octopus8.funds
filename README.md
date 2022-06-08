@@ -42,3 +42,5 @@ cv en funds
 ## Known Issues
 
 - 0.1.3. Fixed JS to prevent two forms
+
+- 0.1.4. Changed projection formula

@@ -1,6 +1,6 @@
 CRM.$(function ($) {
 
-    $("a.sw-add-transaction").click(function (event) {
+    $("a.sw-add-transaction").off("click").click(function (event) {
         event.preventDefault();
         var href = $(this).attr('href');
         // alert(href);
@@ -13,7 +13,7 @@ CRM.$(function ($) {
         });
     });
 
-    $("a.sw-view-transaction").click(function (event) {
+    $("a.sw-view-transaction").off("click").click(function (event) {
         event.preventDefault();
         var href = $(this).attr('href');
         // alert(href);
@@ -46,7 +46,7 @@ CRM.$(function ($) {
         };
         transactions_dtsettings.fnDrawCallback = function (oSettings) {
             // $("a.sw-view-transaction").css('background','red');
-            $("a.sw-update-transaction").click(function (event) {
+            $("a.sw-update-transaction").off("click").click(function (event) {
                 event.preventDefault();
                 var href = $(this).attr('href');
                 // alert(href);
@@ -58,7 +58,7 @@ CRM.$(function ($) {
                     hm_table.draw();
                 });
             });
-            $("a.sw-delete-transaction").click(function (event) {
+            $("a.sw-delete-transaction").off("click").click(function (event) {
                 event.preventDefault();
                 var href = $(this).attr('href');
                 // alert(href);
@@ -70,7 +70,7 @@ CRM.$(function ($) {
                     hm_table.draw();
                 });
             });
-            $("a.sw-view-transaction").click(function (event) {
+            $("a.sw-view-transaction").off("click").click(function (event) {
                 event.preventDefault();
                 var href = $(this).attr('href');
                 // alert(href);

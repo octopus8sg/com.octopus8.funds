@@ -32,7 +32,7 @@ CRM.$(function ($) {
         };
         account_types_dtsettings.fnDrawCallback = function (oSettings) {
             // $("a.view-account_type").css('background','red');
-            $("a.update-account-type").click(function (event) {
+            $("a.update-account-type").off("click").click(function (event) {
                 event.preventDefault();
                 var href = $(this).attr('href');
                 // alert(href);
@@ -44,7 +44,7 @@ CRM.$(function ($) {
                     hm_table.draw();
                 });
             });
-            $("a.update-account-type").click(function (event) {
+            $("a.update-account-type").off("click").click(function (event) {
                 event.preventDefault();
                 var href = $(this).attr('href');
                 // alert(href);

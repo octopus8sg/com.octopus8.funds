@@ -32,7 +32,7 @@ CRM.$(function ($) {
         };
         funds_dtsettings.fnDrawCallback = function (oSettings) {
             // $("a.view-fund").css('background','red');
-            $("a.view-fund").click(function (event) {
+            $("a.view-fund").off("click").click(function (event) {
                 event.preventDefault();
                 var href = $(this).attr('href');
                 // alert(href);
@@ -45,7 +45,7 @@ CRM.$(function ($) {
                 });
             });
             // $("a.update-fund").css('background','blue');
-            $("a.update-fund").click(function (event) {
+            $("a.update-fund").off("click").click(function (event) {
                 event.preventDefault();
                 var href = $(this).attr('href');
                 // alert(href);
@@ -57,7 +57,7 @@ CRM.$(function ($) {
                     hm_table.draw();
                 });
             });
-            $("a.delete-fund").click(function (event) {
+            $("a.delete-fund").off("click").click(function (event) {
                 event.preventDefault();
                 var href = $(this).attr('href');
                 // alert(href);

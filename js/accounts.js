@@ -1,6 +1,6 @@
 CRM.$(function ($) {
 
-    $("a.add-account").click(function( event ) {
+    $("a.add-account").off("click").click(function( event ) {
         event.preventDefault();
         var href = $(this).attr('href');
         // alert(href);
@@ -32,7 +32,7 @@ CRM.$(function ($) {
         };
         accounts_dtsettings.fnDrawCallback = function (oSettings) {
             // $("a.view-account").css('background','red');
-            $("a.update-account").click(function (event) {
+            $("a.update-account").off("click").click(function (event) {
                 event.preventDefault();
                 var href = $(this).attr('href');
                 // alert(href);
@@ -44,7 +44,7 @@ CRM.$(function ($) {
                     hm_table.draw();
                 });
             });
-            $("a.delete-account").click(function (event) {
+            $("a.delete-account").off("click").click(function (event) {
                 event.preventDefault();
                 var href = $(this).attr('href');
                 // alert(href);

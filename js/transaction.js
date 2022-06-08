@@ -1,7 +1,7 @@
 // alert("ccc!");
 CRM.$(function ($) {
 
-    $("a.add-transaction").click(function (event) {
+    $("a.add-transaction").off("click").click(function (event) {
         event.preventDefault();
         var href = $(this).attr('href');
         // alert(href);
@@ -14,7 +14,7 @@ CRM.$(function ($) {
         });
     });
 
-    $("a.view-transaction").click(function (event) {
+    $("a.view-transaction").off("click").click(function (event) {
         event.preventDefault();
         var href = $(this).attr('href');
         // alert(href);
@@ -55,7 +55,7 @@ CRM.$(function ($) {
         };
         transactions_dtsettings.fnDrawCallback = function (oSettings) {
             // $("a.view-transaction").css('background','red');
-            $("a.update-transaction").click(function (event) {
+            $("a.update-transaction").off("click").click(function (event) {
                 event.preventDefault();
                 var href = $(this).attr('href');
                 // alert(href);
@@ -67,7 +67,7 @@ CRM.$(function ($) {
                     hm_table.draw();
                 });
             });
-            $("a.delete-transaction").click(function (event) {
+            $("a.delete-transaction").off("click").click(function (event) {
                 event.preventDefault();
                 var href = $(this).attr('href');
                 // alert(href);
@@ -79,7 +79,7 @@ CRM.$(function ($) {
                     hm_table.draw();
                 });
             });
-            $("a.view-transaction").click(function (event) {
+            $("a.view-transaction").off("click").click(function (event) {
                 event.preventDefault();
                 var href = $(this).attr('href');
                 // alert(href);
@@ -147,7 +147,7 @@ CRM.$(function ($) {
         };
         transactions_table.destroy();
         var new_transactions_table = transactions_tab.DataTable(transactions_dtsettings);
-        $('a.approve-transactions').click(function (event) {
+        $('a.approve-transactions').off("click").click(function (event) {
             event.preventDefault();
             var roo = new_transactions_table.$('.row_selected');
             var i = 0;
@@ -174,7 +174,7 @@ CRM.$(function ($) {
             }
 
         });
-        $('a.reject-transactions').click(function (event) {
+        $('a.reject-transactions').off("click").click(function (event) {
             event.preventDefault();
             var roo = new_transactions_table.$('.row_selected');
             var i = 0;
@@ -201,7 +201,7 @@ CRM.$(function ($) {
             }
 
         });
-        $('a.select-all-transactions').click(function (event) {
+        $('a.select-all-transactions').off("click").click(function (event) {
             event.preventDefault();
             $('.selector-transactions tr').each(function() {
                 let aaa = $(this).find('td:eq(11)').text();

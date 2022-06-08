@@ -32,7 +32,7 @@ CRM.$(function ($) {
         };
         categorys_dtsettings.fnDrawCallback = function (oSettings) {
             // $("a.view-category").css('background','red');
-            $("a.update-category").click(function (event) {
+            $("a.update-category").off("click").click(function (event) {
                 event.preventDefault();
                 var href = $(this).attr('href');
                 // alert(href);
@@ -44,7 +44,7 @@ CRM.$(function ($) {
                     hm_table.draw();
                 });
             });
-            $("a.delete-category").click(function (event) {
+            $("a.delete-category").off("click").click(function (event) {
                 event.preventDefault();
                 var href = $(this).attr('href');
                 // alert(href);

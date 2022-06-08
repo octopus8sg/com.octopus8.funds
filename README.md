@@ -41,4 +41,4 @@ cv en funds
 
 ## Known Issues
 
-(* FIXME *)
+- 0.1.3. Fixed JS to prevent two forms

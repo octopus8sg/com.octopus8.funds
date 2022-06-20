@@ -86,9 +86,7 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
         if (in_array($pagename, $accountPages)) {
             $this->account_filter();
         }
-        if (in_array($pagename, $accountTypePages)) {
-            $this->account_type_filter();
-        }
+
         if (in_array($pagename, $subAccountPages)) {
             $this->sub_account_filter();
         }
@@ -190,27 +188,6 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
 
 //        CRM_Core_Error::debug_var('cid', $this->_cid);
 
-        $this->addEntityRef('account_account_type_id', E::ts('Type'), [
-            'api' => [
-                'search_fields' => ['code', 'name'],
-//                'extra' => ['code', 'name'],
-//                'search_field' => 'code',
-                'description_field' => [
-                    'code',
-                    'description',
-                ],
-                'label_field' => "name",
-                'params' => [],
-                'check_permissions' => FALSE
-            ],
-            'select' => ['minimumInputLength' => 0],
-            'entity' => 'fund_account_type',
-            'class' => 'huge',
-            'create' => false,
-            'multiple' => true,
-            'add_wildcard' => false,
-            'placeholder' => ts('- Select Type -'),
-        ], FALSE);
 
     }
 
@@ -242,33 +219,6 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
 
     }
 
-    function account_type_filter()
-    {
-        // ID or Code
-        // Contact (Owner)
-        /*
-         *
-            aoData.push({ "name": "account_type_id",
-                "value": $('#account_type_id').val() });
-            aoData.push({ "name": "account_type_name",
-                "value": $('#account_type_name').val() });
-         */
-
-        $this->add(
-            'text',
-            'account_type_id',
-            ts('Account Type ID or Code'),
-            ['size' => 28, 'maxlength' => 128]);
-
-        $this->add(
-            'text',
-            'account_type_name',
-            ts('Account Type Name or Description'),
-            ['size' => 28, 'maxlength' => 128]);
-
-//        CRM_Core_Error::debug_var('cid', $this->_cid);
-
-    }
 
     function sub_account_filter()
     {

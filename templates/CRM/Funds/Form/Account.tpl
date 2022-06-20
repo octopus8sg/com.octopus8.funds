@@ -14,12 +14,6 @@
   <div class="crm-block crm-form-block">
 
     <div class="crm-section">
-      <div class="label">{$form.type_id.label}</div>
-      <div class="content">{$form.type_id.html}</div>
-      <div class="clear"></div>
-    </div>
-
-    <div class="crm-section">
       <div class="label">{$form.code.label}</div>
       <div class="content">{$form.code.html}</div>
       <div class="clear"></div>

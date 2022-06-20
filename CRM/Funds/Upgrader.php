@@ -1,10 +1,12 @@
 <?php
+
 use CRM_Funds_ExtensionUtil as E;
 
 /**
  * Collection of upgrade steps.
  */
-class CRM_Funds_Upgrader extends CRM_Funds_Upgrader_Base {
+class CRM_Funds_Upgrader extends CRM_Funds_Upgrader_Base
+{
 
     // By convention, functions that look like "function upgrade_NNNN()" are
     // upgrade tasks. They are executed in order (like Drupal's hook_update_N).
@@ -13,7 +15,8 @@ class CRM_Funds_Upgrader extends CRM_Funds_Upgrader_Base {
      * Example: Run an external SQL script when the module is installed.
      *
      */
-    public function install() {
+    public function install()
+    {
         $this->uninstall();
         // Create the device_type and sensor option groups
         $trxnStatusGroup = civicrm_api3('OptionGroup',
@@ -48,20 +51,16 @@ class CRM_Funds_Upgrader extends CRM_Funds_Upgrader_Base {
      * created during the installation (e.g., a setting or a managed entity), do
      * so here to avoid order of operation problems.
      */
-    // public function postInstall() {
-    //  $customFieldId = civicrm_api3('CustomField', 'getvalue', array(
-    //    'return' => array("id"),
-    //    'name' => "customFieldCreatedViaManagedHook",
-    //  ));
-    //  civicrm_api3('Setting', 'create', array(
-    //    'myWeirdFieldSetting' => array('id' => $customFieldId, 'weirdness' => 1),
-    //  ));
-    // }
+    function postInstall() {
+        // Update schemaVersion if added new version in upgrade process.
+        CRM_Core_BAO_Extension::setSchemaVersion('com.octopus8.funds', 10006);
+    }
 
     /**
      * Example: Run an external SQL script when the module is uninstalled.
      */
-    public function uninstall() {
+    public function uninstall()
+    {
         try {
             $optionGroupId = civicrm_api3('OptionGroup',
                 'getvalue', ['return' => 'id',
@@ -80,10 +79,18 @@ class CRM_Funds_Upgrader extends CRM_Funds_Upgrader_Base {
 
     /**
      * Example: Run a simple query when a module is enabled.
+     * @throws Exception
      */
-    // public function enable() {
-    //  CRM_Core_DAO::executeQuery('UPDATE foo SET is_active = 1 WHERE bar = "whiz"');
-    // }
+     public function enable() {
+         CRM_Core_BAO_Extension::setSchemaVersion('com.octopus8.funds', 10006);
+         $revision =  $this->getCurrentRevision();
+         if($revision >= 10006){
+             $this->upgrade_10006();
+         }
+         CRM_Core_Error::debug_var('revision', $this->getCurrentRevision());
+
+         //      CRM_Core_DAO::executeQuery('UPDATE foo SET is_active = 1 WHERE bar = "whiz"');
+     }
 
     /**
      * Example: Run a simple query when a module is disabled.
@@ -168,5 +175,74 @@ class CRM_Funds_Upgrader extends CRM_Funds_Upgrader_Base {
     //   }
     //   return TRUE;
     // }
+
+    /**
+     * @return TRUE on success
+     * @throws Exception
+     * 1 - remove table
+     * 2 - remove row
+     * 3 - remove foreign index
+     */
+    public function upgrade_10006()
+    {
+        CRM_Core_Error::debug_var('news', 'Applying update 0006 - Remove civicrm_o8_fund_account_type table');
+//        $this->ctx->log->info('Applying update 0006 - Remove civicrm_o8_fund_account_type table');
+        $tableToRemove = 'civicrm_o8_fund_account_type';
+        $tableToRemoveColumn = 'civicrm_o8_fund_account';
+        $columnToRemove = 'type_id';
+        $foreinKeyToRemove = 'FK_civicrm_o8_fund_account_type_id';
+        if (self::checkColumnExists('civicrm_o8_fund_account', 'type_id')) {
+//            CRM_Core_Error::debug_var('columnToRemove', $columnToRemove);
+            // There is no such column in new version
+            try {
+//                CRM_Core_Error::debug_var('fkToRemove', $columnToRemove);
+                CRM_Core_DAO::executeQuery("ALTER TABLE `$tableToRemoveColumn` DROP FOREIGN KEY `$foreinKeyToRemove`;");
+            } catch (Exception $e) {
+                CRM_Core_Error::debug_var('error1', $e->getMessage());
+            }
+            try {
+//                CRM_Core_Error::debug_var('columnToRemove', $columnToRemove);
+                CRM_Core_DAO::executeQuery("ALTER TABLE `$tableToRemoveColumn` DROP `$columnToRemove`;");
+            } catch (Exception $e) {
+                CRM_Core_Error::debug_var('error2', $e->getMessage());
+            }
+            // There is no such column in new version
+            return TRUE;
+        }
+        if (CRM_Core_DAO::checkTableExists('civicrm_o8_fund_account_type')) {
+            // There is no such table in new version
+            try {
+//                CRM_Core_Error::debug_var('tableToRemove', $tableToRemove);
+                CRM_Core_DAO::executeQuery("DROP TABLE IF EXISTS $tableToRemove;");
+            } catch (Exception $e) {
+                CRM_Core_Error::debug_var('error3', $e->getMessage());
+            }
+            return TRUE;
+        }
+        return TRUE;
+    }
+
+    /**
+     * Check if there is a given table in the database.
+     *
+     * @param string $tableName
+     *
+     * @return bool
+     *   true if exists, else false
+     */
+    public static function checkColumnExists($tableName, $columnName)
+    {
+        $query = "
+SHOW COLUMNS from `%1` LIKE %2;
+";
+        $params = [
+            1 => [$tableName, 'MysqlColumnNameOrAlias'],
+            2 => [$columnName, 'String'],
+        ];
+
+        $dao = CRM_Core_DAO::executeQuery($query, $params);
+        return (bool)$dao->fetch();
+    }
+
 
 }

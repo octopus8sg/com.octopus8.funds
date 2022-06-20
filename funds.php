@@ -426,12 +426,6 @@ function funds_civicrm_alterAPIPermissions($entity, $action, &$params, &$permiss
 //        CRM_Core_Error::debug_var('action', $action);
 //        CRM_Core_Error::debug_var('params', $params);
 //        CRM_Core_Error::debug_var('permissions', $permissions);
-    } elseif ($entity == 'fund_account_type' and ($action == 'getlist' or $action == 'get')) {
-        $params['check_permissions'] = FALSE;
-//        CRM_Core_Error::debug_var('entity', $entity);
-//        CRM_Core_Error::debug_var('action', $action);
-//        CRM_Core_Error::debug_var('params', $params);
-//        CRM_Core_Error::debug_var('permissions', $permissions);
     } elseif ($entity == 'fund_sub_account' and ($action == 'getlist' or $action == 'get')) {
         $params['check_permissions'] = FALSE;
 //        CRM_Core_Error::debug_var('entity', $entity);
@@ -603,24 +597,6 @@ function funds_civicrm_navigationMenu(&$menu)
         'label' => E::ts('Add Account'),
         'name' => 'o8_funds_account_add',
         'url' => 'civicrm/fund/account?reset=1&action=add',
-        'permission' => 'administer CiviCRM,*manage o8connect Funds',
-        'operator' => 'OR',
-        'separator' => 0,
-    ));
-    _funds_civix_navigationMenu($menu);
-    _funds_civix_insert_navigation_menu($menu, 'o8_funds', array(
-        'label' => E::ts('Find Account Type'),
-        'name' => 'o8_funds_account_type_search',
-        'url' => 'civicrm/fund/accounttypesearch',
-        'permission' => 'administer CiviCRM,*manage o8connect Funds',
-        'operator' => 'OR',
-        'separator' => 0,
-    ));
-    _funds_civix_navigationMenu($menu);
-    _funds_civix_insert_navigation_menu($menu, 'o8_funds', array(
-        'label' => E::ts('Add Account Type'),
-        'name' => 'o8_funds_account_type_add',
-        'url' => 'civicrm/fund/accounttype?reset=1&action=add',
         'permission' => 'administer CiviCRM,*manage o8connect Funds',
         'operator' => 'OR',
         'separator' => 0,

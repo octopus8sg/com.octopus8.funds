@@ -19,7 +19,6 @@ DROP TABLE IF EXISTS `civicrm_o8_fund_transaction`;
 DROP TABLE IF EXISTS `civicrm_o8_fund_sub_account`;
 DROP TABLE IF EXISTS `civicrm_o8_fund_category`;
 DROP TABLE IF EXISTS `civicrm_o8_fund_account`;
-DROP TABLE IF EXISTS `civicrm_o8_fund_account_type`;
 DROP TABLE IF EXISTS `civicrm_o8_fund`;
 
 SET FOREIGN_KEY_CHECKS=1;

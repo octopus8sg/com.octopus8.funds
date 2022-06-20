@@ -53,9 +53,6 @@ class CRM_Funds_Page_SearchAccount extends CRM_Core_Page
         $account_name = CRM_Utils_Request::retrieveValue('account_name', 'String', null);
 
 
-        $account_type_id = CRM_Utils_Request::retrieveValue('account_type_id', 'CommaSeparatedIntegers', null);
-//        CRM_Core_Error::debug_var('account_fund_id', $account_fund_id);
-
         $offset = CRM_Utils_Request::retrieveValue('iDisplayStart', 'Positive', 0);
 //        CRM_Core_Error::debug_var('offset', $offset);
 
@@ -65,8 +62,7 @@ class CRM_Funds_Page_SearchAccount extends CRM_Core_Page
         $sortMapper = [
             0 => 'id',
             1 => 'code',
-            2 => 'name',
-            3 => 'type_code'
+            2 => 'name'
         ];
 
         $sort = isset($_REQUEST['iSortCol_0']) ? CRM_Utils_Array::value(CRM_Utils_Type::escape($_REQUEST['iSortCol_0'], 'Integer'), $sortMapper) : NULL;
@@ -87,12 +83,8 @@ class CRM_Funds_Page_SearchAccount extends CRM_Core_Page
       a.id,
       a.code,
       a.name,
-      a.description,
-      concat(f.code, ': ', f.name) type_name,
-      f.code type_code,
-      a.type_id
+      a.description
     FROM civicrm_o8_fund_account a 
-    INNER JOIN civicrm_o8_fund_account_type f on a.type_id = f.id
     WHERE 1";
 
 
@@ -113,16 +105,6 @@ class CRM_Funds_Page_SearchAccount extends CRM_Core_Page
             }
         }
 
-
-        if (isset($account_type_id)) {
-            if (strval($account_type_id) != "") {
-                if (is_numeric($account_type_id)) {
-                    $sql .= " AND a.`type_id` = " . $account_type_id . " ";
-                } else {
-                    $sql .= " AND a.`type_id` in (" . $account_type_id . ") ";
-                }
-            }
-        }
 
         if ($sort !== NULL) {
             $sql .= " ORDER BY {$sort} {$sortOrder}";
@@ -146,11 +128,6 @@ class CRM_Funds_Page_SearchAccount extends CRM_Core_Page
         $rows = array();
         $count = 0;
         while ($dao->fetch()) {
-            if (!empty($dao->type_id)) {
-                $fund = '<a href="' . CRM_Utils_System::url('civicrm/fund/accounttype',
-                        ['reset' => 1, 'id' => $dao->type_id, 'action' => 'view']) . '">' .
-                    $dao->type_name . '</a>';
-            }
 
             $r_update = CRM_Utils_System::url('civicrm/fund/account',
                 ['action' => 'update', 'id' => $dao->id]);
@@ -162,7 +139,6 @@ class CRM_Funds_Page_SearchAccount extends CRM_Core_Page
             $rows[$count][] = $dao->id;
             $rows[$count][] = $dao->code;
             $rows[$count][] = $dao->name;
-            $rows[$count][] = $fund;
             $rows[$count][] = $dao->description;
             $rows[$count][] = $action;
             $count++;

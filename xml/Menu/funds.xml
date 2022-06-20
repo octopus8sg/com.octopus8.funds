@@ -90,11 +90,6 @@
     <access_arguments>access CiviCRM</access_arguments>
   </item>
   <item>
-    <path>civicrm/fund/account_type_ajax</path>
-    <page_callback>CRM_Funds_Page_SearchAccountType::getAjax</page_callback>
-    <access_arguments>access CiviCRM</access_arguments>
-  </item>
-  <item>
     <path>civicrm/fund/category_ajax</path>
     <page_callback>CRM_Funds_Page_SearchCategory::getAjax</page_callback>
     <access_arguments>access CiviCRM</access_arguments>

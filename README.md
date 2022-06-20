@@ -46,3 +46,5 @@ cv en funds
 - 0.1.4. Changed projection formula
 
 - 0.1.5. Rename Fund Residue to Fund Balance ($) Fund balance Fund Balance (%)
+
+- 0.1.0006. Remove Account type table, menu, pages

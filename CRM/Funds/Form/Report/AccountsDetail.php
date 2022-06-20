@@ -16,62 +16,6 @@ class CRM_Funds_Form_Report_AccountsDetail extends CRM_Report_Form
     function __construct()
     {
         $this->_columns = array(
-            'civicrm_o8_fund_account_type' => array(
-                'dao' => 'CRM_Funds_DAO_Fund',
-                'fields' => [
-                    'id' => [
-                        'name' => 'id',
-                        'title' => E::ts('Type ID'),
-                        'type' => CRM_Utils_Type::T_INT,
-                        'required' => TRUE,
-                    ],
-                    'code' => [
-                        'name' => 'code',
-                        'type' => CRM_Utils_Type::T_STRING,
-                        'title' => E::ts('Type Code'),
-                        'required' => TRUE,
-                    ],
-                    'name' => [
-                        'name' => 'name',
-                        'type' => CRM_Utils_Type::T_STRING,
-                        'title' => E::ts('Type Name'),
-                        'description' => E::ts('Type Name'),
-                        'required' => TRUE,
-                    ],
-                    'description' => [
-                        'name' => 'description',
-                        'type' => CRM_Utils_Type::T_TEXT,
-                        'title' => E::ts('Type Description'),
-                    ],
-                ],
-                'filters' => array(
-                    'type_name' => array(
-                        'name' => 'name',
-                        'title' => E::ts('Type Name'),
-                        'operator' => 'like',
-                    ),
-                    'type_code' => array(
-                        'name' => 'code',
-                        'title' => E::ts('Type Code'),
-                        'operator' => 'like',
-                    ),
-                    'type_description' => array(
-                        'name' => 'description',
-                        'title' => E::ts('Type Description'),
-                        'operator' => 'like',
-                    ),
-                ),
-                'order_bys' => [
-                    'type_code' => [
-                        'name' => 'code',
-                        'title' => ts('Type Code'),
-                        'default' => TRUE,
-                        'default_weight' => '0',
-                        'default_order' => 'ASC',
-                    ],
-                ],
-                'grouping' => 'fund-fields',
-            ),
             'civicrm_o8_fund_account' => array(
                 'dao' => 'CRM_Funds_DAO_FundAccount',
                 'fields' => [
@@ -241,10 +185,7 @@ class CRM_Funds_Form_Report_AccountsDetail extends CRM_Report_Form
         $this->_from = NULL;
 
         $this->_from = "
-         FROM  civicrm_o8_fund_account_type {$this->_aliases['civicrm_o8_fund_account_type']} {$this->_aclFrom}
-               INNER JOIN civicrm_o8_fund_account {$this->_aliases['civicrm_o8_fund_account']}
-                          ON {$this->_aliases['civicrm_o8_fund_account_type']}.id =
-                             {$this->_aliases['civicrm_o8_fund_account']}.type_id
+         FROM  civicrm_o8_fund_account {$this->_aliases['civicrm_o8_fund_account']} {$this->_aclFrom}
                LEFT JOIN civicrm_contact {$this->_aliases['civicrm_created']}
                           ON {$this->_aliases['civicrm_created']}.id =
                              {$this->_aliases['civicrm_o8_fund_account']}.created_by

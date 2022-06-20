@@ -62,8 +62,6 @@ CRM.$(function ($) {
                 "value": $('#account_id').val() });
             aoData.push({ "name": "account_name",
                 "value": $('#account_name').val() });
-            aoData.push({ "name": "account_type_id",
-                "value": $('#account_account_type_id').val() });
             $.ajax( {
                 "dataType": 'json',
                 "type": "POST",

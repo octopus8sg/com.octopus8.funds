@@ -460,11 +460,6 @@ function _funds_civix_civicrm_entityTypes(&$entityTypes) {
       'class' => 'CRM_Funds_DAO_FundAccount',
       'table' => 'civicrm_o8_fund_account',
     ],
-    'CRM_Funds_DAO_FundAccountType' => [
-      'name' => 'FundAccountType',
-      'class' => 'CRM_Funds_DAO_FundAccountType',
-      'table' => 'civicrm_o8_fund_account_type',
-    ],
     'CRM_Funds_DAO_FundCategory' => [
       'name' => 'FundCategory',
       'class' => 'CRM_Funds_DAO_FundCategory',

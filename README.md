@@ -44,3 +44,5 @@ cv en funds
 - 0.1.3. Fixed JS to prevent two forms
 
 - 0.1.4. Changed projection formula
+
+- 0.1.5. Rename Fund Residue to Fund Balance ($) Fund balance Fund Balance (%)

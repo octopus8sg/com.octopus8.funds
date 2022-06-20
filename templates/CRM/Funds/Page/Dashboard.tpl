@@ -31,10 +31,10 @@
                             {ts}FUND EXPENDITURE{/ts}
                         </th>
                         <th scope="col">
-                            {ts}FUND RESIDUE{/ts}
+                            {ts}FUND BALANCE ($){/ts}
                         </th>
                         <th scope="col">
-                            {ts}FUND BALANCE{/ts}
+                            {ts}FUND BALANCE (%){/ts}
                         </th>
                         <th id="nosort">
                             {ts}FUND PROJECTION{/ts}

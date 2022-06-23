@@ -71,6 +71,7 @@ ENGINE=InnoDB;
 -- *
 -- *******************************************************/
 CREATE TABLE `civicrm_o8_fund_account` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT 'Unique Fund ID',
   `code` varchar(255) NOT NULL COMMENT 'Account Code',
   `name` varchar(255) NOT NULL COMMENT 'Account Name',
   `description` text COMMENT 'Optional verbose description of the account.',
@@ -78,6 +79,7 @@ CREATE TABLE `civicrm_o8_fund_account` (
   `created_by` int unsigned COMMENT 'FK to Created Contact',
   `modified_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Date and time the account was modified',
   `modified_by` int unsigned COMMENT 'FK to Modified Contact',
+  PRIMARY KEY (`id`),
   UNIQUE INDEX `index_code`(code),
   INDEX `index_name`(code),
   CONSTRAINT FK_civicrm_o8_fund_account_created_by FOREIGN KEY (`created_by`) REFERENCES `civicrm_contact`(`id`) ON DELETE RESTRICT,

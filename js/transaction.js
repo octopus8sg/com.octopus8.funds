@@ -1,4 +1,5 @@
 // alert("ccc!");
+// alert("ccc!");
 CRM.$(function ($) {
 
     $("a.add-transaction").off("click").click(function (event) {

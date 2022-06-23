@@ -7,6 +7,19 @@
   <comment>Account</comment>
   <log>true</log>
 
+  <field>
+    <name>id</name>
+    <type>int unsigned</type>
+    <required>true</required>
+    <comment>Unique Fund ID</comment>
+    <html>
+      <type>Number</type>
+    </html>
+  </field>
+  <primaryKey>
+    <name>id</name>
+    <autoincrement>true</autoincrement>
+  </primaryKey>
 
   <field>
     <name>code</name>
@@ -52,22 +65,6 @@
     </html>
     <comment>Optional verbose description of the account.</comment>
   </field>
-
-<!--  <field>-->
-<!--    <name>type_id</name>-->
-<!--    <title>Type</title>-->
-<!--    <type>int unsigned</type>-->
-<!--    <required>true</required>-->
-<!--    <comment>FK to civicrm_o8_fund_account_type</comment>-->
-<!--    <html>-->
-<!--      <label>Type</label>-->
-<!--    </html>-->
-<!--  </field>-->
-<!--  <foreignKey>-->
-<!--    <name>type_id</name>-->
-<!--    <table>civicrm_o8_fund_account_type</table>-->
-<!--    <key>id</key>-->
-<!--  </foreignKey>-->
 
   <field>
     <name>created_at</name>

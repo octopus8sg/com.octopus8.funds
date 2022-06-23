@@ -263,8 +263,6 @@ class CRM_Funds_Form_Transaction extends CRM_Core_Form
                     'description_field' => [
                         'code',
 //                        'description',
-                        'type_id.code',
-                        'type_id.name',
                     ]
                 ],
                 'class' => 'huge',

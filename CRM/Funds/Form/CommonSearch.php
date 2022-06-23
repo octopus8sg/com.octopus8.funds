@@ -71,9 +71,7 @@ class CRM_Funds_Form_CommonSearch extends CRM_Core_Form
         $accountPages = [
             'SearchAccount',
         ];
-        $accountTypePages = [
-            'SearchAccountType',
-        ];
+
         $subAccountPages = [
             'SearchSubAccount',
         ];

@@ -33,12 +33,6 @@ class CRM_Funds_Form_Report_AccountsDetail extends CRM_Report_Form
                         'description' => E::ts('Account Code'),
                         'required' => TRUE,
                     ],
-                    'type_id' => [
-                        'type' => CRM_Utils_Type::T_INT,
-                        'description' => E::ts('Type ID'),
-                        'no_display' => TRUE,
-                        'required' => TRUE,
-                    ],
                     'ac_name' => [
                         'name' => 'name',
                         'type' => CRM_Utils_Type::T_STRING,

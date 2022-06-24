@@ -681,7 +681,12 @@ function funds_civicrm_tabset($path, &$tabs, $context)
     $isApprover = $isSocial = $isOrganization = FALSE;
     $isApprover = boolval(CRM_Contact_BAO_GroupContact::isContactInGroup($contactId, $financial_manager_group_id));
     $isSocial = boolval(CRM_Contact_BAO_GroupContact::isContactInGroup($contactId, $social_worker_group_id));
-    $contactType = CRM_Contact_BAO_Contact::getContactType($contactId);
+    try {
+        $contactType = CRM_Contact_BAO_Contact::getContactType($contactId);
+    } catch (CRM_Core_Exception $e) {
+        CRM_Core_Error::debug_var('some_error_in_funds_tab', $e->getMessage());
+        return;
+    }
     if ($contactType == 'Organization') {
         $isOrganization = TRUE;
     }

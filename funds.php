@@ -675,22 +675,7 @@ function funds_civicrm_tabset($path, &$tabs, $context)
 {
 
     $contactId = $context['contact_id'];
-    $financial_manager_group_id = _find_financial_manager_group_id();
-    $social_worker_group_id = _find_social_worker_group_id();
 //    CRM_Core_Error::debug_var('contactId', $contactId);
-    $isApprover = $isSocial = $isOrganization = FALSE;
-    $isApprover = boolval(CRM_Contact_BAO_GroupContact::isContactInGroup($contactId, $financial_manager_group_id));
-    $isSocial = boolval(CRM_Contact_BAO_GroupContact::isContactInGroup($contactId, $social_worker_group_id));
-    try {
-        $contactType = CRM_Contact_BAO_Contact::getContactType($contactId);
-    } catch (CRM_Core_Exception $e) {
-        CRM_Core_Error::debug_var('some_error_in_funds_tab', $e->getMessage());
-        return;
-    }
-    if ($contactType == 'Organization') {
-        $isOrganization = TRUE;
-    }
-    $tab_added = FALSE;
     if ($path === 'civicrm/contact/view') {
         // add a tab to the contact summary screen
 //        if ($isApprover) {
@@ -744,12 +729,19 @@ function funds_civicrm_tabset($path, &$tabs, $context)
 //            );
 //
 //        }
-        $myEntities = civicrm_api3('FundTransaction', 'getcount', [
-            'created_by' => $contactId,
-            'contact_id_sub' => $contactId,
-            'contact_id_app' => $contactId,
-            'options' => ['or' => [["created_by", "contact_id_sub", "contact_id_app"]]],
-        ]);
+        $myEntities = 0;
+        try {
+            $myEntities = civicrm_api3('FundTransaction', 'getcount', [
+                'created_by' => $contactId,
+                'contact_id_sub' => $contactId,
+                'contact_id_app' => $contactId,
+                'options' => ['or' => [["created_by", "contact_id_sub", "contact_id_app"]]],
+            ]);
+        } catch (CRM_Core_Exception $e) {
+            CRM_Core_Error::debug_var('some_error_in_funds_tab', $e->getMessage());
+            return;
+        }
+
 //    CRM_Core_Error::debug_var('myEntities', $myEntities);
         $url = CRM_Utils_System::url('civicrm/fund/transactiontab', ['cid' => $contactId]);
         $title = "Transactions";

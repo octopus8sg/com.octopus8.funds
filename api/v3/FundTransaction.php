@@ -58,3 +58,16 @@ function civicrm_api3_fund_transaction_delete($params) {
 function civicrm_api3_fund_transaction_get($params) {
   return _civicrm_api3_basic_get(_civicrm_api3_get_BAO(__FUNCTION__), $params, TRUE, 'FundTransaction');
 }
+
+function civicrm_api3_fund_transaction_getcount($apiRequest)
+{
+    $apiRequest['params']['options']['is_count'] = TRUE;
+    $records = _civicrm_api3_basic_get(_civicrm_api3_get_BAO(__FUNCTION__), $apiRequest, TRUE, 'FundTransaction');
+    if (is_numeric(CRM_Utils_Array::value('values', $records))) {
+        return (int)$records['values'];
+    }
+    if (!isset($records['count'])) {
+        throw new API_Exception(ts('Unexpected result from getcount') . print_r($records, TRUE));
+    }
+    return (int) $records['count'];
+}

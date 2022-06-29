@@ -731,17 +731,17 @@ function funds_civicrm_tabset($path, &$tabs, $context)
 //        }
         $myEntities = 0;
         try {
-            $myEntities = civicrm_api3('FundTransaction', 'getcount', [
-                'created_by' => $contactId,
-                'contact_id_sub' => $contactId,
-                'contact_id_app' => $contactId,
-                'options' => ['or' => [["created_by", "contact_id_sub", "contact_id_app"]]],
-            ]);
+            $contactType = CRM_Contact_BAO_Contact::getContactType($contactId);
         } catch (CRM_Core_Exception $e) {
             CRM_Core_Error::debug_var('some_error_in_funds_tab', $e->getMessage());
             return;
         }
-
+        $myEntities = civicrm_api3('FundTransaction', 'getcount', [
+            'created_by' => $contactId,
+            'contact_id_sub' => $contactId,
+            'contact_id_app' => $contactId,
+            'options' => ['or' => [["created_by", "contact_id_sub", "contact_id_app"]]],
+        ]);
 //    CRM_Core_Error::debug_var('myEntities', $myEntities);
         $url = CRM_Utils_System::url('civicrm/fund/transactiontab', ['cid' => $contactId]);
         $title = "Transactions";

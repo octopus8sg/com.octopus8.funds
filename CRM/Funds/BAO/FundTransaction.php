@@ -5,6 +5,8 @@ class CRM_Funds_BAO_FundTransaction extends CRM_Funds_DAO_FundTransaction {
     const PENDING_APPROVAL = 1;
     const APPROVED = 2;
     const REJECTED = 3;
+    const PENDING_REVIEW = 4;
+    const REVIEWED = 5;
 
   /**
    * Create a new FundTransaction based on array-data

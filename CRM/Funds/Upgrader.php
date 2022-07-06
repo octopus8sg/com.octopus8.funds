@@ -19,28 +19,8 @@ class CRM_Funds_Upgrader extends CRM_Funds_Upgrader_Base
     {
         $this->uninstall();
         // Create the device_type and sensor option groups
-        $trxnStatusGroup = civicrm_api3('OptionGroup',
-            'create',
-            ['name' => 'o8_fund_trxn_status',
-                'title' => E::ts('Fund Transaction Status')]);
-        $trxnStatusGroupId = $trxnStatusGroup['id'];
 
-        $device_type1 = civicrm_api3('OptionValue', 'create',
-            ['value' => CRM_Funds_BAO_FundTransaction::PENDING_APPROVAL,
-                'is_default' => '1',
-                'name' => 'Pending_Approval',
-                'label' => E::ts('Pending Approval'),
-                'option_group_id' => $trxnStatusGroupId]);
-        civicrm_api3('OptionValue', 'create',
-            ['value' => CRM_Funds_BAO_FundTransaction::APPROVED,
-                'name' => 'Approved',
-                'label' => E::ts('Approved'),
-                'option_group_id' => $trxnStatusGroupId]);
-        civicrm_api3('OptionValue', 'create',
-            ['value' => CRM_Funds_BAO_FundTransaction::REJECTED,
-                'name' => 'Rejected',
-                'label' => E::ts('Rejected'),
-                'option_group_id' => $trxnStatusGroupId]);
+        $this->createTrnxStatuses();
     }
 
     /**
@@ -51,7 +31,8 @@ class CRM_Funds_Upgrader extends CRM_Funds_Upgrader_Base
      * created during the installation (e.g., a setting or a managed entity), do
      * so here to avoid order of operation problems.
      */
-    function postInstall() {
+    function postInstall()
+    {
         // Update schemaVersion if added new version in upgrade process.
         CRM_Core_BAO_Extension::setSchemaVersion('com.octopus8.funds', 10006);
     }
@@ -81,16 +62,18 @@ class CRM_Funds_Upgrader extends CRM_Funds_Upgrader_Base
      * Example: Run a simple query when a module is enabled.
      * @throws Exception
      */
-     public function enable() {
-         CRM_Core_BAO_Extension::setSchemaVersion('com.octopus8.funds', 10006);
-         $revision =  $this->getCurrentRevision();
-         if($revision >= 10006){
-             $this->upgrade_10006();
-         }
-         CRM_Core_Error::debug_var('revision', $this->getCurrentRevision());
+    public function enable()
+    {
+        $this->createTrnxStatuses();
+        CRM_Core_BAO_Extension::setSchemaVersion('com.octopus8.funds', 10006);
+        $revision = $this->getCurrentRevision();
+        if ($revision >= 10006) {
+            $this->upgrade_10006();
+        }
+//        CRM_Core_Error::debug_var('revision', $this->getCurrentRevision());
 
-         //      CRM_Core_DAO::executeQuery('UPDATE foo SET is_active = 1 WHERE bar = "whiz"');
-     }
+        //      CRM_Core_DAO::executeQuery('UPDATE foo SET is_active = 1 WHERE bar = "whiz"');
+    }
 
     /**
      * Example: Run a simple query when a module is disabled.
@@ -242,6 +225,95 @@ SHOW COLUMNS from `%1` LIKE %2;
 
         $dao = CRM_Core_DAO::executeQuery($query, $params);
         return (bool)$dao->fetch();
+    }
+
+    /**
+     * @param $trxnStatusGroupId
+     * @throws CiviCRM_API3_Exception
+     */
+    private function createTrnxStatuses(): void
+    {
+        $trxnStatusGroup = civicrm_api3('OptionGroup',
+            'get',
+            ['name' => 'o8_fund_trxn_status',
+                'sequental' => 1,
+            ]);
+//        CRM_Core_Error::debug_var('trxnStatusGroup1', $trxnStatusGroup);
+        if ($trxnStatusGroup['count'] != 0) {
+            $trxnStatusGroup = $trxnStatusGroup['values'];
+            $trxnStatusGroup = reset($trxnStatusGroup);
+            $trxnStatusGroupId = $trxnStatusGroup['id'];
+        } else {
+            $trxnStatusGroup = civicrm_api3('OptionGroup',
+                'create',
+                ['name' => 'o8_fund_trxn_status',
+                    'title' => E::ts('Fund Transaction Status')]);
+            $trxnStatusGroupId = $trxnStatusGroup['id'];
+        }
+//        CRM_Core_Error::debug_var('trxnStatusGroup2', $trxnStatusGroup);
+        $status_value = CRM_Funds_BAO_FundTransaction::PENDING_APPROVAL;
+        $status_name = "Pending_Approval";
+        $status_label = "Pending Approval";
+        $status = $this->createOneStatus($trxnStatusGroupId, $status_value, $status_name, $status_label);
+//        CRM_Core_Error::debug_var('status1', $status);
+        $status_value = CRM_Funds_BAO_FundTransaction::APPROVED;
+        $status_name = "Approved";
+        $status_label = "Approved";
+        $status = $this->createOneStatus($trxnStatusGroupId, $status_value, $status_name, $status_label);
+//        CRM_Core_Error::debug_var('status2', $status);
+        $status_value = CRM_Funds_BAO_FundTransaction::REJECTED;
+        $status_name = "Rejected";
+        $status_label = "Rejected";
+        $status = $this->createOneStatus($trxnStatusGroupId, $status_value, $status_name, $status_label);
+//        CRM_Core_Error::debug_var('status3', $status);
+        $status_value = CRM_Funds_BAO_FundTransaction::PENDING_REVIEW;
+        $status_name = "Pending_Review";
+        $status_label = "Pending Review";
+        $status = $this->createOneStatus($trxnStatusGroupId, $status_value, $status_name, $status_label);
+//        CRM_Core_Error::debug_var('status4', $status);
+        $status_value = CRM_Funds_BAO_FundTransaction::REVIEWED;
+        $status_name = "Reviewed";
+        $status_label = "Reviewed";
+        $status = $this->createOneStatus($trxnStatusGroupId, $status_value, $status_name, $status_label);
+//        CRM_Core_Error::debug_var('status5', $status);
+    }
+
+    /**
+     * @param $trxnStatusGroupId
+     * @param int $status_value
+     * @return array|int|mixed
+     * @throws CiviCRM_API3_Exception
+     */
+    private function createOneStatus(int $trxnStatusGroupId,
+                                     int $status_value,
+                                     string $status_name,
+                                     string $status_label)
+    {
+        $status = civicrm_api3('OptionValue', 'get',
+            ['value' => $status_value,
+                'sequental' => '1',
+                'option_group_id' => $trxnStatusGroupId,
+            ]);
+//        CRM_Core_Error::debug_var('status', $status);
+        $options = ['value' => $status_value,
+//                'is_default' => '1',
+//                'sequental' => '1',
+            'name' => $status_name,
+            'label' => $status_label,
+            'option_group_id' => $trxnStatusGroupId];
+        if ($status['count'] != 0) {
+            $status = $status['values'];
+            $status = reset($status);
+            $status_id = $status['id'];
+            $options['id'] = $status_id;
+        }
+        if ($status_value == CRM_Funds_BAO_FundTransaction::PENDING_APPROVAL) {
+            $options['is_default'] = 1;
+        }
+//        CRM_Core_Error::debug_var('options', $options);
+        $status = civicrm_api3('OptionValue', 'create',
+            $options);
+        return $status;
     }
 
 

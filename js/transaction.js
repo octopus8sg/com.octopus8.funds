@@ -35,14 +35,6 @@ CRM.$(function ($) {
         //Reset Table, add Filter and Search Possibility
         //transactions datatable
 
-        $('.selector-transactions').on('click', 'tr', function () {
-            let aaa = $(this).find('td:eq(11)').text();
-            // alert(aaa);
-            if (aaa === "Pending Approval") {
-                $(this).toggleClass('row_selected columnheader');
-            }
-        });
-
         var transactions_tab = $('.selector-transactions');
         var transactions_table = transactions_tab.DataTable();
         var transactions_dtsettings = transactions_table.settings().init();
@@ -202,18 +194,7 @@ CRM.$(function ($) {
             }
 
         });
-        $('a.select-all-transactions').off("click").click(function (event) {
-            event.preventDefault();
-            $('.selector-transactions tr').each(function() {
-                let aaa = $(this).find('td:eq(11)').text();
-                // alert(aaa);
-                if (aaa === "Pending Approval") {
-                    $(this).toggleClass('row_selected columnheader');
-                }
-            });
 
-
-        });
         //End Reset Table
         $('.transaction-filter :input').change(function () {
             new_transactions_table.draw();

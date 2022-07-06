@@ -49,4 +49,4 @@ cv en funds
 
 - 0.1.6. Remove Account type table, menu, pages
 
-- 1.0.3. Simplified funds_count
+- 1.0.3. Simplified funds_count everywhere

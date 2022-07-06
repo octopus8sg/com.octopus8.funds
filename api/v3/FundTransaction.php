@@ -59,6 +59,11 @@ function civicrm_api3_fund_transaction_get($params) {
   return _civicrm_api3_basic_get(_civicrm_api3_get_BAO(__FUNCTION__), $params, TRUE, 'FundTransaction');
 }
 
+/**
+ * @param $apiRequest
+ * @return int
+ * @throws API_Exception
+ */
 function civicrm_api3_fund_transaction_getcount($apiRequest)
 {
     $apiRequest['params']['options']['is_count'] = TRUE;

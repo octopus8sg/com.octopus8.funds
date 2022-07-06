@@ -5,6 +5,13 @@ use CRM_Funds_ExtensionUtil as E;
 class CRM_Funds_Page_TransactionTab extends CRM_Core_Page
 {
 
+    /**
+     * @return void|null
+     * @throws API_Exception
+     * @throws CRM_Core_Exception
+     * @throws CiviCRM_API3_Exception
+     * @throws \Civi\API\Exception\UnauthorizedException
+     */
     public function run()
     {
 
@@ -46,12 +53,14 @@ class CRM_Funds_Page_TransactionTab extends CRM_Core_Page
         $social_worker_group_id = _find_social_worker_group_id();
 //    CRM_Core_Error::debug_var('contactId', $contactId);
 
-        $myEntities = civicrm_api3('FundTransaction', 'getcount', [
+        $myEntities = civicrm_api3('FundTransaction', 'get', [
+            'sequential' => 1,
             'created_by' => $contactId,
             'contact_id_sub' => $contactId,
             'options' => ['or' => [["created_by", "contact_id_sub"]]],
         ]);
-        $this->assign('submissions', $myEntities);
+        $myCount = $myEntities['count'];
+        $this->assign('submissions', $myCount);
 
 //        $isApprover = boolval(CRM_Contact_BAO_GroupContact::isContactInGroup($contactId, $financial_manager_group_id));
         $isSocial = boolval(CRM_Contact_BAO_GroupContact::isContactInGroup($contactId, $social_worker_group_id));
@@ -59,24 +68,29 @@ class CRM_Funds_Page_TransactionTab extends CRM_Core_Page
             ->addWhere('id', '=', $contactId)
             ->execute()->single();
         $contactType = $contact['contact_type'];
-            $myEntities = civicrm_api3('FundTransaction', 'getcount', [
-                'contact_id_app' => $contactId
-            ]);
-            $this->assign('approvals', $myEntities);
+        $myEntities = civicrm_api3('FundTransaction', 'get', [
+            'contact_id_app' => $contactId,
+            'sequential' => 1,
+        ]);
+        $myCount = $myEntities['count'];
+        $this->assign('approvals', $myCount);
         if ($isSocial) {
-            $myEntities = civicrm_api3('FundTransaction', 'getcount', [
+            $myEntities = civicrm_api3('FundTransaction', 'get', [
+                'sequential' => 1,
                 'created_by' => $contactId,
                 'contact_id_sub' => $contactId,
                 'options' => ['or' => [["created_by", "contact_id_sub"]]],
             ]);
-            $this->assign('social_worker', $myEntities);
+            $myCount = $myEntities['count'];
+            $this->assign('social_worker', $myCount);
         }
         if ($isOrganization) {
-            $myEntities = civicrm_api3('FundTransaction', 'getcount', [
+            $myEntities = civicrm_api3('FundTransaction', 'get', [
                 'fund.contact_id' => $contactId,
+                'sequential' => 1,
             ]);
-
-            $this->assign('organisation', $myEntities);
+            $myCount = $myEntities['count'];
+            $this->assign('organisation', $myCount);
 
         }
         parent::run();

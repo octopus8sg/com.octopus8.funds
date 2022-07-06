@@ -102,15 +102,15 @@ function funds_civicrm_post($op, $objectName, $objectId, &$objectRef)
      */
     $send_an_email = false; //Set to TRUE for DEBUG only
     if ($objectName != 'FundTransaction') {
-        return;
+        return TRUE;
     }
     if ($objectRef->contact_id_app === null) {
-        return;
+        return TRUE;
     }
     $approverId = $objectRef->contact_id_app;
 //    CRM_Core_Error::debug_var('vapproverId', intval($approverId));
     if (intval($approverId) <= 0) {
-        return;
+        return TRUE;
     }
     $groupName = 'Activity Email Sender';
     $from = CRM_Contact_BAO_Contact::getPrimaryEmail($objectRef->modified_by);
@@ -343,9 +343,12 @@ function funds_civicrm_permission(&$permissions)
 }
 
 /**
- * Implementation of hook_civicrm_permission_check
- * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_permission/
+ * @param $permission
+ * @param $granted
+ * @param null $contact_id
+ * @throws CiviCRM_API3_Exception
  */
+
 
 function funds_civicrm_permission_check($permission, &$granted, $contact_id = NULL)
 {
@@ -451,6 +454,7 @@ function funds_civicrm_alterAPIPermissions($entity, $action, &$params, &$permiss
 //        CRM_Core_Error::debug_var('params', $params);
 //        CRM_Core_Error::debug_var('permissions', $permissions);
     } else {
+        $params['check_permissions'] = FALSE;
 //        CRM_Core_Error::debug_var('entity', $entity);
 //        CRM_Core_Error::debug_var('action', $action);
 //        CRM_Core_Error::debug_var('params', $params);
@@ -669,7 +673,10 @@ function funds_civicrm_navigationMenu(&$menu)
 
 /**
  * Implementation of hook_civicrm_tabset
- * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_tabset
+ * @param $path
+ * @param $tabs
+ * @param $context
+ * @throws CiviCRM_API3_Exception
  */
 function funds_civicrm_tabset($path, &$tabs, $context)
 {
@@ -677,58 +684,6 @@ function funds_civicrm_tabset($path, &$tabs, $context)
     $contactId = $context['contact_id'];
 //    CRM_Core_Error::debug_var('contactId', $contactId);
     if ($path === 'civicrm/contact/view') {
-        // add a tab to the contact summary screen
-//        if ($isApprover) {
-//            $myEntities = civicrm_api3('FundTransaction', 'getcount', [
-//                'contact_id_app' => $contactId,
-//            ]);
-//
-//            $url = CRM_Utils_System::url('civicrm/fund/approvertab', ['cid' => $contactId]);
-//            $title = "Transactions";
-//            $tabs[] = array(
-//                'id' => 'approvertab',
-//                'url' => $url,
-//                'count' => $myEntities,
-//                'title' => $title,
-//                'weight' => 1000,
-//                'icon' => 'crm-i fa-dropbox',
-//            );
-//            $tab_added = TRUE;
-//        }
-//        if ($isSocial) {
-//            $myEntities = civicrm_api3('FundTransaction', 'getcount', [
-//                'contact_id_sub' => $contactId,
-//            ]);
-//            $url = CRM_Utils_System::url('civicrm/fund/socialtab', ['cid' => $contactId]);
-//            $title = "Transactions";
-//            $tabs[] = array(
-//                'id' => 'socialtab',
-//                'url' => $url,
-//                'count' => $myEntities,
-//                'title' => $title,
-//                'weight' => 1010,
-//                'icon' => 'crm-i fa-dropbox',
-//            );
-//
-//        }
-//        if ($isOrganization) {
-//            $myEntities = civicrm_api3('FundTransaction', 'getcount', [
-//                'fund.contact_id' => $contactId,
-//            ]);
-//
-//            $url = CRM_Utils_System::url('civicrm/fund/orgtab', ['cid' => $contactId]);
-//            $title = "Transactions";
-////            CRM_Core_Error::debug_var('myEntities', $myEntities);
-//            $tabs[] = array(
-//                'id' => 'orgtab',
-//                'url' => $url,
-//                'count' => $myEntities,
-//                'title' => $title,
-//                'weight' => 1020,
-//                'icon' => 'crm-i fa-dropbox',
-//            );
-//
-//        }
         $myEntities = 0;
         try {
             $contactType = CRM_Contact_BAO_Contact::getContactType($contactId);
@@ -736,25 +691,25 @@ function funds_civicrm_tabset($path, &$tabs, $context)
             CRM_Core_Error::debug_var('some_error_in_funds_tab', $e->getMessage());
             return;
         }
-        $myEntities = civicrm_api3('FundTransaction', 'getcount', [
+        $myEntities = civicrm_api3('FundTransaction', 'get', [
             'created_by' => $contactId,
             'contact_id_sub' => $contactId,
             'contact_id_app' => $contactId,
+            'sequential' => 1,
             'options' => ['or' => [["created_by", "contact_id_sub", "contact_id_app"]]],
         ]);
-//    CRM_Core_Error::debug_var('myEntities', $myEntities);
+        $funds_count = $myEntities['count'];
         $url = CRM_Utils_System::url('civicrm/fund/transactiontab', ['cid' => $contactId]);
         $title = "Transactions";
-        $tabs[] = array(
+        $tabs[] = [
             'id' => 'transactiontab',
             'url' => $url,
-            'count' => $myEntities,
+            'count' => $funds_count,
             'title' => $title,
             'weight' => 1030,
             'icon' => 'crm-i fa-dropbox',
-        );
+        ];
 
-        //        CRM_Core_Error::debug_var('myEntities', $myEntities);
 //        CRM_Core_Error::debug_var('isApprover', $isApprover);
 //        CRM_Core_Error::debug_var('isSocial', $isSocial);
 //        CRM_Core_Error::debug_var('isOrganization', $isOrganization);

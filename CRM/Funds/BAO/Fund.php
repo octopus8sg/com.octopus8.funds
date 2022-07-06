@@ -45,15 +45,17 @@ class CRM_Funds_BAO_Fund extends CRM_Funds_DAO_Fund
 
     /**
      * Get child transactions count
-     *
-     * @param integer $fundID Fund IDs
-     * @return integer
+     * @param $fundId
+     * @return int
+     * @throws CiviCRM_API3_Exception
      */
 
     public static function getTransactionsCount($fundId) {
-        $transactionsCount = civicrm_api3('FundTransaction', 'getcount', [
-            'fund_id' => $fundId
+        $transactions = civicrm_api3('FundTransaction', 'get', [
+            'fund_id' => $fundId,
+            'sequential' => 1,
         ]);
+        $transactionsCount = $transactions['count'];
         return intval($transactionsCount);
     }
 

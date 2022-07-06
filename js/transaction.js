@@ -150,12 +150,12 @@ CRM.$(function ($) {
         var new_transactions_table = transactions_tab.DataTable(transactions_dtsettings);
         $('a.approve-transactions').off("click").click(function (event) {
             event.preventDefault();
-            var roo = new_transactions_table.$('.row_selected');
+            var roo = new_transactions_table.$('.crm-row-selected');
             var i = 0;
             if (roo.length !== 0) {
                 roo.each(function () {
                     CRM.api3('FundTransaction', 'create', {
-                        "id": $(this).find("td:eq(0)").text(),
+                        "id": $(this).find("td:eq(1)").text(),
                         "status_id": 2
                     }).then(function (results) {
                         i++;
@@ -177,12 +177,12 @@ CRM.$(function ($) {
         });
         $('a.reject-transactions').off("click").click(function (event) {
             event.preventDefault();
-            var roo = new_transactions_table.$('.row_selected');
+            var roo = new_transactions_table.$('.crm-row-selected');
             var i = 0;
             if (roo.length !== 0) {
                 roo.each(function () {
                     CRM.api3('FundTransaction', 'create', {
-                        "id": $(this).find("td:eq(0)").text(),
+                        "id": $(this).find("td:eq(1)").text(),
                         "status_id": 3
                     }).then(function (results) {
                         i++;

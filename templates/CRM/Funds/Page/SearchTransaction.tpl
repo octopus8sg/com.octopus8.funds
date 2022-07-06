@@ -13,14 +13,13 @@
                 <i class="crm-i fa-plus-circle">&nbsp;</i>
                 {ts}Import Transaction{/ts}
             </a>
-            <a class="button select-all-transactions" href="#" }">
-            <i class="crm-i fa-check">&nbsp;</i>{ts}Select All{/ts}
-            </a>
-            <a class="button approve-transactions" href="#" }">
+{*            <a class="button select-all-transactions" href="#">*}
+{*            <i class="crm-i fa-check">&nbsp;</i>{ts}Select All{/ts}*}
+{*            </a>*}
+            <a class="button approve-transactions" href="#">
             <i class="crm-i fa-circle">&nbsp;</i>{ts}Approve Selected{/ts}
             </a>
-            </a>
-            <a class="button reject-transactions" href="#" }">
+            <a class="button reject-transactions" href="#">
             <i class="crm-i fa-times">&nbsp;</i>{ts}Reject Selected{/ts}
             </a>
         </div>
@@ -32,6 +31,9 @@
                 <table class="selector-transactions row-highlight pagerDisplay" id="Transactions" name="Transactions">
                     <thead class="sticky">
                     <tr>
+                        <th id="nosort" scope="col">
+                            <input class="select-rows crm-form-checkbox" type="checkbox" value="1">
+                        </th>
                         <th id="sortable" scope="col">
                             {ts}ID{/ts}
                         </th>

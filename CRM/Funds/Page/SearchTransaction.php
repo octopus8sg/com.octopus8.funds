@@ -28,6 +28,7 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
         );
         $controller_data->setEmbedded(TRUE);
         $controller_data->assign('pagename', $pageName);
+        $contactId = CRM_Utils_Request::retrieve('cid', 'Positive');
         $controller_data->run();
         parent::run();
     }
@@ -154,18 +155,18 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
             ];
         } else {
             $sortMapper = [
-                0 => 'id',
-                1 => 'date',
-                2 => 'description',
-                3 => 'amount',
-                4 => 'account_name',
-                5 => 'sub_account_name',
-                6 => 'cs_name',
-                7 => 'ca_name',
-                8 => 'cb_name',
-                9 => 'case_name',
-                10 => 'fund_name',
-                11 => 'status_name'
+                1 => 'id',
+                2 => 'date',
+                3 => 'description',
+                4 => 'amount',
+                5 => 'account_name',
+                6 => 'sub_account_name',
+                7 => 'cs_name',
+                8 => 'ca_name',
+                9 => 'cb_name',
+                10 => 'case_name',
+                11 => 'fund_name',
+                12 => 'status_name'
             ];
         }
         $sort = isset($_REQUEST['iSortCol_0']) ? CRM_Utils_Array::value(CRM_Utils_Type::escape($_REQUEST['iSortCol_0'], 'Integer'), $sortMapper) : NULL;
@@ -517,6 +518,9 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
 //                    }
 //                }
             }
+            if (!isset($contactId)) {
+                $rows[$count][] = "<input class=\"select-row crm-form-checkbox\" type=\"checkbox\" value=\"1\">";
+            }
             $rows[$count][] = $dao->id;
             $rows[$count][] = $date;
             $rows[$count][] = $dao->description;
@@ -557,5 +561,23 @@ class CRM_Funds_Page_SearchTransaction extends CRM_Core_Page
         CRM_Utils_JSON::output($hmdatas);
     }
 
+    /**
+     * Add checkboxes for each row plus a master checkbox.
+     *
+     * @param array $rows
+     */
+    public function addRowSelectors($rows)
+    {
+        $this->addElement('checkbox', 'toggleSelect', NULL, NULL, ['class' => 'select-rows']);
+        if (!empty($rows)) {
+            foreach ($rows as $row) {
+                if (!empty($row['checkbox'])) {
+                    $this->addElement('checkbox', $row['checkbox'], NULL, NULL, ['class' => 'select-row']);
+                }
+            }
+        }
+    }
+
 
 }
+
